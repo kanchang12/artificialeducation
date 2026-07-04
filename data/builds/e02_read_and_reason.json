@@ -1,0 +1,62 @@
+{
+  "id": "e02_read_and_reason",
+  "title": "Read and Reason",
+  "tagline": "Read a short passage. Answer what it actually says — not what you think.",
+  "category": "English",
+  "free": false,
+  "icp": {
+    "age_range": "12–22",
+    "prior_experience": "zero",
+    "device": "smartphone",
+    "notes": "Comprehension. No writing. Read and pick."
+  },
+  "levels": [
+    {
+      "key": "beginner",
+      "label": "Beginner",
+      "intro": "Read the passage carefully. The answer is always in the text — not in your head.",
+      "theory": "**Reading comprehension — the rules:**\n\n1. The answer must come from the passage, not from what you already know.\n2. 'Probably' and 'maybe' are traps — if the passage does not say it, do not pick it.\n3. Read every option before picking. The wrong options often sound right.\n4. If two options seem right, go back to the passage and find the exact line.",
+      "theory_hint": "Put your finger on the exact sentence that supports your answer."
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "Read this:\n\n'Riya walked to school every morning. She never took the bus, even when it rained.'\n\nWhat does this tell us about Riya?",
+      "options_type": "text",
+      "options": [
+        "She always walked to school, rain or shine",
+        "She liked the rain",
+        "The bus was too expensive for her",
+        "She lived very close to school"
+      ],
+      "correct": 0,
+      "hints": [
+        "What does the passage actually say? Find the exact words.",
+        "The passage says she never took the bus even when it rained. That is all it says — nothing about cost or distance."
+      ],
+      "why": "The passage says she walked every morning and never took the bus even in rain. Option A matches exactly. The others add information the passage never gives."
+    },
+    {
+      "id": 2,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "Read this:\n\n'The market opened at six. By seven, all the fish had been sold.'\n\nWhat can we conclude?",
+      "options_type": "text",
+      "options": [
+        "The fish sold out within an hour of the market opening",
+        "Fish is very popular in this town",
+        "The market closes at seven",
+        "The fishermen arrived early"
+      ],
+      "correct": 0,
+      "hints": [
+        "The market opened at six. The fish were gone by seven. How long is that?",
+        "Options B, C, D all add things the passage never says."
+      ],
+      "why": "Opened at six, sold out by seven — that is one hour. The passage says nothing about the town's preferences, closing time, or when the fishermen arrived."
+    }
+  ]
+}

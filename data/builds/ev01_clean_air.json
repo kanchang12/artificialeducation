@@ -1,0 +1,62 @@
+{
+  "id": "ev01_clean_air",
+  "title": "Clean Air",
+  "tagline": "Understand air pollution — what causes it, what it does, what can be done.",
+  "category": "Environmental Studies",
+  "free": true,
+  "icp": {
+    "age_range": "10–20",
+    "prior_experience": "zero",
+    "device": "smartphone",
+    "notes": "No prior science knowledge needed."
+  },
+  "levels": [
+    {
+      "key": "beginner",
+      "label": "Beginner",
+      "intro": "What is air pollution, where does it come from, and why does it matter.",
+      "theory": "**Air pollution** happens when harmful substances enter the air we breathe.\n\n**Main sources:**\n- Vehicle exhaust — cars and trucks burn fuel and release carbon monoxide, nitrogen oxides.\n- Factories — burning coal and oil releases sulphur dioxide and particulate matter.\n- Crop burning — farmers burn leftover crops, releasing smoke and carbon.\n- Indoor cooking — burning wood or cow dung in enclosed spaces.\n\n**Why it matters:**\n- Particulate matter (PM2.5) enters the lungs and bloodstream.\n- Causes respiratory diseases, heart disease, and premature death.\n- India has 9 of the world's 10 most polluted cities by PM2.5.",
+      "theory_hint": "PM2.5 means particles smaller than 2.5 micrometres — small enough to enter the bloodstream."
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "A city has very high PM2.5 levels every winter. What is the most likely cause?",
+      "options_type": "text",
+      "options": [
+        "Crop burning in surrounding farmland combined with cold air trapping pollution close to ground",
+        "More people walking in winter",
+        "Less rainfall washing pollution away",
+        "Factories closing for winter holidays"
+      ],
+      "correct": 0,
+      "hints": [
+        "Winter in North India — what happens to crops after harvest?",
+        "Cold air is denser and traps pollution near the ground. Crop burning adds smoke directly."
+      ],
+      "why": "Crop burning after harvest releases large amounts of smoke. Cold winter air creates a temperature inversion that traps the pollution close to the ground. This combination causes the severe winter smog seen in Delhi and other North Indian cities."
+    },
+    {
+      "id": 2,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "Which action would most directly reduce indoor air pollution for a rural family?",
+      "options_type": "text",
+      "options": [
+        "Replacing a wood-burning chulha with an LPG gas stove",
+        "Opening a window while cooking on the chulha",
+        "Planting trees outside the house",
+        "Using a fan to circulate air"
+      ],
+      "correct": 0,
+      "hints": [
+        "The source of indoor pollution is the fuel being burned. What changes the source?",
+        "Opening a window helps slightly but does not remove the source of smoke."
+      ],
+      "why": "The chulha burning wood or dung is the source. Switching to LPG eliminates the smoke at the source. Opening a window only dilutes it slightly."
+    }
+  ]
+}

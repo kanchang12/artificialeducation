@@ -1,0 +1,62 @@
+{
+  "id": "e01_sentence_builder",
+  "title": "Sentence Builder",
+  "tagline": "Read a situation. Write the right sentence for it.",
+  "category": "English",
+  "free": true,
+  "icp": {
+    "age_range": "10–20",
+    "prior_experience": "zero",
+    "device": "smartphone",
+    "notes": "No writing required. Read, reason, pick."
+  },
+  "levels": [
+    {
+      "key": "beginner",
+      "label": "Beginner",
+      "intro": "Learn how sentences are built — subject, verb, object. Then practise choosing the right one.",
+      "theory": "**Every sentence has three parts:**\n\n1. **Subject** — who is doing it. 'The boy', 'She', 'AI'\n2. **Verb** — what they are doing. 'runs', 'builds', 'is'\n3. **Object** — what the action is done to. 'the ball', 'a chatbot'\n\n'She builds a chatbot.' — Subject: She. Verb: builds. Object: a chatbot.\n\nA sentence without a verb is not a sentence. 'The fast car.' — no verb, not a sentence.",
+      "theory_hint": "Find the verb first. Then find who is doing it."
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "Which of these is a complete sentence?",
+      "options_type": "text",
+      "options": [
+        "The student writes code every day.",
+        "The happy student on a phone.",
+        "Running fast through the market.",
+        "A very old and broken computer."
+      ],
+      "correct": 0,
+      "hints": [
+        "Look for the verb — the action word. Which option has one?",
+        "'writes' is a verb. The other options describe things but nothing happens in them."
+      ],
+      "why": "'The student writes code every day' has a subject (the student), a verb (writes), and an object (code). The others have no verb — nothing happens."
+    },
+    {
+      "id": 2,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "Your friend says: 'Me and him goes to school.' What is wrong?",
+      "options_type": "text",
+      "options": [
+        "Should be 'He and I go to school'",
+        "Should be 'Me and him go to school'",
+        "Should be 'Him and I goes to school'",
+        "Nothing is wrong"
+      ],
+      "correct": 0,
+      "hints": [
+        "When you are the subject doing the action, use 'I' not 'me'.",
+        "'Goes' is for one person — he goes, she goes. 'Go' is for more than one — they go, we go."
+      ],
+      "why": "'He and I' are subjects — they do the action. 'Me' and 'him' are objects — they receive the action. And 'go' not 'goes' because there are two people."
+    }
+  ]
+}

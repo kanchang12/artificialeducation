@@ -1,0 +1,62 @@
+{
+  "id": "c01_make_a_chatbot",
+  "title": "Make a Chatbot",
+  "tagline": "Build your first chatbot — one idea at a time, right on your phone.",
+  "category": "Coding",
+  "free": true,
+  "icp": {
+    "age_range": "12–25",
+    "prior_experience": "zero",
+    "device": "smartphone",
+    "notes": "No computer needed. No coding history assumed."
+  },
+  "levels": [
+    {
+      "key": "beginner",
+      "label": "Beginner",
+      "intro": "Learn what a variable is, how to ask the user a question, and how to use a loop.",
+      "theory": "**1. What is a variable?**\nA small box with a label. You put something inside — a number, a name. The label is the variable name. When you write `name = 'Kanchan'`, you make a box called 'name' and put 'Kanchan' inside.\n\n**2. Asking the user a question**\n`input('What is your name? ')` prints a question and waits. Whatever you type gets stored in a variable.\n\n**3. Responding back**\n`print('Hello, ' + name)` takes what is in the box and prints it back. That is a chatbot — ask, store, reply.",
+      "theory_hint": "Think of the box. Label on the left, value on the right."
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "You want to store a user's name. Which line of code does that correctly?",
+      "options_type": "code",
+      "options": [
+        "name = input('What is your name? ')",
+        "input = name('What is your name? ')",
+        "name == input('What is your name? ')",
+        "store name from input"
+      ],
+      "correct": 0,
+      "hints": [
+        "The variable name goes on the left. The input() call goes on the right.",
+        "A single = stores a value. == is a comparison, not storage."
+      ],
+      "why": "name = input(...) stores whatever the user types into a box called 'name'. The other options either flip the order or use wrong syntax."
+    },
+    {
+      "id": 2,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "Your chatbot has stored the user's name. How do you print 'Hello, Kanchan'?",
+      "options_type": "code",
+      "options": [
+        "print('Hello, ' + name)",
+        "print('Hello, name')",
+        "say('Hello, ' + name)",
+        "print(Hello + name)"
+      ],
+      "correct": 0,
+      "hints": [
+        "To join text and a variable, use +. Putting name in quotes prints the word 'name', not the value.",
+        "Python uses print() not say(). Quotes around Hello would make it a string with no +."
+      ],
+      "why": "print('Hello, ' + name) joins the fixed text with the variable value. 'Hello, name' prints the literal word name, not what is stored."
+    }
+  ]
+}

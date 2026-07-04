@@ -1,0 +1,62 @@
+{
+  "id": "ev02_water",
+  "title": "Water and Us",
+  "tagline": "Where water comes from, where it goes, and why we are running out.",
+  "category": "Environmental Studies",
+  "free": false,
+  "icp": {
+    "age_range": "10–20",
+    "prior_experience": "zero",
+    "device": "smartphone",
+    "notes": "No prior science needed."
+  },
+  "levels": [
+    {
+      "key": "beginner",
+      "label": "Beginner",
+      "intro": "The water cycle, groundwater, and why freshwater scarcity is a crisis.",
+      "theory": "**The water cycle:**\nWater evaporates from oceans → forms clouds → falls as rain → runs into rivers and soaks into the ground → evaporates again.\n\n**Groundwater:**\nRain that soaks into the soil reaches underground layers called aquifers. We pump this water for drinking and farming. If we pump faster than rain refills it, the aquifer runs dry.\n\n**The crisis:**\n- Only 3% of Earth's water is freshwater. Most of that is frozen.\n- Agriculture uses 70% of freshwater.\n- Many cities in India — Chennai, Bengaluru — have already faced 'Day Zero' where taps ran dry.\n- Climate change is making rainfall less predictable.",
+      "theory_hint": "If an aquifer takes 1000 years to fill and we pump it dry in 50 years, it does not come back in our lifetime."
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "A farmer digs a borewell 200 feet deep. Ten years later it is dry. He digs to 400 feet. Why is this a problem?",
+      "options_type": "text",
+      "options": [
+        "He is extracting groundwater faster than it is being replenished",
+        "The deeper water is too salty to use",
+        "Digging deeper costs too much money",
+        "Deeper borewells always run dry faster"
+      ],
+      "correct": 0,
+      "hints": [
+        "The borewell dried at 200 feet. Now he needs 400 feet. What does that tell you about the water table?",
+        "The water table is dropping because extraction exceeds recharge."
+      ],
+      "why": "Each time the borewell dries and he digs deeper, it shows the water table is falling. This means water is being taken out faster than rain is putting it back — a path to permanent depletion."
+    },
+    {
+      "id": 2,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "A city installs rooftop rainwater harvesting on every building. What is the most direct environmental benefit?",
+      "options_type": "text",
+      "options": [
+        "Rainwater soaks into the ground locally, recharging the aquifer",
+        "It reduces the city's electricity bill",
+        "It stops flooding in the streets",
+        "It makes tap water cleaner"
+      ],
+      "correct": 0,
+      "hints": [
+        "Harvested rainwater that soaks into the ground goes where?",
+        "Recharge means refilling — the opposite of depletion."
+      ],
+      "why": "Rooftop harvesting captures rain and directs it into the ground. This recharges the local aquifer — directly countering the depletion caused by over-extraction."
+    }
+  ]
+}

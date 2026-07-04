@@ -1,0 +1,62 @@
+{
+  "id": "c02_fix_the_bug",
+  "title": "Fix the Bug",
+  "tagline": "Read broken code, find what is wrong, fix it.",
+  "category": "Coding",
+  "free": false,
+  "icp": {
+    "age_range": "14–25",
+    "prior_experience": "basic",
+    "device": "smartphone",
+    "notes": "Works on any phone. You read and reason — no typing code required."
+  },
+  "levels": [
+    {
+      "key": "beginner",
+      "label": "Beginner",
+      "intro": "You are given code with a bug. Read it, find the mistake, pick the fix.",
+      "theory": "**Bugs are not random — they follow patterns.**\n\nThe most common bugs beginners hit:\n1. Wrong variable name — you stored it as 'Score' but called it 'score'. Python is case-sensitive.\n2. Missing colon — every if, for, while needs a : at the end.\n3. Wrong indentation — code inside a loop must be indented.\n4. Using = instead of == in a condition — = stores, == compares.",
+      "theory_hint": "Read the error message first. It usually tells you the line number."
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "This code crashes. What is wrong?\n\nscore = 10\nif score > 5\n    print('You win')",
+      "options_type": "text",
+      "options": [
+        "Missing colon after the if condition",
+        "score should be a string not a number",
+        "print needs double quotes",
+        "The condition should use == not >"
+      ],
+      "correct": 0,
+      "hints": [
+        "Look at the if line. What does every if statement need at the end?",
+        "Python requires a colon after every if, for, and while statement."
+      ],
+      "why": "if score > 5 is missing the colon. It should be if score > 5: — without the colon Python does not know where the condition ends."
+    },
+    {
+      "id": 2,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "What is wrong here?\n\nusername = 'Kanchan'\nif Username == 'Kanchan':\n    print('Welcome')",
+      "options_type": "text",
+      "options": [
+        "Username should be username — Python is case-sensitive",
+        "== should be =",
+        "Welcome needs to be in a variable first",
+        "Nothing is wrong"
+      ],
+      "correct": 0,
+      "hints": [
+        "Python treats 'username' and 'Username' as two completely different boxes.",
+        "The variable was stored as username (lowercase). The condition checks Username (capital U) — that box does not exist."
+      ],
+      "why": "username and Username are different names in Python. The box was created as username but the code looks for Username — which was never created."
+    }
+  ]
+}

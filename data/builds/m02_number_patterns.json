@@ -1,0 +1,62 @@
+{
+  "id": "m02_number_patterns",
+  "title": "Number Patterns",
+  "tagline": "Find the rule. Predict what comes next.",
+  "category": "Maths",
+  "free": false,
+  "icp": {
+    "age_range": "10–20",
+    "prior_experience": "zero",
+    "device": "smartphone",
+    "notes": "Logical reasoning with numbers."
+  },
+  "levels": [
+    {
+      "key": "beginner",
+      "label": "Beginner",
+      "intro": "Every number sequence follows a rule. Find the rule, find the next number.",
+      "theory": "**How to find the pattern:**\n1. Look at the difference between each pair of numbers.\n2. Is the difference the same every time? That is an arithmetic sequence.\n3. Is each number multiplied by the same amount? That is a geometric sequence.\n4. If neither, look for a more complex pattern — squares, primes, alternating rules.\n\nExample: 2, 4, 8, 16 — each number is doubled. The next is 32.",
+      "theory_hint": "Write down the gaps between numbers. Do they follow a pattern?"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "What comes next? 3, 6, 12, 24, ___",
+      "options_type": "text",
+      "options": [
+        "48",
+        "36",
+        "30",
+        "42"
+      ],
+      "correct": 0,
+      "hints": [
+        "Look at each step: 3 to 6, 6 to 12, 12 to 24. What is happening each time?",
+        "Each number is multiplied by 2. So 24 × 2 = 48."
+      ],
+      "why": "Each number doubles. 3→6→12→24→48."
+    },
+    {
+      "id": 2,
+      "level": "beginner",
+      "type": "choice",
+      "scenario": "What comes next? 1, 4, 9, 16, ___",
+      "options_type": "text",
+      "options": [
+        "25",
+        "20",
+        "24",
+        "18"
+      ],
+      "correct": 0,
+      "hints": [
+        "1 = 1×1, 4 = 2×2, 9 = 3×3, 16 = 4×4. What is 5×5?",
+        "These are square numbers."
+      ],
+      "why": "1, 4, 9, 16 are 1², 2², 3², 4². The next is 5² = 25."
+    }
+  ]
+}
