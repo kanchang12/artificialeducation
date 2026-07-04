@@ -5,7 +5,7 @@ from flask import Blueprint, render_template, jsonify
 
 youtube_bp = Blueprint("youtube", __name__)
 
-# AI With AI — https://www.youtube.com/@aiwithai-y9t
+# Artificial Education YouTube channel
 YOUTUBE_CHANNEL_ID = "UCPH_DSgSxIdoQ4qpalUfRyQ"
 RSS_URL = f"https://www.youtube.com/feeds/videos.xml?channel_id={YOUTUBE_CHANNEL_ID}"
 

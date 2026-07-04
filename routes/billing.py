@@ -48,7 +48,7 @@ def create_credit_checkout():
             line_items=[{
                 "price_data": {
                     "currency": "gbp",
-                    "product_data": {"name": f"AiwithAI Sandbox Credits ({int(minutes)} minutes)"},
+                    "product_data": {"name": f"Artificial Education Sandbox Credits ({int(minutes)} minutes)"},
                     "unit_amount": int(round(amount_gbp * 100)),  # pence
                 },
                 "quantity": 1,
@@ -76,7 +76,7 @@ def create_credit_checkout():
         line_items=[{
             "price_data": {
                 "currency": "inr",
-                "product_data": {"name": f"AiwithAI Sandbox Credits ({round(minutes,1)} minutes)"},
+                "product_data": {"name": f"Artificial Education Sandbox Credits ({round(minutes,1)} minutes)"},
                 "unit_amount": int(round(amount_inr * 100)),  # paise
             },
             "quantity": 1,
@@ -103,7 +103,7 @@ def create_bundle_checkout():
         line_items=[{
             "price_data": {
                 "currency": "inr",
-                "product_data": {"name": f"AiwithAI Project Bundle ({int(BUNDLE_MINUTES)} minutes)"},
+                "product_data": {"name": f"Artificial Education Project Bundle ({int(BUNDLE_MINUTES)} minutes)"},
                 "unit_amount": int(round(BUNDLE_PRICE_INR * 100)),  # paise
             },
             "quantity": 1,
