@@ -1,0 +1,30 @@
+{
+  "id": "sb_24_json_schema_validate",
+  "title": "Validate Required Keys and Types",
+  "topic": "Validation",
+  "difficulty": "medium",
+  "description": "Check whether a dict matches a simple schema of required keys and their expected types.",
+  "problem": "Write validate_schema(data, schema) where schema is a dict like {'name': str, 'age': int}. Return True only if every key in schema exists in data AND has the correct type.",
+  "starter_code": "def validate_schema(data, schema):\n    # For each key,type in schema, check data has that key with that type\n    return True\n",
+  "hint": "Loop over schema.items(); if key not in data or not isinstance(data[key], expected_type): return False. Return True after the loop.",
+  "test_cases": [
+    {
+      "label": "Valid data",
+      "setup": "schema={'name':str,'age':int}",
+      "call": "validate_schema({'name':'Bob','age':30}, schema)",
+      "expected": true
+    },
+    {
+      "label": "Wrong type",
+      "setup": "schema={'name':str,'age':int}",
+      "call": "validate_schema({'name':'Bob','age':'30'}, schema)",
+      "expected": false
+    },
+    {
+      "label": "Missing key",
+      "setup": "schema={'name':str,'age':int}",
+      "call": "validate_schema({'name':'Bob'}, schema)",
+      "expected": false
+    }
+  ]
+}

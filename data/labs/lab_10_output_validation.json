@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_10_output_validation",
+  "title": "The model returned the wrong schema",
+  "topic": "Validation",
+  "difficulty": "medium",
+  "free": false,
+  "problem": "Your pipeline asks the model for a JSON object with keys: action, target, priority. In production you receive objects with keys: Action, TARGET, Priority (wrong casing) and sometimes an extra key 'reasoning' you did not ask for. Your downstream code breaks. Without changing the model, describe how you would make the pipeline robust to these variations.",
+  "context": "Expected: {\"action\": \"delete\", \"target\": \"user_42\", \"priority\": 3}\nReceived variants:\n  {\"Action\": \"delete\", \"TARGET\": \"user_42\", \"Priority\": 3, \"reasoning\": \"user requested\"}\n  {\"action\": \"delete\", \"target\": \"user_42\"} (missing priority)",
+  "hints": [
+    "Normalise before you validate, not after.",
+    "Key casing can be fixed in one line of Python.",
+    "Missing keys need a default strategy — fail loudly or substitute a safe default?"
+  ],
+  "solution": "Three-step normalisation before the downstream code ever sees the object: (1) lowercase all keys — {k.lower(): v for k, v in raw.items()}; (2) drop unexpected keys by building a new dict with only the three expected keys; (3) apply defaults for missing keys — action defaults to 'unknown', target to None, priority to 0, and log a warning when a default is used so you can improve the prompt later. This makes the pipeline robust without touching the model. Separately, tighten the system prompt to specify exact lowercase key names and forbid extra keys — this reduces the frequency of normalisation being needed."
+}

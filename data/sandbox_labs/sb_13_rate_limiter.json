@@ -1,0 +1,30 @@
+{
+  "id": "sb_13_rate_limiter",
+  "title": "Rate Limiter for API Calls",
+  "topic": "System Design",
+  "difficulty": "medium",
+  "description": "Prevent hitting API rate limits by tracking call frequency.",
+  "problem": "Write RateLimiter(max_calls, period_seconds) class with a method allow() that returns True if a call is allowed, False if the rate limit is exceeded. Use a sliding window approach.",
+  "starter_code": "import time\nfrom collections import deque\n\nclass RateLimiter:\n    def __init__(self, max_calls, period_seconds):\n        self.max_calls = max_calls\n        self.period = period_seconds\n        self.calls = deque()\n    \n    def allow(self):\n        # Remove calls outside the window\n        # Check if under limit\n        return True  # fix this\n",
+  "hint": "Store timestamps in a deque. Remove any older than period_seconds. If len < max_calls, add now and return True.",
+  "test_cases": [
+    {
+      "label": "Allows calls under limit",
+      "setup": "import time\nrl = RateLimiter(3, 60)",
+      "call": "all(rl.allow() for _ in range(3))",
+      "expected": true
+    },
+    {
+      "label": "Blocks calls over limit",
+      "setup": "import time\nrl = RateLimiter(2, 60)",
+      "call": "[rl.allow() for _ in range(3)][-1]",
+      "expected": false
+    },
+    {
+      "label": "Single call always allowed",
+      "setup": "import time\nrl = RateLimiter(1, 60)",
+      "call": "rl.allow()",
+      "expected": true
+    }
+  ]
+}

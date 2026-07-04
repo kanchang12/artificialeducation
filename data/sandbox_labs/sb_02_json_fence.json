@@ -1,0 +1,38 @@
+{
+  "id": "sb_02_json_fence",
+  "title": "Strip the Markdown Fence",
+  "topic": "Structured Output",
+  "difficulty": "easy",
+  "description": "The model wraps its JSON in markdown fences. Fix the parser.",
+  "problem": "Write parse_model_output(text) that returns the parsed dict whether or not the model wrapped it in a ```json fence.",
+  "starter_code": "import json\n\ndef parse_model_output(text):\n    # This crashes when text has ```json fences\n    return json.loads(text)\n",
+  "hint": "Strip ```json and ``` with .strip().removeprefix('```json').removesuffix('```').strip()",
+  "test_cases": [
+    {
+      "label": "Plain JSON",
+      "setup": "",
+      "call": "parse_model_output('{\"sentiment\": \"positive\", \"score\": 0.9}')",
+      "expected": {
+        "sentiment": "positive",
+        "score": 0.9
+      }
+    },
+    {
+      "label": "Fenced JSON",
+      "setup": "",
+      "call": "parse_model_output('```json\\n{\"sentiment\": \"positive\", \"score\": 0.9}\\n```')",
+      "expected": {
+        "sentiment": "positive",
+        "score": 0.9
+      }
+    },
+    {
+      "label": "Whitespace around fence",
+      "setup": "",
+      "call": "parse_model_output('  ```json\\n  {\"ok\": true}  \\n```  ')",
+      "expected": {
+        "ok": true
+      }
+    }
+  ]
+}

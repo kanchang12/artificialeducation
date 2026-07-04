@@ -1,0 +1,30 @@
+{
+  "id": "sb_14_prompt_builder",
+  "title": "Build a Structured Prompt",
+  "topic": "Prompting",
+  "difficulty": "easy",
+  "description": "Construct clean prompts programmatically instead of string concatenation.",
+  "problem": "Write build_prompt(system, examples, query) that returns a formatted prompt string. System goes first, then each example as 'User: ... Assistant: ...', then the final query as 'User: ...'.",
+  "starter_code": "def build_prompt(system, examples, query):\n    # system: string\n    # examples: list of (user, assistant) tuples\n    # query: string\n    # Return formatted prompt string\n    return ''  # fix this\n",
+  "hint": "Start with system, then loop examples formatting each as 'User: {u}\\nAssistant: {a}', end with 'User: {query}'.",
+  "test_cases": [
+    {
+      "label": "System only",
+      "setup": "",
+      "call": "build_prompt('You are helpful.', [], 'Hello')",
+      "expected": "You are helpful.\nUser: Hello"
+    },
+    {
+      "label": "With one example",
+      "setup": "",
+      "call": "build_prompt('Sys', [('hi','hello')], 'How are you')",
+      "expected": "Sys\nUser: hi\nAssistant: hello\nUser: How are you"
+    },
+    {
+      "label": "Empty system",
+      "setup": "",
+      "call": "build_prompt('', [], 'test')",
+      "expected": "\nUser: test"
+    }
+  ]
+}

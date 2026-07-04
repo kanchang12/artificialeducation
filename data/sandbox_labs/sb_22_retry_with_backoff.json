@@ -1,0 +1,39 @@
+{
+  "id": "sb_22_retry_with_backoff",
+  "title": "Exponential Backoff Calculator",
+  "topic": "Reliability",
+  "difficulty": "easy",
+  "description": "Compute the delay sequence for retrying a failed API call with exponential backoff.",
+  "problem": "Write backoff_delays(base, attempts) returning a list of delays where delay[i] = base * (2 ** i) for i in range(attempts).",
+  "starter_code": "def backoff_delays(base, attempts):\n    # Return [base, base*2, base*4, ...] for `attempts` values\n    return []\n",
+  "hint": "Use a list comprehension: [base * (2 ** i) for i in range(attempts)]",
+  "test_cases": [
+    {
+      "label": "3 attempts base 1",
+      "setup": "",
+      "call": "backoff_delays(1, 3)",
+      "expected": [
+        1,
+        2,
+        4
+      ]
+    },
+    {
+      "label": "4 attempts base 2",
+      "setup": "",
+      "call": "backoff_delays(2, 4)",
+      "expected": [
+        2,
+        4,
+        8,
+        16
+      ]
+    },
+    {
+      "label": "Zero attempts",
+      "setup": "",
+      "call": "backoff_delays(5, 0)",
+      "expected": []
+    }
+  ]
+}

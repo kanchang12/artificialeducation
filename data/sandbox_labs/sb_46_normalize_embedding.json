@@ -1,0 +1,39 @@
+{
+  "id": "sb_46_normalize_embedding",
+  "title": "Normalize an Embedding Vector",
+  "topic": "RAG",
+  "difficulty": "medium",
+  "description": "Normalize an embedding vector to unit length so cosine similarity reduces to a dot product.",
+  "problem": "Write normalize_vector(v) returning a new list where each component is divided by the vector's L2 norm, each rounded to 4 decimals. If the norm is 0, return the vector unchanged.",
+  "starter_code": "import math\n\ndef normalize_vector(v):\n    # Divide each component by sqrt(sum of squares); handle zero vector\n    return v\n",
+  "hint": "norm = math.sqrt(sum(x*x for x in v)); if norm == 0: return v; return [round(x/norm, 4) for x in v]",
+  "test_cases": [
+    {
+      "label": "Simple vector",
+      "setup": "",
+      "call": "normalize_vector([3,4])",
+      "expected": [
+        0.6,
+        0.8
+      ]
+    },
+    {
+      "label": "Zero vector",
+      "setup": "",
+      "call": "normalize_vector([0,0])",
+      "expected": [
+        0,
+        0
+      ]
+    },
+    {
+      "label": "Unit vector unchanged",
+      "setup": "",
+      "call": "normalize_vector([1,0])",
+      "expected": [
+        1.0,
+        0.0
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "sb_05_temperature_bug",
+  "title": "Temperature is Breaking Your Pipeline",
+  "topic": "Prompting",
+  "difficulty": "easy",
+  "description": "High temperature makes the model add text around JSON. Fix the parser to handle it.",
+  "problem": "Your parser gets this from the model: 'Sure! Here is the JSON:\\n{\"intent\": \"refund\"}\\nLet me know if you need anything else!'. json.loads() crashes. Write parse_response(text) that extracts and returns the JSON dict regardless of surrounding text.",
+  "starter_code": "import json\n\ndef parse_response(text):\n    # Extract JSON from text that may have prose before/after it\n    return json.loads(text)  # fix this\n",
+  "hint": "Find the first '{' and last '}' in the string, slice between them, then json.loads().",
+  "test_cases": [
+    {
+      "label": "Clean JSON works",
+      "setup": "",
+      "call": "parse_response('{\"intent\": \"refund\"}')",
+      "expected": {
+        "intent": "refund"
+      }
+    },
+    {
+      "label": "Prose before JSON",
+      "setup": "",
+      "call": "parse_response('Sure! Here is the result:\\n{\"intent\": \"refund\"}')",
+      "expected": {
+        "intent": "refund"
+      }
+    },
+    {
+      "label": "Prose before and after",
+      "setup": "",
+      "call": "parse_response('Here you go: {\"ok\": true} Hope that helps!')",
+      "expected": {
+        "ok": true
+      }
+    }
+  ]
+}

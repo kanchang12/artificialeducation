@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_05_finetune_vs_rag",
+  "title": "Fine-tune, RAG, or just prompt?",
+  "topic": "Fine-tuning",
+  "difficulty": "legend",
+  "free": false,
+  "problem": "You have 2,000 labelled customer support tickets (message + ideal agent reply). Your goal is to build a bot that replies in the exact tone and format your company uses. Decide: prompt engineering, RAG, or fine-tuning? Justify your choice and describe the training dataset format.",
+  "context": "",
+  "hints": [
+    "Fine-tuning teaches style and format. RAG supplies facts. Prompting shapes a single call.",
+    "2,000 message->reply pairs is strong signal for tone — not for live facts like order status.",
+    "Fine-tune datasets are JSONL: one example per line, each a messages array."
+  ],
+  "solution": "Fine-tune for tone and format — 2,000 clean input->output pairs directly encode how a good reply should sound. Use RAG alongside for live facts. Dataset format: JSONL, one example per line: {\"messages\": [{\"role\": \"user\", \"content\": \"<ticket>\"}, {\"role\": \"assistant\", \"content\": \"<ideal reply>\"}]}"
+}

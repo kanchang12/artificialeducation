@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_11_embedding_staleness",
+  "title": "Your RAG answers are confidently wrong about last month",
+  "topic": "RAG",
+  "difficulty": "hard",
+  "free": false,
+  "problem": "You built a RAG system over your company's policy documents. It worked well for six months. Now users report it gives confident answers about policies that were updated last month — the old answers, not the new ones. The new policies are in the database. Diagnose the most likely cause and describe the fix.",
+  "context": "Architecture: documents chunked and embedded at upload time, stored in pgvector\nUpdate process: new document uploaded, old document NOT deleted\nSymptom: query 'What is the remote work allowance?' returns answer from February policy, not the April update",
+  "hints": [
+    "Two versions of the same document now exist in the vector store.",
+    "Cosine similarity does not know which version is newer.",
+    "The fix has two parts: one for old data, one for the process going forward."
+  ],
+  "solution": "The cause is stale embeddings — both the old and new versions of the policy are in the vector store, and the retrieval step returns whichever chunks score higher by cosine similarity, which may be the older version if it happens to match the query phrasing more closely. Fix in two parts: (1) immediate — delete all chunks belonging to superseded document versions when a new version is uploaded; implement a document_id + version scheme so old chunks can be identified and purged; (2) process — add a metadata filter to retrieval that excludes any chunk whose document was marked superseded, as a belt-and-braces check. Never rely on similarity alone when document freshness matters."
+}

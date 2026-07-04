@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_22_ab_testing_llm",
+  "title": "How to A/B test a prompt change safely",
+  "topic": "Evaluation",
+  "difficulty": "medium",
+  "free": false,
+  "problem": "You rewrote the system prompt for your AI assistant. Offline evals show a 12% improvement on your test set. You want to ship it to production but your manager asks how you will know if it is actually better for real users. Design an A/B test for this prompt change, including how you would split traffic, what metric you would use as the primary success measure, and what would cause you to roll back.",
+  "context": "Current prompt: v1 (in production, serving 10,000 requests/day)\nNew prompt: v2 (12% better on offline eval set of 200 examples)\nProduct: AI customer support bot",
+  "hints": [
+    "Offline eval improvement does not always translate to production improvement.",
+    "What do users actually do that signals they got a good answer?",
+    "Statistical significance: how long do you run the test?"
+  ],
+  "solution": "A/B test design: (1) Traffic split — route 10% of traffic to v2, 90% to v1 for the first 48 hours; if no regressions, expand to 50/50. Use consistent user-level hashing so a user always sees the same prompt version within a session. (2) Primary metric — deflection rate: the percentage of users who resolve their issue without escalating to a human agent. A good answer deflects; a bad one escalates. Secondary metrics: user satisfaction rating (thumbs up/down), conversation length (shorter often means clearer), and repeat question rate (user asking the same thing twice = answer was unclear). (3) Statistical significance — run until you have at least 1,000 conversations per variant and a p-value < 0.05 on the primary metric. At 10,000 requests/day this takes about 2-3 days. (4) Rollback triggers: deflection rate drops more than 2 percentage points, error rate increases, or safety classifier flags more outputs. Automatic rollback if any trigger fires."
+}

@@ -1,0 +1,39 @@
+{
+  "id": "sb_29_dedupe_near_duplicates",
+  "title": "Deduplicate Near-Identical Strings",
+  "topic": "RAG",
+  "difficulty": "medium",
+  "description": "Remove near-duplicate chunks from retrieved RAG results based on simple normalized text comparison.",
+  "problem": "Write dedupe_chunks(chunks) that removes duplicates after lowercasing and stripping whitespace/punctuation, keeping the first occurrence's original text and order.",
+  "starter_code": "import re\n\ndef dedupe_chunks(chunks):\n    # Normalize each chunk (lowercase, strip non-alphanumeric) to detect duplicates\n    # Keep first occurrence (original text) for each unique normalized form\n    return chunks\n",
+  "hint": "Normalize with re.sub(r'[^a-z0-9]', '', chunk.lower()). Track seen normalized forms in a set; only keep chunks whose normalized form hasn't been seen.",
+  "test_cases": [
+    {
+      "label": "Exact duplicate",
+      "setup": "",
+      "call": "dedupe_chunks(['Hello World','hello world','Goodbye'])",
+      "expected": [
+        "Hello World",
+        "Goodbye"
+      ]
+    },
+    {
+      "label": "Punctuation difference",
+      "setup": "",
+      "call": "dedupe_chunks(['Hi there!','Hi there'])",
+      "expected": [
+        "Hi there!"
+      ]
+    },
+    {
+      "label": "No duplicates",
+      "setup": "",
+      "call": "dedupe_chunks(['a','b','c'])",
+      "expected": [
+        "a",
+        "b",
+        "c"
+      ]
+    }
+  ]
+}

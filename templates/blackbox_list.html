@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Blackbox — Artificial Education{% endblock %}
+{% block canonical_path %}/blackbox{% endblock %}
+
+{% block content %}
+<div style="background:#0a0a0f;min-height:calc(100vh - 60px);padding-bottom:3rem;">
+  <div style="background:linear-gradient(135deg,#0a0a0f,#1a1025);padding:2.5rem 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+    <div class="container">
+      <span style="background:linear-gradient(135deg,#a855f7,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">End-to-end AI builds</span>
+      <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.6rem,4vw,2.2rem);color:#fff;margin:0.4rem 0 0.5rem;">⬛ Blackbox</h1>
+      <p style="color:rgba(255,255,255,0.5);font-size:0.9rem;max-width:600px;">Pick a project. Work through the steps. An AI mentor reviews your code at every step and shows you what it would produce.</p>
+      <div style="margin-top:1rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-sm);padding:0.75rem 1rem;display:inline-flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+        <span style="font-size:0.85rem;color:rgba(255,255,255,0.7);">⏱ <strong style="color:#fff;">{{ credits_minutes }}</strong> credit minutes left (₹{{ rate }}/min)</span>
+        <a href="/upgrade" class="btn btn-sm" style="background:linear-gradient(135deg,#a855f7,#6366f1);color:#fff;">Top up</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top:2rem;">
+    <div class="grid-3">
+      {% for p in projects %}
+      {% set unlocked = credits_minutes > 0 %}
+      <a href="{{ '/blackbox/' + p.id if unlocked else '/upgrade' }}" class="card" style="text-decoration:none;display:block;background:#15111f;border:1px solid rgba(255,255,255,0.08);">
+        <div class="badge-wrap mb-1">
+          <span class="tag tag-{{ p.difficulty }}">{{ p.difficulty }}</span>
+          <span class="tag" style="background:rgba(168,85,247,0.15);color:#c084fc;">{{ p.category }}</span>
+          {% if not unlocked %}<span class="tag" style="background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);">🔒 Locked</span>{% endif %}
+        </div>
+        <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:#fff;margin:0.5rem 0 0.4rem;">{{ p.title }}</h3>
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.5);line-height:1.55;margin-bottom:0.5rem;">{{ p.tagline }}</p>
+        <p style="font-size:0.75rem;color:rgba(255,255,255,0.35);">{{ p.steps|length }} steps</p>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

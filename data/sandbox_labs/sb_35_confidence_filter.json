@@ -1,0 +1,44 @@
+{
+  "id": "sb_35_confidence_filter",
+  "title": "Filter Low-Confidence Predictions",
+  "topic": "Validation",
+  "difficulty": "easy",
+  "description": "Filter out model predictions below a confidence threshold before showing them to a user.",
+  "problem": "Write filter_confident(results, threshold) where results is a list of dicts with a 'confidence' key. Return only the dicts whose confidence >= threshold, preserving order.",
+  "starter_code": "def filter_confident(results, threshold):\n    # Keep only entries with confidence >= threshold\n    return results\n",
+  "hint": "[r for r in results if r['confidence'] >= threshold]",
+  "test_cases": [
+    {
+      "label": "Mixed confidence",
+      "setup": "results=[{'label':'a','confidence':0.9},{'label':'b','confidence':0.4}]",
+      "call": "filter_confident(results, 0.5)",
+      "expected": [
+        {
+          "label": "a",
+          "confidence": 0.9
+        }
+      ]
+    },
+    {
+      "label": "All pass",
+      "setup": "results=[{'label':'x','confidence':0.6},{'label':'y','confidence':0.7}]",
+      "call": "filter_confident(results, 0.5)",
+      "expected": [
+        {
+          "label": "x",
+          "confidence": 0.6
+        },
+        {
+          "label": "y",
+          "confidence": 0.7
+        }
+      ]
+    },
+    {
+      "label": "None pass",
+      "setup": "results=[{'label':'z','confidence':0.1}]",
+      "call": "filter_confident(results, 0.9)",
+      "expected": []
+    }
+  ]
+}

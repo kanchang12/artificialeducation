@@ -1,0 +1,44 @@
+{
+  "id": "sb_30_sentence_buffer",
+  "title": "Streaming Sentence Buffer",
+  "topic": "Streaming",
+  "difficulty": "hard",
+  "description": "Buffer streamed model tokens and emit complete sentences as soon as they're ready, for incremental TTS or display.",
+  "problem": "Write flush_complete_sentences(buffer) that takes a string buffer, finds all complete sentences (ending in '.', '!', or '?'), returns a tuple (list_of_sentences, remaining_buffer) where remaining_buffer is the leftover incomplete text.",
+  "starter_code": "import re\n\ndef flush_complete_sentences(buffer):\n    # Find complete sentences and the remaining incomplete text\n    # Return [sentences_list, remainder] (a LIST, not a tuple)\n    return [[], buffer]\n",
+  "hint": "Use re.findall(r'[^.!?]*[.!?]', buffer) to get complete sentences. The remainder is whatever text comes after the last match, stripped. Return [sentences, remainder] as a LIST.",
+  "test_cases": [
+    {
+      "label": "Two complete sentences",
+      "setup": "",
+      "call": "flush_complete_sentences('Hello world. How are you?')",
+      "expected": [
+        [
+          "Hello world.",
+          "How are you?"
+        ],
+        ""
+      ]
+    },
+    {
+      "label": "Incomplete trailing text",
+      "setup": "",
+      "call": "flush_complete_sentences('Hi there. I am ty')",
+      "expected": [
+        [
+          "Hi there."
+        ],
+        "I am ty"
+      ]
+    },
+    {
+      "label": "No complete sentence",
+      "setup": "",
+      "call": "flush_complete_sentences('still going')",
+      "expected": [
+        [],
+        "still going"
+      ]
+    }
+  ]
+}

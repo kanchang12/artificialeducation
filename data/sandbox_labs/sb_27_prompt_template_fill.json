@@ -1,0 +1,30 @@
+{
+  "id": "sb_27_prompt_template_fill",
+  "title": "Safe Prompt Template Filling",
+  "topic": "Prompting",
+  "difficulty": "easy",
+  "description": "Fill a prompt template with variables, raising a clear error if a required variable is missing.",
+  "problem": "Write fill_template(template, variables) where template contains {placeholders}. Return the filled string. If any placeholder has no matching key in variables, raise KeyError with the missing placeholder's name as the message.",
+  "starter_code": "def fill_template(template, variables):\n    # Replace {name} with variables['name'], raise KeyError(name) if missing\n    return template.format(**variables)\n",
+  "hint": "template.format(**variables) already raises KeyError with the missing key as args[0] - but you must catch and re-raise with str(e.args[0]) as the message, or just let it propagate (KeyError's str already shows the key).",
+  "test_cases": [
+    {
+      "label": "All vars present",
+      "setup": "",
+      "call": "fill_template('Hello {name}, you are {age}', {'name':'Bob','age':30})",
+      "expected": "Hello Bob, you are 30"
+    },
+    {
+      "label": "Missing var raises",
+      "setup": "",
+      "call": "(lambda: fill_template('Hi {name}', {}))()",
+      "expected": "ERROR"
+    },
+    {
+      "label": "No placeholders",
+      "setup": "",
+      "call": "fill_template('static text', {})",
+      "expected": "static text"
+    }
+  ]
+}

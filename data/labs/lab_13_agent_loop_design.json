@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_13_agent_loop_design",
+  "title": "Design a safe tool-calling agent loop",
+  "topic": "Agents",
+  "difficulty": "hard",
+  "free": false,
+  "problem": "You are building an agent that can call three tools: search_web, read_file, and send_email. A user asks: 'Find the latest pricing for Acme Corp and email it to sales@company.com.' Design the agent loop, explain what safety checks you would add before send_email executes, and describe what happens if the agent loops indefinitely.",
+  "context": "Tools available: search_web(query), read_file(path), send_email(to, subject, body)\nUser request: 'Find the latest pricing for Acme Corp and email it to sales@company.com'",
+  "hints": [
+    "The agent should plan before it acts — what is the minimum number of steps?",
+    "send_email is a destructive/irreversible action. What should gate it?",
+    "Infinite loops: what terminates them in production?"
+  ],
+  "solution": "Agent loop: (1) plan — model decides it needs search_web('Acme Corp pricing'), (2) execute search, (3) model reads result and decides send_email is the next action, (4) safety gate before execution — confirm the recipient is in an allowlist, show the user a preview and require explicit confirmation before any email is sent, log the intended action. (5) execute send_email, (6) return result to user. Safety checks on send_email: recipient allowlist, human-in-the-loop confirmation for first use, rate limit (max N emails per session), content review for PII. Infinite loop prevention: set a hard max_iterations (e.g. 10), detect repeated identical tool calls (loop detection), and implement a timeout. When the limit is hit, return a partial result and explain why the agent stopped."
+}

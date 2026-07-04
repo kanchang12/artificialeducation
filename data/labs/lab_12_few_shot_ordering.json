@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_12_few_shot_ordering",
+  "title": "Why your few-shot examples are hurting performance",
+  "topic": "Prompting",
+  "difficulty": "medium",
+  "free": false,
+  "problem": "You added 5 few-shot examples to your classification prompt and accuracy dropped from 84% to 71%. All 5 examples are correct. Explain three reasons why adding correct examples can hurt performance, and describe how you would diagnose which reason applies here.",
+  "context": "Task: classify customer intent as: refund / technical / billing / other\nExamples added: all 5 are 'refund' intents\nTest set: 40% refund, 20% technical, 20% billing, 20% other\nObserved: model now classifies 68% of inputs as 'refund'",
+  "hints": [
+    "Look at the class distribution of your examples.",
+    "Recency bias: where are the examples positioned in the prompt?",
+    "Token budget: what did the examples push out?"
+  ],
+  "solution": "Three reasons: (1) Class imbalance in examples — all 5 examples are 'refund', so the model learns that 'refund' is the dominant class and over-predicts it. Fix: use balanced examples across all 4 classes. (2) Recency bias — examples near the end of the prompt have disproportionate influence. If refund examples cluster at the end, the model anchors on them. Fix: interleave examples from all classes. (3) Token displacement — the examples consume tokens that previously held the full class list and definitions, and the model now has less room for the actual input. Fix: check whether the prompt was truncated after adding examples. To diagnose: first check the class distribution of examples (clearly the issue here), then run ablations removing examples one at a time to find the tipping point."
+}

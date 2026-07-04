@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_01_prompt_json",
+  "title": "Force clean JSON from a model",
+  "topic": "Prompting",
+  "difficulty": "easy",
+  "free": true,
+  "problem": "A model keeps replying with prose and markdown when you need machine-readable data. Write a system prompt that makes it return ONLY a JSON object with keys 'sentiment' and 'score' (0 to 1). No markdown, no extra words, no code fences.",
+  "context": "Weak prompt: \"Tell me how this review feels: '{review}'\"\n\nTypical reply:\n\"Sure! This review sounds quite positive — I'd say about 0.9 confidence 😊\"",
+  "hints": [
+    "A system prompt sets rules the model must obey on every reply.",
+    "Tell it the exact output shape and forbid everything else.",
+    "The words 'return ONLY valid JSON' and 'no markdown' matter a lot."
+  ],
+  "solution": "You are a sentiment classifier.\nRespond with ONLY a JSON object. No markdown, no code fences, no extra text.\nSchema: {\"sentiment\": \"positive\" | \"negative\" | \"neutral\", \"score\": <number 0-1>}"
+}

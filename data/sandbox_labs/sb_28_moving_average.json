@@ -1,0 +1,42 @@
+{
+  "id": "sb_28_moving_average",
+  "title": "Latency Moving Average",
+  "topic": "Observability",
+  "difficulty": "easy",
+  "description": "Compute a simple moving average over the last N latency measurements for a monitoring dashboard.",
+  "problem": "Write moving_average(values, window) returning a list where each element is the average of the last `window` values up to that point (using fewer values at the start).",
+  "starter_code": "def moving_average(values, window):\n    # result[i] = average of values[max(0,i-window+1):i+1]\n    return values\n",
+  "hint": "For each index i, take values[max(0, i-window+1):i+1], compute sum/len, and round to 2 decimals.",
+  "test_cases": [
+    {
+      "label": "Window 2",
+      "setup": "",
+      "call": "moving_average([1,2,3,4],2)",
+      "expected": [
+        1.0,
+        1.5,
+        2.5,
+        3.5
+      ]
+    },
+    {
+      "label": "Window larger than list",
+      "setup": "",
+      "call": "moving_average([2,4],5)",
+      "expected": [
+        2.0,
+        3.0
+      ]
+    },
+    {
+      "label": "Window 1",
+      "setup": "",
+      "call": "moving_average([5,10,15],1)",
+      "expected": [
+        5.0,
+        10.0,
+        15.0
+      ]
+    }
+  ]
+}

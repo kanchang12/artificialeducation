@@ -1,0 +1,10 @@
+{
+  "id": "video_01_intro",
+  "title": "Welcome to AiwithAI: Your First AI Engineering Project",
+  "topic": "Getting Started",
+  "free": true,
+  "duration_minutes": 8,
+  "description": "An overview of what you'll build across this course, and how to set up your local Python environment for the hands-on exercises.",
+  "what_you_do": "Set up Python, install the google-genai SDK, and make your first Gemini API call from your own terminal.",
+  "bunny_video_id": "REPLACE_WITH_BUNNY_VIDEO_ID"
+}

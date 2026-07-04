@@ -1,0 +1,31 @@
+{
+  "id": "ae_coding_02_temperature_average",
+  "title": "Average the Readings",
+  "topic": "Coding",
+  "subject": "Coding",
+  "difficulty": "easy",
+  "description": "Turn a list of numbers into a single meaningful figure, the core of measurement.",
+  "problem": "Write average(readings) that returns the mean of a list of numbers, rounded to 1 decimal place. Return 0 for an empty list.",
+  "starter_code": "def average(readings):\n    # handle empty list\n    # sum and divide\n    # round to 1 decimal\n    pass\n",
+  "hint": "Guard against len(readings)==0, then round(sum(readings)/len(readings), 1).",
+  "test_cases": [
+    {
+      "label": "Basic",
+      "setup": "",
+      "call": "average([10,20,30])",
+      "expected": 20.0
+    },
+    {
+      "label": "Rounding",
+      "setup": "",
+      "call": "average([1,2,2])",
+      "expected": 1.7
+    },
+    {
+      "label": "Empty",
+      "setup": "",
+      "call": "average([])",
+      "expected": 0
+    }
+  ]
+}

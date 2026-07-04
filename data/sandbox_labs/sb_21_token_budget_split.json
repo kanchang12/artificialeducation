@@ -1,0 +1,39 @@
+{
+  "id": "sb_21_token_budget_split",
+  "title": "Split Text Into Token-Budget Chunks",
+  "topic": "RAG",
+  "difficulty": "medium",
+  "description": "Split a long string into word-chunks that each fit under a token budget.",
+  "problem": "Write split_into_chunks(text, max_words) that splits text into a list of chunks, each containing at most max_words words, preserving word order.",
+  "starter_code": "def split_into_chunks(text, max_words):\n    # Split text on whitespace and group into chunks of max_words\n    words = text.split()\n    return [words]  # fix this\n",
+  "hint": "Slice the words list in steps of max_words: words[i:i+max_words], then ' '.join each slice.",
+  "test_cases": [
+    {
+      "label": "Exact multiple",
+      "setup": "",
+      "call": "split_into_chunks('a b c d', 2)",
+      "expected": [
+        "a b",
+        "c d"
+      ]
+    },
+    {
+      "label": "Remainder chunk",
+      "setup": "",
+      "call": "split_into_chunks('a b c d e', 2)",
+      "expected": [
+        "a b",
+        "c d",
+        "e"
+      ]
+    },
+    {
+      "label": "Single chunk",
+      "setup": "",
+      "call": "split_into_chunks('one two', 5)",
+      "expected": [
+        "one two"
+      ]
+    }
+  ]
+}

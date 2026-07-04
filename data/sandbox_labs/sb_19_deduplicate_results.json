@@ -1,0 +1,30 @@
+{
+  "id": "sb_19_deduplicate_results",
+  "title": "Deduplicate Retrieved Chunks",
+  "topic": "RAG",
+  "difficulty": "medium",
+  "description": "Remove near-duplicate chunks before injecting into the prompt.",
+  "problem": "Write deduplicate(chunks, threshold=0.9) that removes chunks whose text content overlaps by more than threshold with an already-kept chunk. Use simple word overlap (Jaccard similarity) to measure overlap.",
+  "starter_code": "def jaccard(a, b):\n    sa, sb = set(a.lower().split()), set(b.lower().split())\n    if not sa or not sb: return 0.0\n    return len(sa & sb) / len(sa | sb)\n\ndef deduplicate(chunks, threshold=0.9):\n    # chunks: list of strings\n    # Remove any chunk too similar to one already kept\n    return chunks  # fix this\n",
+  "hint": "Keep a list of accepted chunks. For each new chunk, only add it if its Jaccard similarity with all accepted chunks is below threshold.",
+  "test_cases": [
+    {
+      "label": "No duplicates kept",
+      "setup": "",
+      "call": "len(deduplicate(['the cat sat','the cat sat on mat'],0.5))",
+      "expected": 1
+    },
+    {
+      "label": "Different chunks kept",
+      "setup": "",
+      "call": "len(deduplicate(['hello world','foo bar baz'],0.9))",
+      "expected": 2
+    },
+    {
+      "label": "Empty list",
+      "setup": "",
+      "call": "deduplicate([])",
+      "expected": []
+    }
+  ]
+}

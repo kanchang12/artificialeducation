@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+{% block title %}{{ build.title }} — Builds — Artificial Education{% endblock %}
+{% block canonical_path %}/builds/{{ build.id }}{% endblock %}
+
+{% block extra_head %}
+<style>
+  .build-wrap { max-width:720px; margin:0 auto; padding:1.5rem clamp(1rem,4vw,1.5rem) 4rem; }
+  .build-topbar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.25rem; font-size:0.85rem; }
+
+  .progress-track { background:var(--bp-200); border-radius:999px; height:7px; overflow:hidden; }
+  .progress-fill { background:linear-gradient(135deg,var(--bp-600),var(--accent)); height:100%; border-radius:999px; transition:width 0.3s ease; }
+  .progress-meta { display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem; }
+  .progress-meta span { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--bp-500); }
+
+  .theory-card { background:var(--bp-50); border:1px solid var(--bp-200); border-radius:var(--radius); padding:1.1rem 1.25rem; margin-bottom:1.1rem; }
+  .theory-label { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--bp-500); margin-bottom:0.4rem; }
+  .theory-text { font-size:0.87rem; line-height:1.75; color:var(--text-secondary); }
+
+  .task-card { background:#fff; border:1.5px solid var(--bp-200); border-radius:var(--radius); padding:clamp(1rem,3vw,1.5rem); }
+  .scenario { font-size:0.97rem; line-height:1.7; color:var(--text-primary); margin-bottom:1.1rem; font-weight:500; }
+
+  .option-btn { display:block; width:100%; text-align:left; border:1.5px solid var(--bp-200); border-radius:var(--radius-sm); padding:0.75rem 0.9rem; margin-bottom:0.5rem; background:#fff; cursor:pointer; font-size:0.88rem; color:var(--text-primary); font-family:inherit; transition:border-color 0.12s,background 0.12s; -webkit-tap-highlight-color:transparent; }
+  .option-btn:hover:not(.disabled) { border-color:var(--bp-500); background:var(--bp-50); }
+  .option-btn.selected { border-color:var(--bp-700); background:var(--accent-soft); }
+  .option-btn.correct { border-color:#10b981!important; background:#ecfdf5!important; color:#065f46; font-weight:600; }
+  .option-btn.incorrect { border-color:#ef4444!important; background:#fff5f5!important; color:#991b1b; }
+  .option-btn.disabled { cursor:default; }
+  .option-btn pre { margin:0; font-family:'JetBrains Mono',monospace; font-size:0.78rem; line-height:1.6; white-space:pre-wrap; color:inherit; overflow-x:auto; }
+  .option-marker { font-weight:700; margin-right:0.4rem; color:var(--bp-500); }
+
+  .code-area { width:100%; min-height:110px; font-family:'JetBrains Mono',monospace; font-size:0.8rem; line-height:1.65; padding:0.75rem; background:var(--bp-50); border:1.5px solid var(--bp-200); border-radius:var(--radius-sm); color:var(--text-primary); resize:vertical; box-sizing:border-box; -webkit-text-size-adjust:100%; }
+  .prompt-area { width:100%; min-height:80px; font-size:0.88rem; line-height:1.65; padding:0.75rem; background:var(--bp-50); border:1.5px solid var(--bp-200); border-radius:var(--radius-sm); color:var(--text-primary); font-family:inherit; resize:vertical; box-sizing:border-box; }
+  .code-area:focus, .prompt-area:focus { outline:none; border-color:var(--bp-600); box-shadow:0 0 0 3px var(--accent-soft); }
+
+  .reorder-item { display:flex; align-items:center; gap:0.5rem; padding:0.6rem 0.7rem; border:1.5px solid var(--bp-200); border-radius:var(--radius-sm); margin-bottom:0.45rem; background:#fff; }
+  .reorder-num { font-weight:700; font-size:0.75rem; color:var(--bp-400); min-width:1.3rem; flex-shrink:0; }
+  .reorder-text { flex:1; font-size:0.86rem; color:var(--text-primary); line-height:1.5; }
+  .reorder-btns { display:flex; gap:3px; flex-shrink:0; }
+  .reorder-btn { background:none; border:1px solid var(--bp-200); border-radius:6px; width:32px; height:32px; cursor:pointer; font-size:0.85rem; color:var(--bp-600); touch-action:manipulation; }
+  .reorder-btn:hover:not([disabled]) { background:var(--bp-100); }
+  .reorder-btn[disabled] { opacity:0.25; cursor:default; }
+  .reorder-item.correct { border-color:#10b981; background:#ecfdf5; }
+  .reorder-item.incorrect { border-color:#ef4444; background:#fff5f5; }
+
+  .feedback-box { margin-top:1rem; padding:0.9rem 1rem; border-radius:var(--radius-sm); font-size:0.86rem; line-height:1.7; }
+  .feedback-box.wrong { background:#fff7ed; border:1px solid #fed7aa; color:#92400e; }
+  .feedback-box.correct { background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; }
+  .feedback-box.loading { background:var(--bp-50); border:1px solid var(--bp-200); color:var(--text-muted); font-style:italic; }
+  .feedback-label { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.3rem; }
+  .why-box { margin-top:0.7rem; padding:0.7rem 0.9rem; background:var(--bp-50); border:1px solid var(--bp-200); border-radius:var(--radius-sm); font-size:0.84rem; line-height:1.65; color:var(--text-secondary); }
+  .why-label { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--bp-500); margin-bottom:0.25rem; }
+
+  .action-wrap { margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
+  .action-wrap .btn { flex:1; min-width:120px; text-align:center; }
+  @media(max-width:400px){ .action-wrap .btn { width:100%; } }
+
+  .result-row { display:flex; align-items:flex-start; gap:0.5rem; padding:0.45rem 0; border-bottom:1px solid var(--border); font-size:0.86rem; }
+  .result-row:last-child { border-bottom:none; }
+  .ri { font-weight:700; flex-shrink:0; margin-top:1px; }
+  .ri.y { color:#10b981; } .ri.n { color:#ef4444; }
+  .completed-pill { display:inline-block; background:#10b981; color:#fff; font-size:0.68rem; font-weight:700; padding:2px 8px; border-radius:12px; }
+
+  .out-of-credits-bar { display:none; background:#fff5f5; border:1px solid #fecaca; border-radius:var(--radius-sm); padding:0.9rem 1rem; text-align:center; margin-bottom:1.1rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="build-wrap">
+
+  <div class="build-topbar">
+    <a href="/builds" style="color:var(--bp-700);text-decoration:none;">← All Builds</a>
+    {% if free %}
+      <span style="font-size:0.83rem;font-weight:600;color:#10b981;">Free — no credits used</span>
+    {% else %}
+      <span style="font-size:0.83rem;color:var(--text-muted);">⏱ <strong id="credit-balance">{{ credits_minutes }}</strong> min left</span>
+    {% endif %}
+  </div>
+
+  <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.3rem,3.5vw,1.8rem);color:var(--bp-900);margin-bottom:0.25rem;">{{ build.title }}</h1>
+  <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.5rem;">{{ build.tagline }}</p>
+
+  <div class="out-of-credits-bar" id="out-of-credits">
+    <p style="font-weight:700;color:#ef4444;margin-bottom:0.35rem;">Out of credits</p>
+    <a href="/upgrade" class="btn btn-primary btn-sm">Top up now</a>
+  </div>
+
+  {% if not has_content %}
+  <div class="task-card" style="text-align:center;">
+    <p style="color:var(--text-muted);">This project is still being built — check back soon.</p>
+    <a href="/builds" class="btn btn-outline btn-sm" style="margin-top:0.75rem;">← All Builds</a>
+  </div>
+  {% else %}
+
+  <div id="progress-wrap" style="margin-bottom:1.5rem;">
+    <div class="progress-meta">
+      <span id="progress-label">Loading…</span>
+      <span id="level-label"></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%;"></div></div>
+  </div>
+
+  <div id="main-panel"></div>
+
+  {% endif %}
+</div>
+
+<script>
+const BUILD_ID = "{{ build.id }}";
+const FREE = {{ "true" if free else "false" }};
+let build = null, tasks = [], levels = [];
+let idx = 0, answered = false, currentLevelKey = null, results = [], outOfCredits = false;
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+async function init() {
+  const panel = document.getElementById("main-panel");
+  try {
+    const res = await fetch(`/api/builds/${BUILD_ID}`);
+    const data = await res.json();
+    if (!data.ok) { panel.innerHTML = `<div class="task-card"><p style="color:#ef4444;">${esc(data.error)}</p></div>`; return; }
+    build = data.build; tasks = build.tasks || []; levels = build.levels || [];
+    startHeartbeat(); advance();
+  } catch(e) {
+    panel.innerHTML = '<div class="task-card"><p style="color:#ef4444;">Network error — please reload.</p></div>';
+  }
+}
+
+function levelMeta(key) { return levels.find(l => l.key === key) || {}; }
+
+function updateProgress() {
+  const done = Math.min(idx, tasks.length);
+  document.getElementById("progress-fill").style.width = `${(done/tasks.length)*100}%`;
+  if (idx < tasks.length) {
+    document.getElementById("progress-label").textContent = `Task ${idx+1} of ${tasks.length}`;
+    document.getElementById("level-label").textContent = levelMeta(tasks[idx].level).label || "";
+  }
+}
+
+function advance() {
+  if (idx >= tasks.length) { showResults(); return; }
+  const task = tasks[idx];
+  const isNewLevel = currentLevelKey !== task.level;
+  if (isNewLevel) { currentLevelKey = task.level; showTheory(task.level); }
+  else { showTask(task); }
+}
+
+function showTheory(levelKey) {
+  const lm = levelMeta(levelKey);
+  updateProgress();
+  document.getElementById("main-panel").innerHTML = `
+    <div class="theory-card">
+      <div class="theory-label">${esc(lm.label || levelKey)} — Read this first</div>
+      <p class="theory-text">${esc(lm.theory || lm.intro || '')}</p>
+    </div>
+    <div style="text-align:right;">
+      <button class="btn btn-primary" id="start-btn">Start tasks →</button>
+    </div>`;
+  document.getElementById("start-btn").onclick = () => showTask(tasks[idx]);
+}
+
+function showTask(task) {
+  answered = false; updateProgress();
+  document.getElementById("main-panel").innerHTML = `
+    <div class="task-card">
+      <div class="scenario">${esc(task.scenario)}</div>
+      <div id="task-body"></div>
+      <div class="action-wrap" id="action-wrap">
+        <button class="btn btn-primary" id="action-btn" disabled>Check</button>
+      </div>
+      <div id="feedback"></div>
+    </div>`;
+  const body = document.getElementById("task-body");
+  const actionBtn = document.getElementById("action-btn");
+  if (task.type === "fix_code") renderFixCode(task, body, actionBtn);
+  else if (task.type === "write_prompt") renderWritePrompt(task, body, actionBtn);
+  else if (task.type === "reorder") renderReorder(task, body, actionBtn);
+  else renderChoice(task, body, actionBtn);
+}
+
+function afterCheck(task, isCorrect, feedbackHtml, whyHtml) {
+  answered = true;
+  const fb = document.getElementById("feedback");
+  fb.innerHTML = feedbackHtml;
+  const actionBtn = document.getElementById("action-btn");
+  actionBtn.disabled = false;
+  if (isCorrect) {
+    results.push({title: task.scenario.slice(0,80), correct: true});
+    if (whyHtml) fb.innerHTML += whyHtml;
+    actionBtn.textContent = idx === tasks.length - 1 ? "See results →" : "Next task →";
+    actionBtn.onclick = () => { if (outOfCredits) { location.href="/upgrade"; return; } idx++; advance(); };
+  } else {
+    actionBtn.textContent = "Try again";
+    actionBtn.onclick = () => { if (outOfCredits) { location.href="/upgrade"; return; } answered = false; showTask(task); };
+  }
+}
+
+function renderChoice(task, body, actionBtn) {
+  let attempt = 0, selected = null;
+  const isCode = task.options_type === "code";
+  task.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.className = "option-btn"; btn.dataset.i = i;
+    btn.innerHTML = isCode ? `<pre>${esc(opt)}</pre>` : `<span class="option-marker">${String.fromCharCode(65+i)}.</span>${esc(opt)}`;
+    btn.onclick = () => {
+      if (answered) return; selected = i;
+      body.querySelectorAll(".option-btn").forEach(b => b.classList.toggle("selected", parseInt(b.dataset.i)===i));
+      actionBtn.disabled = false;
+    };
+    body.appendChild(btn);
+  });
+  actionBtn.onclick = async () => {
+    if (selected === null || answered) return;
+    actionBtn.disabled = true;
+    try {
+      const d = await (await fetch(`/api/builds/${BUILD_ID}/check`, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({task_id:task.id,type:"choice",selected,attempt})})).json();
+      if (d.correct) {
+        body.querySelectorAll(".option-btn").forEach(b => { b.classList.add("disabled"); if (parseInt(b.dataset.i)===selected) b.classList.add("correct"); });
+        afterCheck(task,true,`<div class="feedback-box correct"><div class="feedback-label">✓ Correct</div></div>`,`<div class="why-box"><div class="why-label">Why</div>${esc(d.why)}</div>`);
+      } else {
+        attempt++;
+        body.querySelectorAll(".option-btn").forEach(b => { if(parseInt(b.dataset.i)===selected) b.classList.add("incorrect"); b.classList.remove("selected"); });
+        selected = null;
+        afterCheck(task,false,`<div class="feedback-box wrong"><div class="feedback-label">→ Not quite</div>${esc(d.hint||"Re-read the theory above and try again.")}</div>`,null);
+      }
+    } catch(e) { actionBtn.disabled = false; }
+  };
+}
+
+function renderFixCode(task, body, actionBtn) {
+  body.innerHTML = `<textarea class="code-area" id="task-input" spellcheck="false">${esc(task.starter_code||"")}</textarea>`;
+  actionBtn.disabled = false;
+  actionBtn.onclick = async () => {
+    if (answered) return;
+    const answer = document.getElementById("task-input").value.trim();
+    if (!answer) return;
+    actionBtn.disabled = true;
+    document.getElementById("feedback").innerHTML = `<div class="feedback-box loading">Reviewing with AI…</div>`;
+    try {
+      const d = await (await fetch(`/api/builds/${BUILD_ID}/review`, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({task_id:task.id,answer})})).json();
+      if (!d.ok) { document.getElementById("feedback").innerHTML=`<div class="feedback-box wrong">${esc(d.error)}</div>`; actionBtn.disabled=false; return; }
+      if (d.correct) {
+        document.getElementById("task-input").disabled = true;
+        afterCheck(task,true,`<div class="feedback-box correct"><div class="feedback-label">✓ Looks good</div>${esc(d.feedback)}</div>`,`<div class="why-box"><div class="why-label">Why</div>${esc(d.why)}</div>`);
+      } else {
+        afterCheck(task,false,`<div class="feedback-box wrong"><div class="feedback-label">→ Not quite yet</div>${esc(d.feedback)}</div>`,null);
+      }
+    } catch(e) { document.getElementById("feedback").innerHTML=`<div class="feedback-box wrong">Network error — try again.</div>`; actionBtn.disabled=false; }
+  };
+}
+
+function renderWritePrompt(task, body, actionBtn) {
+  body.innerHTML = `<textarea class="prompt-area" id="task-input" placeholder="${esc(task.placeholder||'')}"></textarea>`;
+  document.getElementById("task-input").addEventListener("input", e => { actionBtn.disabled = e.target.value.trim().length===0; });
+  actionBtn.onclick = async () => {
+    if (answered) return;
+    const answer = document.getElementById("task-input").value.trim();
+    if (!answer) return;
+    actionBtn.disabled = true;
+    document.getElementById("feedback").innerHTML = `<div class="feedback-box loading">Reviewing with AI…</div>`;
+    try {
+      const d = await (await fetch(`/api/builds/${BUILD_ID}/review`, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({task_id:task.id,answer})})).json();
+      if (!d.ok) { document.getElementById("feedback").innerHTML=`<div class="feedback-box wrong">${esc(d.error)}</div>`; actionBtn.disabled=false; return; }
+      if (d.correct) {
+        document.getElementById("task-input").disabled = true;
+        afterCheck(task,true,`<div class="feedback-box correct"><div class="feedback-label">✓ Looks good</div>${esc(d.feedback)}</div>`,`<div class="why-box"><div class="why-label">Why</div>${esc(d.why)}</div>`);
+      } else {
+        afterCheck(task,false,`<div class="feedback-box wrong"><div class="feedback-label">→ Not quite yet</div>${esc(d.feedback)}</div>`,null);
+      }
+    } catch(e) { document.getElementById("feedback").innerHTML=`<div class="feedback-box wrong">Network error — try again.</div>`; actionBtn.disabled=false; }
+  };
+}
+
+function renderReorder(task, body, actionBtn) {
+  let order = task.items.map((_,i)=>i);
+  function draw(locked) {
+    let html='<div id="reorder-list">';
+    order.forEach((itemIdx,pos) => {
+      html+=`<div class="reorder-item" data-pos="${pos}">
+        <span class="reorder-num">${pos+1}</span>
+        <span class="reorder-text">${esc(task.items[itemIdx])}</span>
+        ${locked?"":` <span class="reorder-btns">
+          <button class="reorder-btn" data-dir="up" ${pos===0?"disabled":""}>↑</button>
+          <button class="reorder-btn" data-dir="down" ${pos===order.length-1?"disabled":""}>↓</button>
+        </span>`}
+      </div>`;
+    });
+    html+='</div>'; body.innerHTML=html;
+    if(locked) return;
+    body.querySelectorAll(".reorder-item").forEach(row => {
+      const pos=parseInt(row.dataset.pos);
+      const up=row.querySelector('[data-dir="up"]'), dn=row.querySelector('[data-dir="down"]');
+      if(up) up.onclick=()=>{if(pos>0){[order[pos-1],order[pos]]=[order[pos],order[pos-1]];draw(false);}};
+      if(dn) dn.onclick=()=>{if(pos<order.length-1){[order[pos+1],order[pos]]=[order[pos],order[pos+1]];draw(false);}};
+    });
+  }
+  draw(false); actionBtn.disabled=false;
+  actionBtn.onclick = async () => {
+    if(answered) return; actionBtn.disabled=true;
+    try {
+      const d = await (await fetch(`/api/builds/${BUILD_ID}/check`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({task_id:task.id,type:"reorder",order})})).json();
+      draw(true);
+      if(d.correct) {
+        body.querySelectorAll(".reorder-item").forEach(r=>r.classList.add("correct"));
+        afterCheck(task,true,`<div class="feedback-box correct"><div class="feedback-label">✓ Correct order</div></div>`,`<div class="why-box"><div class="why-label">Why</div>${esc(d.why)}</div>`);
+      } else {
+        body.querySelectorAll(".reorder-item").forEach((r,pos)=>{ r.classList.add(order[pos]===(d.correct_order||[])[pos]?"correct":"incorrect"); });
+        afterCheck(task,false,`<div class="feedback-box wrong"><div class="feedback-label">→ Not quite</div>${esc(d.hint||"Think about which step must come first.")}</div>`,null);
+      }
+    } catch(e){ actionBtn.disabled=false; }
+  };
+}
+
+function showResults() {
+  localStorage.setItem("build_complete_" + BUILD_ID, "1");
+  document.getElementById("progress-wrap").style.display="none";
+  const correct = results.filter(r=>r.correct).length;
+  let html=`<div class="task-card" style="text-align:center;margin-bottom:1rem;">
+    <div class="completed-pill" style="margin-bottom:0.65rem;">✓ Completed</div>
+    <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;color:var(--bp-900);margin-bottom:0.25rem;">${correct} of ${results.length} first try</h2>
+    <p style="font-size:0.86rem;color:var(--text-muted);">Any task you retried still counts as done.</p>
+  </div><div class="task-card">`;
+  results.forEach((r,i)=>{
+    html+=`<div class="result-row"><span class="ri ${r.correct?"y":"n"}">${r.correct?"✓":"✗"}</span><span>Task ${i+1}: ${esc(r.title)}…</span></div>`;
+  });
+  html+=`</div><div style="text-align:center;margin-top:1.25rem;"><a href="/builds" class="btn btn-primary">Back to Builds</a></div>`;
+  document.getElementById("main-panel").innerHTML=html;
+}
+
+function startHeartbeat() {
+  if(FREE) return;
+  setInterval(async()=>{
+    try {
+      const d=await(await fetch("/api/builds/heartbeat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({seconds:15})})).json();
+      if(d.ok){ const el=document.getElementById("credit-balance"); if(el) el.textContent=d.credits_minutes; if(d.out_of_credits){outOfCredits=true;document.getElementById("out-of-credits").style.display="block";} }
+    } catch(e){}
+  }, 15000);
+}
+
+window.addEventListener("DOMContentLoaded", init);
+</script>
+{% endblock %}

@@ -1,0 +1,33 @@
+{
+  "id": "sb_11_validate_schema",
+  "title": "Validate Model Output Schema",
+  "topic": "Validation",
+  "difficulty": "medium",
+  "description": "Always validate the model returned exactly what you asked for.",
+  "problem": "Write validate_schema(data, required_keys, types) that checks: (1) all required_keys are present, (2) each key matches its expected type. Returns (True, None) on success or (False, error_message) on failure.",
+  "starter_code": "def validate_schema(data, required_keys, types):\n    # Check all required_keys exist in data\n    # Check each key matches its type in types dict\n    # Return (True, None) or (False, \"error message\")\n    return True, None  # fix this\n",
+  "hint": "Use isinstance(data[k], types[k]) for type checking. Build a clear error message saying which key failed.",
+  "test_cases": [
+    {
+      "label": "Valid data",
+      "setup": "",
+      "call": "validate_schema({'sentiment':'pos','score':0.9},['sentiment','score'],{'sentiment':str,'score':float})",
+      "expected": [
+        true,
+        null
+      ]
+    },
+    {
+      "label": "Missing key",
+      "setup": "",
+      "call": "validate_schema({'sentiment':'pos'},['sentiment','score'],{'sentiment':str,'score':float})[0]",
+      "expected": false
+    },
+    {
+      "label": "Wrong type",
+      "setup": "",
+      "call": "validate_schema({'sentiment':'pos','score':'high'},['sentiment','score'],{'sentiment':str,'score':float})[0]",
+      "expected": false
+    }
+  ]
+}

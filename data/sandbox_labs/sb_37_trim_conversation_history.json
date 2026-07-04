@@ -1,0 +1,57 @@
+{
+  "id": "sb_37_trim_conversation_history",
+  "title": "Trim Conversation History to Token Budget",
+  "topic": "Context Window",
+  "difficulty": "medium",
+  "description": "Trim the oldest messages from a conversation history so the total token estimate fits within a budget, always keeping the system message.",
+  "problem": "Write trim_history(messages, max_tokens, tokens_per_message) where messages is a list of dicts (first one has role='system'). Drop oldest non-system messages (in order) until len(messages)*tokens_per_message <= max_tokens. Return the trimmed list.",
+  "starter_code": "def trim_history(messages, max_tokens, tokens_per_message):\n    # Always keep messages[0] (system). Drop oldest of the rest until it fits.\n    return messages\n",
+  "hint": "While len(messages) * tokens_per_message > max_tokens and len(messages) > 1: delete messages[1] (the oldest non-system message).",
+  "test_cases": [
+    {
+      "label": "Trim to fit",
+      "setup": "msgs=[{'role':'system','content':'s'},{'role':'user','content':'1'},{'role':'user','content':'2'},{'role':'user','content':'3'}]",
+      "call": "trim_history(msgs, 30, 10)",
+      "expected": [
+        {
+          "role": "system",
+          "content": "s"
+        },
+        {
+          "role": "user",
+          "content": "2"
+        },
+        {
+          "role": "user",
+          "content": "3"
+        }
+      ]
+    },
+    {
+      "label": "Already fits",
+      "setup": "msgs=[{'role':'system','content':'s'},{'role':'user','content':'1'}]",
+      "call": "trim_history(msgs, 100, 10)",
+      "expected": [
+        {
+          "role": "system",
+          "content": "s"
+        },
+        {
+          "role": "user",
+          "content": "1"
+        }
+      ]
+    },
+    {
+      "label": "Only system left",
+      "setup": "msgs=[{'role':'system','content':'s'},{'role':'user','content':'1'},{'role':'user','content':'2'}]",
+      "call": "trim_history(msgs, 5, 10)",
+      "expected": [
+        {
+          "role": "system",
+          "content": "s"
+        }
+      ]
+    }
+  ]
+}

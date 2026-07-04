@@ -1,0 +1,35 @@
+{
+  "id": "sb_38_extract_urls",
+  "title": "Extract URLs From Model Output",
+  "topic": "Validation",
+  "difficulty": "easy",
+  "description": "Extract all HTTP(S) URLs from a block of text, e.g. citations returned by a research agent.",
+  "problem": "Write extract_urls(text) returning a list of all http:// or https:// URLs found in text, in order of appearance, without trailing punctuation like '.' or ')'.",
+  "starter_code": "import re\n\ndef extract_urls(text):\n    # Find all http(s) URLs, stripping trailing punctuation\n    return []\n",
+  "hint": "Pattern: r'https?://[^\\s)]+' then rstrip each match of '.,)'.",
+  "test_cases": [
+    {
+      "label": "Single URL with period",
+      "setup": "",
+      "call": "extract_urls('See https://example.com/page.')",
+      "expected": [
+        "https://example.com/page"
+      ]
+    },
+    {
+      "label": "Two URLs",
+      "setup": "",
+      "call": "extract_urls('a https://a.com and https://b.com/x')",
+      "expected": [
+        "https://a.com",
+        "https://b.com/x"
+      ]
+    },
+    {
+      "label": "No URL",
+      "setup": "",
+      "call": "extract_urls('no links here')",
+      "expected": []
+    }
+  ]
+}

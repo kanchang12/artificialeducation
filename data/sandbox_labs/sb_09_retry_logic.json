@@ -1,0 +1,30 @@
+{
+  "id": "sb_09_retry_logic",
+  "title": "Add Retry Logic to an API Call",
+  "topic": "System Design",
+  "difficulty": "medium",
+  "description": "LLM APIs fail transiently. Write a retry wrapper with exponential backoff.",
+  "problem": "Write call_with_retry(fn, max_retries=3, base_delay=1) that calls fn(), retries up to max_retries times on Exception, with delay doubling each attempt (1s, 2s, 4s). Returns the result or raises the last exception.",
+  "starter_code": "import time\n\ndef call_with_retry(fn, max_retries=3, base_delay=0.01):  # small delay for testing\n    # Try fn() up to max_retries times\n    # Double the delay each attempt\n    # Raise last exception if all retries fail\n    return fn()  # fix this\n",
+  "hint": "Use a loop with a counter. Catch Exception, sleep(delay), delay *= 2. After max_retries, re-raise.",
+  "test_cases": [
+    {
+      "label": "Succeeds first try",
+      "setup": "def fn(): return 42",
+      "call": "call_with_retry(fn)",
+      "expected": 42
+    },
+    {
+      "label": "Succeeds on 3rd try",
+      "setup": "_c=[0]\ndef fn():\n    _c[0]+=1\n    if _c[0]<3: raise ValueError('fail')\n    return 'ok'",
+      "call": "call_with_retry(fn,max_retries=3,base_delay=0.001)",
+      "expected": "ok"
+    },
+    {
+      "label": "Raises after max retries",
+      "setup": "def fn(): raise RuntimeError('always fails')",
+      "call": "(lambda: (call_with_retry(fn,max_retries=2,base_delay=0.001), None) if False else 'raised')()",
+      "expected": "raised"
+    }
+  ]
+}

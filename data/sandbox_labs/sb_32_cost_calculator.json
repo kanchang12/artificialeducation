@@ -1,0 +1,30 @@
+{
+  "id": "sb_32_cost_calculator",
+  "title": "LLM API Cost Calculator",
+  "topic": "Cost Management",
+  "difficulty": "easy",
+  "description": "Calculate the cost in USD of an LLM API call given input/output token counts and per-million-token prices.",
+  "problem": "Write calc_cost(input_tokens, output_tokens, input_price_per_million, output_price_per_million) returning total cost in USD rounded to 6 decimal places.",
+  "starter_code": "def calc_cost(input_tokens, output_tokens, input_price_per_million, output_price_per_million):\n    # cost = (input_tokens/1e6)*input_price + (output_tokens/1e6)*output_price\n    return 0\n",
+  "hint": "cost = input_tokens/1_000_000 * input_price_per_million + output_tokens/1_000_000 * output_price_per_million, then round(cost, 6).",
+  "test_cases": [
+    {
+      "label": "Basic calc",
+      "setup": "",
+      "call": "calc_cost(1000, 500, 3.0, 15.0)",
+      "expected": 0.0105
+    },
+    {
+      "label": "Zero tokens",
+      "setup": "",
+      "call": "calc_cost(0, 0, 3.0, 15.0)",
+      "expected": 0.0
+    },
+    {
+      "label": "Output heavy",
+      "setup": "",
+      "call": "calc_cost(1000000, 1000000, 1.0, 2.0)",
+      "expected": 3.0
+    }
+  ]
+}

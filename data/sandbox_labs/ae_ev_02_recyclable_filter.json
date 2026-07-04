@@ -1,0 +1,28 @@
+{
+  "id": "ae_ev_02_recyclable_filter",
+  "title": "Sort the Recyclables",
+  "topic": "Environmental Studies",
+  "subject": "Environmental Studies",
+  "difficulty": "easy",
+  "description": "Classify waste correctly, turning an environmental rule into a logical filter.",
+  "problem": "Write recyclables(items) that takes a list of (name, material) tuples and returns the names whose material is 'paper', 'glass' or 'metal'.",
+  "starter_code": "def recyclables(items):\n    # keep names where material is recyclable\n    pass\n",
+  "hint": "Loop through items, check if material is in {'paper','glass','metal'}, collect the name.",
+  "test_cases": [
+    {
+      "label": "Mixed",
+      "setup": "",
+      "call": "recyclables([('bottle','glass'),('wrapper','plastic'),('can','metal')])",
+      "expected": [
+        "bottle",
+        "can"
+      ]
+    },
+    {
+      "label": "None recyclable",
+      "setup": "",
+      "call": "recyclables([('bag','plastic')])",
+      "expected": []
+    }
+  ]
+}

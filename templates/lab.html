@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% block title %}{{ lab.title }} — Artificial Education{% endblock %}
+{% block canonical_path %}/lab/{{ lab.task_id }}{% endblock %}
+{% block meta_description %}{{ lab.problem[:160] }}{% endblock %}
+
+{% block extra_head %}
+<style>
+.lab-layout { display:grid; grid-template-columns:1fr 380px; gap:1.5rem; align-items:start; }
+@media(max-width:900px) { .lab-layout { grid-template-columns:1fr; } }
+.hint-item { background:var(--bp-50); border:1px solid var(--border); border-radius:var(--radius-sm); padding:0.75rem 1rem; margin-bottom:0.5rem; font-size:0.875rem; color:var(--bp-800); display:none; }
+.hint-item.revealed { display:block; }
+.solution-box { background:var(--bp-950); color:#c7d2fe; border-radius:var(--radius); padding:1.5rem; display:none; }
+.solution-box.revealed { display:block; }
+.tutor-msg { padding:0.75rem 1rem; border-radius:var(--radius-sm); font-size:0.875rem; line-height:1.6; margin-bottom:0.75rem; }
+.tutor-msg.ai { background:var(--bp-100); color:var(--bp-800); }
+.tutor-msg.user { background:var(--bp-800); color:#fff; text-align:right; }
+#tutor-scroll { max-height:340px; overflow-y:auto; padding-right:4px; }
+#tutor-scroll::-webkit-scrollbar { width:4px; } 
+#tutor-scroll::-webkit-scrollbar-thumb { background:var(--bp-300); border-radius:2px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div style="background:var(--bp-100);border-bottom:1px solid var(--border);padding:1.25rem 0;">
+  <div class="container">
+    <div class="flex items-center gap-2 flex-wrap" style="font-size:0.8rem;color:var(--text-muted);">
+      <a href="/dashboard" style="color:var(--bp-600);text-decoration:none;">Dashboard</a>
+      <span>›</span>
+      <span>{{ lab.topic }}</span>
+      <span>›</span>
+      <span style="color:var(--text-primary);">{{ lab.title }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="padding-top:2rem;padding-bottom:3rem;">
+  <div class="lab-layout">
+
+    <!-- MAIN CONTENT -->
+    <div>
+      <div class="badge-wrap mb-2">
+        <span class="tag tag-{{ lab.difficulty }}">{{ lab.difficulty }}</span>
+        <span class="tag">{{ lab.topic }}</span>
+        {% if lab.get('free') %}<span class="tag tag-free">Free</span>{% endif %}
+      </div>
+      <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.4rem,3vw,2rem);color:var(--bp-900);margin-bottom:1.25rem;">{{ lab.title }}</h1>
+
+      <div class="card mb-2">
+        <h3 style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:0.75rem;">The Problem</h3>
+        <p style="font-size:0.95rem;color:var(--text-primary);line-height:1.7;">{{ lab.problem }}</p>
+      </div>
+
+      {% if lab.get('context') %}
+      <div class="card mb-2">
+        <h3 style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:0.75rem;">Context</h3>
+        <pre style="white-space:pre-wrap;font-size:0.82rem;">{{ lab.context }}</pre>
+      </div>
+      {% endif %}
+
+      <!-- YOUR ANSWER -->
+      <div class="card mb-2">
+        <h3 style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:0.75rem;">Your Answer</h3>
+        <textarea id="user-answer" placeholder="Write your solution or thinking here…" style="width:100%;resize:vertical;min-height:120px;border:1.5px solid var(--bp-200);border-radius:var(--radius-sm);padding:10px 14px;font-family:Inter,sans-serif;font-size:0.875rem;color:var(--text-primary);background:#fff;outline:none;line-height:1.6;" onfocus="this.style.borderColor='var(--bp-500)'" onblur="this.style.borderColor='var(--bp-200)'"></textarea>
+        <div style="display:flex;gap:0.75rem;margin-top:0.75rem;align-items:center;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" id="check-btn" onclick="checkAnswer()">Check my answer</button>
+          <span id="check-status" style="font-size:0.8rem;color:var(--text-muted);"></span>
+        </div>
+        <div id="check-result" style="display:none;margin-top:1rem;padding:1rem;border-radius:var(--radius-sm);background:var(--bp-50);border:1px solid var(--border);font-size:0.875rem;line-height:1.7;color:var(--text-primary);"></div>
+      </div>
+
+      <!-- HINTS -->
+      <div class="card mb-2">
+        <div class="flex items-center justify-between mb-2">
+          <h3 style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Hints</h3>
+          <button class="btn btn-outline btn-sm" id="hint-btn" onclick="revealNextHint()">Reveal hint</button>
+        </div>
+        {% for hint in lab.get('hints', []) %}
+        <div class="hint-item" id="hint-{{ loop.index0 }}">
+          <span style="font-weight:600;color:var(--bp-600);">{{ loop.index }}.</span> {{ hint }}
+        </div>
+        {% endfor %}
+        <p style="font-size:0.8rem;color:var(--text-muted);margin-top:0.5rem;" id="hints-done" style="display:none;"></p>
+      </div>
+
+      <!-- SOLUTION -->
+      <div class="card">
+        <div class="flex items-center justify-between mb-2">
+          <h3 style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);">Solution</h3>
+          <button class="btn btn-outline btn-sm" onclick="toggleSolution()">Reveal solution</button>
+        </div>
+        <div class="solution-box" id="solution-box">
+          <p style="font-size:0.875rem;line-height:1.7;white-space:pre-wrap;">{{ lab.solution }}</p>
+        </div>
+        <p style="font-size:0.8rem;color:var(--text-muted);" id="solution-placeholder">Work through the hints first. Reveal when you're ready to compare.</p>
+      </div>
+
+      <!-- NAV -->
+      <div class="flex justify-between mt-3 flex-wrap gap-2">
+        {% if prev_lab %}
+        <a href="/lab/{{ prev_lab.task_id }}" class="btn btn-outline btn-sm">← {{ prev_lab.title[:40] }}</a>
+        {% else %}<div></div>{% endif %}
+        {% if next_lab %}
+        <a href="/lab/{{ next_lab.task_id }}" class="btn btn-primary btn-sm">{{ next_lab.title[:40] }} →</a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- TUTOR SIDEBAR -->
+    <div style="position:sticky;top:80px;">
+      <div class="card" style="border:1.5px solid var(--bp-300);">
+        <div class="flex items-center gap-2 mb-2">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,var(--bp-600),var(--accent));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;">🤖</div>
+          <div>
+            <div style="font-weight:700;font-size:0.875rem;color:var(--bp-900);">AI Tutor</div>
+            <div style="font-size:0.7rem;color:var(--text-muted);">Powered by Groq · Llama 3</div>
+          </div>
+        </div>
+        <div id="tutor-scroll">
+          <div class="tutor-msg ai" id="tutor-welcome">
+            Stuck on <strong>{{ lab.title }}</strong>? Ask me anything. I'll guide you — without giving away the answer.
+          </div>
+        </div>
+        <div style="margin-top:0.75rem;">
+          <textarea id="tutor-input" placeholder="Ask a question…" style="width:100%;resize:none;border:1.5px solid var(--bp-200);border-radius:var(--radius-sm);padding:10px 12px;font-family:'Inter',sans-serif;font-size:0.85rem;color:var(--text-primary);background:#fff;outline:none;height:80px;" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();askTutor();}"></textarea>
+          <button class="btn btn-primary btn-sm" style="width:100%;margin-top:0.5rem;" id="tutor-btn" onclick="askTutor()">Ask tutor</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let hintsRevealed = 0;
+const totalHints = {{ lab.hints | length if lab.hints else 0 }};
+
+function revealNextHint() {
+  if (hintsRevealed < totalHints) {
+    document.getElementById("hint-" + hintsRevealed).classList.add("revealed");
+    hintsRevealed++;
+    if (hintsRevealed >= totalHints) {
+      document.getElementById("hint-btn").textContent = "All hints shown";
+      document.getElementById("hint-btn").disabled = true;
+    }
+  }
+}
+
+function toggleSolution() {
+  const box = document.getElementById("solution-box");
+  const ph = document.getElementById("solution-placeholder");
+  const showing = box.classList.contains("revealed");
+  if (showing) {
+    box.classList.remove("revealed");
+    ph.style.display = "block";
+  } else {
+    box.classList.add("revealed");
+    ph.style.display = "none";
+  }
+}
+
+const TASK_ID = "{{ lab.task_id }}";
+
+async function askTutor() {
+  const input = document.getElementById("tutor-input");
+  const q = input.value.trim();
+  if (!q) return;
+
+  const scroll = document.getElementById("tutor-scroll");
+  const btn = document.getElementById("tutor-btn");
+
+  // Add user message
+  scroll.innerHTML += `<div class="tutor-msg user">${escHtml(q)}</div>`;
+  input.value = "";
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+  scroll.scrollTop = scroll.scrollHeight;
+
+  try {
+    const res = await fetch("/api/lab/ask", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({task_id: TASK_ID, question: q})
+    });
+    const data = await res.json();
+    if (data.ok) {
+      scroll.innerHTML += `<div class="tutor-msg ai">${escHtml(data.answer)}</div>`;
+    } else {
+      scroll.innerHTML += `<div class="tutor-msg ai" style="color:var(--danger);">Sorry, tutor is unavailable right now.</div>`;
+    }
+  } catch(e) {
+    scroll.innerHTML += `<div class="tutor-msg ai" style="color:var(--danger);">Network error. Try again.</div>`;
+  }
+  btn.disabled = false;
+  btn.textContent = "Ask tutor";
+  scroll.scrollTop = scroll.scrollHeight;
+}
+
+async function checkAnswer() {
+  const answer = document.getElementById("user-answer").value.trim();
+  if (!answer) { alert("Write your answer first."); return; }
+  const btn = document.getElementById("check-btn");
+  const status = document.getElementById("check-status");
+  const result = document.getElementById("check-result");
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Checking…';
+  status.textContent = "";
+  result.style.display = "none";
+  try {
+    const res = await fetch("/api/lab/check", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({task_id: TASK_ID, answer: answer})
+    });
+    const data = await res.json();
+    if (data.ok) {
+      result.innerHTML = data.feedback;
+      result.style.display = "block";
+      result.style.borderLeft = data.score >= 7 ? "3px solid var(--success)" : data.score >= 4 ? "3px solid var(--gold)" : "3px solid var(--danger)";
+    } else {
+      status.textContent = "Check unavailable right now.";
+    }
+  } catch(e) {
+    status.textContent = "Network error.";
+  }
+  btn.disabled = false;
+  btn.textContent = "Check my answer";
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\n/g,"<br>");
+}
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+{
+  "id": "video_02_first_prompt",
+  "title": "Writing Your First Production-Grade Prompt",
+  "topic": "Prompting",
+  "free": true,
+  "duration_minutes": 12,
+  "description": "Walk through writing a system prompt that reliably returns structured JSON, and test it against edge cases.",
+  "what_you_do": "In your own environment, write a script that calls Gemini with a system prompt and validates the JSON response.",
+  "bunny_video_id": "REPLACE_WITH_BUNNY_VIDEO_ID"
+}

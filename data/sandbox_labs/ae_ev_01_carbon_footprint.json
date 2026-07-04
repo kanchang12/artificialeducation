@@ -1,0 +1,25 @@
+{
+  "id": "ae_ev_01_carbon_footprint",
+  "title": "Add Up the Carbon",
+  "topic": "Environmental Studies",
+  "subject": "Environmental Studies",
+  "difficulty": "easy",
+  "description": "See how daily activities add up to an environmental total, linking data to consequence.",
+  "problem": "Write total_carbon(activities) where activities is a dict of activity name to kg CO2. Return the total kg CO2 as a number.",
+  "starter_code": "def total_carbon(activities):\n    # sum all the values\n    pass\n",
+  "hint": "Use sum(activities.values()).",
+  "test_cases": [
+    {
+      "label": "Basic",
+      "setup": "",
+      "call": "total_carbon({'car':4.2,'electricity':1.8})",
+      "expected": 6.0
+    },
+    {
+      "label": "Empty",
+      "setup": "",
+      "call": "total_carbon({})",
+      "expected": 0
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "sb_25_levenshtein_distance",
+  "title": "Edit Distance for Fuzzy Matching",
+  "topic": "Evaluation",
+  "difficulty": "hard",
+  "description": "Compute the Levenshtein (edit) distance between two strings, used for fuzzy-matching model outputs to expected answers.",
+  "problem": "Write edit_distance(a, b) returning the minimum number of single-character insertions, deletions, or substitutions to turn a into b.",
+  "starter_code": "def edit_distance(a, b):\n    # Classic dynamic programming edit distance\n    return 0\n",
+  "hint": "Build a (len(a)+1) x (len(b)+1) DP table. dp[i][0]=i, dp[0][j]=j. dp[i][j] = dp[i-1][j-1] if a[i-1]==b[j-1] else 1+min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]).",
+  "test_cases": [
+    {
+      "label": "Identical strings",
+      "setup": "",
+      "call": "edit_distance('hello','hello')",
+      "expected": 0
+    },
+    {
+      "label": "One substitution",
+      "setup": "",
+      "call": "edit_distance('cat','bat')",
+      "expected": 1
+    },
+    {
+      "label": "Insertion needed",
+      "setup": "",
+      "call": "edit_distance('ab','abc')",
+      "expected": 1
+    },
+    {
+      "label": "Completely different",
+      "setup": "",
+      "call": "edit_distance('abc','xyz')",
+      "expected": 3
+    }
+  ]
+}

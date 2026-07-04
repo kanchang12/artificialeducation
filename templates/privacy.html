@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy — Artificial Education{% endblock %}
+{% block canonical_path %}/privacy{% endblock %}
+{% block meta_description %}Artificial Education Privacy Policy — how we collect, use, and protect your data, including your rights under GDPR.{% endblock %}
+
+{% block content %}
+<div class="container section" style="max-width:760px;">
+  <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:var(--bp-900);margin-bottom:0.5rem;">Privacy Policy</h1>
+  <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:2rem;">Last updated: June 2026</p>
+
+  <div style="font-size:0.95rem;line-height:1.8;color:var(--text-primary);">
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">1. Who we are</h2>
+    <p>Artificial Education ("we", "us") provides simulation-based learning and assessment at aiwithai.online. We are the data controller for personal data collected through this site.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">2. What data we collect</h2>
+    <p>We collect: your name and email address (for your account, via Supabase Auth); your subscription plan and credit balance; code you submit in the sandbox (processed transiently to run tests, not stored permanently); questions you ask the AI tutor (sent to Google Gemini for a response); and payment information, which is handled entirely by Stripe — we never see or store your card details.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">3. Why we collect it</h2>
+    <p>To create and secure your account, provide access to labs and sandboxes according to your plan, process payments and top-ups, and provide AI tutor responses. We do not sell your data or use it for advertising.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">4. Third-party processors</h2>
+    <p>We use Supabase (authentication and database, EU/global hosting), Stripe (payment processing), and Google Gemini (AI tutor responses). Each processes data under their own privacy policies and applicable data processing agreements.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">5. Cookies</h2>
+    <p>We use essential cookies for login sessions (required for the site to function) and, if you accept, optional analytics cookies to help us improve the product. You can manage your choice via the cookie banner.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">6. Your rights (GDPR / UK GDPR)</h2>
+    <p>If you are in the EU/UK or otherwise covered by data protection law, you have the right to access, correct, export, or delete your personal data, and to object to or restrict certain processing. You can delete your account and all associated data at any time from your <a href="/account" style="color:var(--bp-700);">Account page</a>. For any other request, email hello@aiwithai.online.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">7. Data retention</h2>
+    <p>We retain your account data for as long as your account is active. If you delete your account, your profile and credit balance are permanently removed. Some transaction records may be retained by Stripe as required by financial regulations.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">8. Contact</h2>
+    <p>Questions about this policy or your data: hello@aiwithai.online</p>
+  </div>
+</div>
+{% endblock %}

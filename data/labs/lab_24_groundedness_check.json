@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_24_groundedness_check",
+  "title": "Build a groundedness checker for RAG output",
+  "topic": "Evaluation",
+  "difficulty": "legend",
+  "free": false,
+  "problem": "Your RAG system sometimes generates answers that are not supported by the retrieved context — the model 'fills in' information from its training data rather than the documents. This is called hallucination or lack of groundedness. Design a groundedness checker that runs on every response before it is shown to the user. Describe the approach, its failure modes, and how you would measure its accuracy.",
+  "context": "RAG pipeline: retrieve 5 chunks → generate answer\nExample ungrounded answer: 'The refund policy allows 60 days' (retrieved chunks say 30 days)\nExample grounded answer: 'According to the policy, refunds are accepted within 30 days'",
+  "hints": [
+    "You can use a second LLM call as a judge — but what exactly do you ask it to check?",
+    "Sentence-level checking is more precise than document-level.",
+    "How do you evaluate the checker itself? You need labelled examples of grounded/ungrounded pairs."
+  ],
+  "solution": "Groundedness checker design: after generating the answer, make a second LLM call with the prompt: 'Given only the following context passages, is every factual claim in the answer directly supported by the context? For each sentence in the answer, output: sentence, supported (yes/no), and if no, what the context actually says. Return JSON.' If any sentence is unsupported, either replace it with 'I could not find information on this in the available documents' or flag the whole answer for human review. Failure modes: (1) the checker LLM also hallucinates — mitigate by using a different, more conservative model for checking; (2) paraphrased content is mis-classified as unsupported — the checker must understand semantic equivalence not just lexical match; (3) multi-sentence claims that span chunks confuse sentence-level checking. Measuring accuracy: create a labelled evaluation set of 200 answer-context pairs, half grounded and half intentionally ungrounded. Measure precision and recall of the checker. Target: recall > 95% (catching ungrounded claims is more important than false positives). A/B test: compare user satisfaction and escalation rate with vs. without the checker enabled."
+}

@@ -1,0 +1,25 @@
+{
+  "id": "ae_maths_02_percentage_change",
+  "title": "How Much Did It Change?",
+  "topic": "Maths",
+  "subject": "Maths",
+  "difficulty": "easy",
+  "description": "Calculate percentage change, a life skill that connects maths to the real world.",
+  "problem": "Write percent_change(old, new) that returns the percentage change from old to new, rounded to 1 decimal place.",
+  "starter_code": "def percent_change(old, new):\n    # (new - old) / old * 100\n    # round to 1 decimal\n    pass\n",
+  "hint": "Formula is (new - old) / old * 100, then round to 1 decimal place.",
+  "test_cases": [
+    {
+      "label": "Increase",
+      "setup": "",
+      "call": "percent_change(100,150)",
+      "expected": 50.0
+    },
+    {
+      "label": "Decrease",
+      "setup": "",
+      "call": "percent_change(200,150)",
+      "expected": -25.0
+    }
+  ]
+}

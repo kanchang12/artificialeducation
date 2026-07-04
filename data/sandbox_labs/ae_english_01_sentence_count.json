@@ -1,0 +1,31 @@
+{
+  "id": "ae_english_01_sentence_count",
+  "title": "How Many Sentences?",
+  "topic": "English",
+  "subject": "English",
+  "difficulty": "easy",
+  "description": "Understand sentence boundaries, a first step in reading comprehension and writing.",
+  "problem": "Write count_sentences(text) that returns how many sentences are in the text. Sentences end with '.', '!' or '?'.",
+  "starter_code": "def count_sentences(text):\n    # count the ending punctuation marks\n    pass\n",
+  "hint": "Loop through the text and count characters that are '.', '!' or '?'.",
+  "test_cases": [
+    {
+      "label": "Three sentences",
+      "setup": "",
+      "call": "count_sentences('Hello. How are you? I am fine!')",
+      "expected": 3
+    },
+    {
+      "label": "One",
+      "setup": "",
+      "call": "count_sentences('Just one sentence.')",
+      "expected": 1
+    },
+    {
+      "label": "None",
+      "setup": "",
+      "call": "count_sentences('no ending mark')",
+      "expected": 0
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% block title %}{{ bb.title }} — Blackbox — Artificial Education{% endblock %}
+{% block canonical_path %}/blackbox/{{ bb.id }}{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<style>
+  .bb-page { background:#0a0a0f; min-height:calc(100vh - 60px); color:#e5e5ea; }
+  .bb-layout { display:grid; grid-template-columns:240px 1fr; gap:1.5rem; align-items:start; }
+  @media(max-width:860px) { .bb-layout { grid-template-columns:1fr; } }
+  .bb-step-item { display:block; padding:0.6rem 0.8rem; border-radius:8px; font-size:0.8rem; color:rgba(255,255,255,0.5); cursor:pointer; margin-bottom:0.25rem; border:1px solid transparent; }
+  .bb-step-item.active { background:rgba(168,85,247,0.12); color:#fff; border-color:rgba(168,85,247,0.35); }
+  .bb-step-item.done { color:#86efac; }
+  .bb-card { background:#15111f; border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius); padding:1.25rem; }
+  .CodeMirror { height:260px; font-family:'JetBrains Mono',monospace; font-size:0.85rem; border-radius:8px; }
+  .bb-feedback { background:#0f1117; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1rem; font-size:0.85rem; line-height:1.6; margin-top:1rem; white-space:pre-wrap; }
+  .bb-feedback.correct { border-left:3px solid #22c55e; }
+  .bb-feedback.needs-work { border-left:3px solid #f59e0b; }
+  .bb-sim { background:#000; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:1rem; font-family:'JetBrains Mono',monospace; font-size:0.8rem; color:#86efac; margin-top:0.75rem; white-space:pre-wrap; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bb-page">
+  <div style="background:#0a0a0f;border-bottom:1px solid rgba(255,255,255,0.06);padding:1.25rem 0;">
+    <div class="container">
+      <div class="flex items-center gap-2 flex-wrap" style="font-size:0.8rem;color:rgba(255,255,255,0.4);">
+        <a href="/blackbox" style="color:#c084fc;text-decoration:none;">Blackbox</a>
+        <span>›</span>
+        <span style="color:#fff;">{{ bb.title }}</span>
+        <span style="margin-left:auto;display:flex;align-items:center;gap:0.75rem;">
+          <span id="credit-balance-wrap">⏱ <strong id="credit-balance">{{ credits_minutes }}</strong> min left (₹{{ rate }}/min)</span>
+          <a href="/upgrade" class="btn btn-sm" style="background:linear-gradient(135deg,#a855f7,#6366f1);color:#fff;">Top up</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" style="padding-top:1.5rem;padding-bottom:3rem;">
+    <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.3rem,3vw,1.8rem);color:#fff;margin-bottom:0.4rem;">⬛ {{ bb.title }}</h1>
+    <p style="color:rgba(255,255,255,0.5);font-size:0.9rem;margin-bottom:1.5rem;">{{ bb.description }}</p>
+
+    <div id="out-of-credits" style="display:none;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);border-radius:8px;padding:1rem;margin-bottom:1.25rem;text-align:center;">
+      <p style="font-weight:700;color:#f87171;margin-bottom:0.5rem;">Out of credits</p>
+      <p style="font-size:0.85rem;color:rgba(255,255,255,0.6);margin-bottom:0.75rem;">Top up to keep building. Your progress is preserved.</p>
+      <a href="/upgrade" class="btn btn-sm" style="background:#ef4444;color:#fff;">Top up now</a>
+    </div>
+
+    <div class="bb-layout">
+      <!-- Step list -->
+      <div class="bb-card">
+        <h3 style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:rgba(255,255,255,0.4);margin-bottom:0.75rem;">Steps</h3>
+        {% for step in bb.steps %}
+        <div class="bb-step-item{% if loop.first %} active{% endif %}" data-step="{{ step.id }}" onclick="goToStep({{ step.id }})">
+          {{ step.id }}. {{ step.title }}
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Step content -->
+      <div class="bb-card">
+        <div id="step-title" style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:0.5rem;"></div>
+        <div id="step-instructions" style="font-size:0.88rem;color:rgba(255,255,255,0.6);line-height:1.6;margin-bottom:1rem;"></div>
+
+        <textarea id="code-editor"></textarea>
+
+        <div style="display:flex;gap:0.75rem;margin-top:1rem;flex-wrap:wrap;">
+          <button class="btn" id="review-btn" style="background:linear-gradient(135deg,#a855f7,#6366f1);color:#fff;" onclick="submitStep()">Get AI review</button>
+          <button class="btn btn-outline" id="prev-btn" onclick="prevStep()" style="border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);">← Previous</button>
+          <button class="btn btn-outline" id="next-btn" onclick="nextStep()" style="border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);">Next →</button>
+        </div>
+
+        <div id="feedback-box" style="display:none;"></div>
+        <div id="sim-box" style="display:none;"></div>
+      </div>
+    </div>
+
+    <div class="flex justify-between mt-3" style="font-size:0.85rem;">
+      {% if prev_bb %}<a href="/blackbox/{{ prev_bb.id }}" style="color:#c084fc;text-decoration:none;">← {{ prev_bb.title }}</a>{% else %}<span></span>{% endif %}
+      {% if next_bb %}<a href="/blackbox/{{ next_bb.id }}" style="color:#c084fc;text-decoration:none;">{{ next_bb.title }} →</a>{% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+const STEPS = {{ bb.steps|tojson }};
+const BB_ID = "{{ bb.id }}";
+let currentStep = 1;
+let outOfCredits = false;
+let editor;
+
+function renderStep() {
+  const step = STEPS.find(s => s.id === currentStep);
+  document.getElementById("step-title").textContent = step.id + ". " + step.title;
+  document.getElementById("step-instructions").textContent = step.instructions;
+  editor.setValue(step.starter_code || "");
+  document.getElementById("feedback-box").style.display = "none";
+  document.getElementById("sim-box").style.display = "none";
+
+  document.querySelectorAll(".bb-step-item").forEach(el => {
+    el.classList.toggle("active", parseInt(el.dataset.step) === currentStep);
+  });
+
+  document.getElementById("prev-btn").disabled = currentStep === 1;
+  document.getElementById("next-btn").disabled = currentStep === STEPS.length;
+}
+
+function goToStep(id) { currentStep = id; renderStep(); }
+function prevStep() { if (currentStep > 1) { currentStep--; renderStep(); } }
+function nextStep() { if (currentStep < STEPS.length) { currentStep++; renderStep(); } }
+
+async function submitStep() {
+  if (outOfCredits) { window.location.href = "/upgrade"; return; }
+  const btn = document.getElementById("review-btn");
+  btn.disabled = true;
+  btn.textContent = "Reviewing…";
+
+  const code = editor.getValue();
+  try {
+    const res = await fetch("/api/blackbox/review", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({bb_id: BB_ID, step_id: currentStep, code: code})
+    });
+    const data = await res.json();
+    const fb = document.getElementById("feedback-box");
+    const sim = document.getElementById("sim-box");
+
+    if (!data.ok) {
+      fb.className = "bb-feedback needs-work";
+      fb.textContent = data.error || "Something went wrong.";
+      fb.style.display = "block";
+      sim.style.display = "none";
+    } else {
+      fb.className = "bb-feedback " + (data.correct ? "correct" : "needs-work");
+      fb.textContent = (data.correct ? "✓ " : "→ ") + data.feedback;
+      fb.style.display = "block";
+
+      if (data.simulated_output) {
+        sim.textContent = "Simulated output:\\n\\n" + data.simulated_output;
+        sim.className = "bb-sim";
+        sim.style.display = "block";
+      } else {
+        sim.style.display = "none";
+      }
+
+      if (data.correct) {
+        const item = document.querySelector('.bb-step-item[data-step="' + currentStep + '"]');
+        if (item) item.classList.add("done");
+      }
+    }
+  } catch (e) {
+    const fb = document.getElementById("feedback-box");
+    fb.className = "bb-feedback needs-work";
+    fb.textContent = "Network error — please try again.";
+    fb.style.display = "block";
+  }
+  btn.disabled = false;
+  btn.textContent = "Get AI review";
+}
+
+// Heartbeat: deduct credits every 15s while this page is open
+let heartbeatInterval;
+function startHeartbeat() {
+  heartbeatInterval = setInterval(async () => {
+    try {
+      const res = await fetch("/api/blackbox/heartbeat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({seconds: 15})
+      });
+      const data = await res.json();
+      if (data.ok) {
+        document.getElementById("credit-balance").textContent = data.credits_minutes;
+        if (data.out_of_credits) {
+          outOfCredits = true;
+          document.getElementById("out-of-credits").style.display = "block";
+          clearInterval(heartbeatInterval);
+        }
+      }
+    } catch (e) {}
+  }, 15000);
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+    mode: "python", theme: "dracula", lineNumbers: true,
+    matchBrackets: true, autoCloseBrackets: true, tabSize: 4
+  });
+  renderStep();
+  startHeartbeat();
+});
+</script>
+{% endblock %}

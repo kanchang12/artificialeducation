@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "x5uemo08j4");
+  </script>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="{% block meta_description %}Artificial Education — Simulated learning and assessment for the AI era.{% endblock %}"/>
+  <meta name="keywords" content="AI engineering, LLM, RAG, prompt engineering, fine-tuning, AI security, learn AI"/>
+  <meta property="og:title" content="{% block og_title %}Artificial Education — Simulated Learning and Assessment{% endblock %}"/>
+  <meta property="og:description" content="{% block og_description %}Artificial Education — Simulated learning and assessment for the AI era.{% endblock %}"/>
+  <meta property="og:type" content="website"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="canonical" href="https://aiwithai.online{% block canonical_path %}/{% endblock %}"/>
+  <title>{% block title %}Artificial Education{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── PALETTE: blue-purple ── */
+    :root {
+      --bp-50:   #f0f4ff;
+      --bp-100:  #e0e9ff;
+      --bp-200:  #c3d2fe;
+      --bp-300:  #97b0fc;
+      --bp-400:  #6484f8;
+      --bp-500:  #4361ee;
+      --bp-600:  #3040d4;
+      --bp-700:  #2632ab;
+      --bp-800:  #1e2680;
+      --bp-900:  #141959;
+      --bp-950:  #0b0e33;
+      --accent:       #7c3aed;
+      --accent-light: #a78bfa;
+      --accent-soft:  rgba(124,58,237,0.12);
+      --gold:    #f59e0b;
+      --success: #10b981;
+      --danger:  #ef4444;
+      --text-primary:   #0b0e33;
+      --text-secondary: #2632ab;
+      --text-muted:     #4361ee;
+      --border:  rgba(99,132,248,0.22);
+      --card-bg: rgba(255,255,255,0.88);
+      --radius:    14px;
+      --radius-sm: 8px;
+      --shadow:    0 4px 24px rgba(67,97,238,0.10);
+      --shadow-lg: 0 12px 48px rgba(67,97,238,0.18);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bp-50);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(240,244,255,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(1rem, 5vw, 3rem);
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.2rem;
+      color: var(--bp-900);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; align-items: center; gap: 0.5rem; }
+    .nav-links a {
+      font-size: 0.875rem; font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 6px 14px; border-radius: 20px;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { background: var(--bp-100); color: var(--bp-900); }
+    .nav-links a.btn-primary, .nav-links a.btn-primary:hover { color: #fff; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+      font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.875rem;
+      padding: 9px 20px; border-radius: 24px; border: none; cursor: pointer;
+      text-decoration: none; transition: all 0.2s; white-space: nowrap;
+    }
+    .btn-primary { background: var(--bp-700); color: #fff; }
+    .btn-primary:hover { background: var(--bp-900); transform: translateY(-1px); box-shadow: var(--shadow); }
+    .btn-accent { background: linear-gradient(135deg, var(--bp-600), var(--accent)); color: #fff; }
+    .btn-accent:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(124,58,237,0.30); }
+    .btn-outline { background: transparent; color: var(--bp-700); border: 1.5px solid var(--bp-300); }
+    .btn-outline:hover { background: var(--bp-100); border-color: var(--bp-400); }
+    .btn-ghost { background: transparent; color: var(--text-secondary); }
+    .btn-ghost:hover { background: var(--bp-100); }
+    .btn-sm  { padding: 6px 14px; font-size: 0.8rem; }
+    .btn-lg  { padding: 12px 28px; font-size: 1rem; border-radius: 28px; }
+    .btn:disabled, .btn[disabled] { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+    /* ── TAGS ── */
+    .tag {
+      display: inline-flex; align-items: center;
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 20px;
+      background: var(--bp-100); color: var(--bp-700);
+    }
+    .tag-easy    { background: #d1fae5; color: #065f46; }
+    .tag-medium  { background: #fef3c7; color: #92400e; }
+    .tag-hard    { background: #fee2e2; color: #991b1b; }
+    .tag-legend  { background: linear-gradient(135deg, var(--bp-800), var(--accent)); color: #fff; }
+    .tag-free    { background: #d1fae5; color: #065f46; }
+    .tag-premium { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      transition: all 0.25s;
+    }
+    .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); border-color: var(--bp-300); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1rem, 5vw, 2.5rem); }
+    .section    { padding: clamp(3rem, 8vw, 6rem) 0; }
+    .badge-wrap { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bp-950);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+    }
+    footer a { color: var(--bp-300); text-decoration: none; }
+
+    /* ── CODE ── */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+      background: var(--bp-100);
+      color: var(--bp-800);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    /* standalone pre blocks (theory, solution boxes) stay dark */
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      background: var(--bp-950);
+      color: #c7d2fe;
+      padding: 1.25rem;
+      border-radius: var(--radius-sm);
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+    /* pre INSIDE an option button must NOT inherit the dark block styles */
+    .option-btn pre {
+      background: transparent !important;
+      color: inherit !important;
+      padding: 0 !important;
+      border-radius: 0 !important;
+      font-size: 0.8rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      margin: 0;
+    }
+
+    /* ── FORMS ── */
+    .form-group { margin-bottom: 1rem; }
+    .form-group label {
+      display: block; font-size: 0.8rem; font-weight: 600;
+      color: var(--text-secondary); margin-bottom: 4px;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; padding: 10px 14px;
+      border: 1.5px solid var(--bp-200);
+      border-radius: var(--radius-sm);
+      background: #fff; color: var(--text-primary);
+      font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--bp-500);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+    .err-msg { font-size: 0.8rem; color: var(--danger); margin-top: 0.5rem; display: none; }
+
+    /* ── SPINNER ── */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: inline-block;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── MOBILE NAV ── */
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--bp-800);
+      margin: 5px 0; border-radius: 2px; transition: all 0.3s; }
+    @media (max-width: 640px) {
+      .hamburger { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 60px; left: 0; right: 0;
+        background: var(--bp-50); border-bottom: 1px solid var(--border);
+        flex-direction: column; padding: 1rem; gap: 0.25rem; align-items: stretch;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 10px 14px; border-radius: var(--radius-sm); }
+    }
+
+    /* ── UTILS ── */
+    .text-center { text-align: center; }
+    .mt-1 { margin-top: 0.5rem; } .mt-2 { margin-top: 1rem; } .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; } .mb-2 { margin-bottom: 1rem; } .mb-3 { margin-bottom: 1.5rem; }
+    .flex { display: flex; } .flex-wrap { flex-wrap: wrap; }
+    .items-center { align-items: center; } .justify-between { justify-content: space-between; }
+    .gap-1 { gap: 0.5rem; } .gap-2 { gap: 1rem; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+  </style>
+  {% block extra_head %}{% endblock %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Artificial Education",
+    "url": "https://aiwithai.online",
+    "description": "Simulated learning and assessment for the AI era.",
+    "sameAs": []
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Artificial Education",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR",
+      "description": "Pay-as-you-go credits, billed per minute of active use."
+    }
+  }
+  </script>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="/"><span>AI</span>withAI</a>
+  {% if session.get('is_admin') %}
+  <div class="nav-links" style="display:flex;">
+    <a href="/admin">Dashboard</a>
+    <a href="/admin/logout">Logout</a>
+  </div>
+  {% else %}
+  <div style="display:flex;align-items:center;gap:0.5rem;">
+    <div class="nav-always" style="display:flex;align-items:center;gap:0.5rem;">
+      {% if not session.get('user_id') %}
+        <a href="#" onclick="openTryFree(event)" class="btn btn-accent btn-sm nav-cta-always">Test Your Skills</a>
+      {% endif %}
+      <button class="hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-links">
+      {% if session.get('user_id') %}
+        <a href="/builds">Builds</a>
+        <a href="/youtube">Videos</a>
+        <a href="/account">Account</a>
+        <a href="/upgrade">Upgrade</a>
+        <a href="/logout">Logout</a>
+      {% else %}
+        <a href="/youtube">Videos</a>
+        <a href="/login">Login</a>
+        <a class="btn btn-primary btn-sm" href="/register">Get Started Now</a>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</nav>
+{% block content %}{% endblock %}
+{% if not session.get('is_admin') %}
+<footer>
+  <p>© 2025 Artificial Education · <a href="/login">Login</a> · <a href="/register">Sign Up</a> · <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a> · Simulated learning for the AI era</p>
+</footer>
+{% endif %}
+
+<!-- GDPR Cookie Consent -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bp-950);color:#fff;padding:1rem clamp(1rem,5vw,2.5rem);z-index:1000;box-shadow:0 -4px 24px rgba(0,0,0,0.2);">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+    <p style="font-size:0.85rem;color:rgba(255,255,255,0.8);margin:0;flex:1;min-width:200px;">
+      We use essential cookies for login sessions and analytics to improve Artificial Education. See our <a href="/privacy" style="color:var(--accent-light);">Privacy Policy</a>.
+    </p>
+    <div style="display:flex;gap:0.5rem;">
+      <button class="btn btn-outline btn-sm" style="color:#fff;border-color:rgba(255,255,255,0.3);" onclick="setCookieConsent(false)">Essential only</button>
+      <button class="btn btn-accent btn-sm" onclick="setCookieConsent(true)">Accept all</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function setCookieConsent(acceptAll) {
+  document.cookie = "cookie_consent=" + (acceptAll ? "all" : "essential") + ";path=/;max-age=" + (60*60*24*365);
+  document.getElementById("cookie-banner").style.display = "none";
+}
+if (!document.cookie.includes("cookie_consent=")) {
+  document.getElementById("cookie-banner").style.display = "block";
+}
+</script>
+<script>
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.querySelector('.nav-links').classList.remove('open');
+  });
+});
+</script>
+
+{% if not session.get('is_admin') %}
+<!-- TRY FOR FREE MODAL -->
+<style>
+  .tf-overlay { display:none; position:fixed; inset:0; background:rgba(11,14,51,0.55); z-index:2000; align-items:flex-start; justify-content:center; padding:clamp(1rem,4vw,3rem) 1rem; overflow-y:auto; }
+  .tf-overlay.open { display:flex; }
+  .tf-modal { background:#fff; border-radius:18px; max-width:600px; width:100%; padding:clamp(1.25rem,4vw,2rem); position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.3); margin:auto; }
+  .tf-close { position:absolute; top:1rem; right:1rem; width:32px; height:32px; border-radius:50%; background:var(--bp-100); border:none; color:var(--bp-700); font-size:1.1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+  .tf-close:hover { background:var(--bp-200); }
+  .tf-eyebrow { font-size:0.7rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--bp-600); margin-bottom:0.4rem; }
+  .tf-h1 { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(1.25rem,4vw,1.5rem); color:var(--bp-900); margin-bottom:0.3rem; padding-right:2rem; }
+  .tf-sub { font-size:0.85rem; color:var(--text-secondary); margin-bottom:1.5rem; }
+  .tf-progress { display:flex; gap:0.35rem; margin-bottom:1.5rem; }
+  .tf-dot { flex:1; height:5px; border-radius:4px; background:var(--bp-200); transition:background 0.2s; }
+  .tf-dot.done   { background:var(--bp-600); }
+  .tf-dot.active { background:var(--accent); }
+  .tf-tag { display:inline-block; font-size:0.62rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--bp-600); background:var(--bp-100); padding:3px 10px; border-radius:20px; margin-bottom:0.8rem; }
+  .tf-q { font-family:'Syne',sans-serif; font-weight:700; font-size:clamp(0.98rem,2.8vw,1.15rem); color:var(--bp-900); line-height:1.4; margin-bottom:1.25rem; }
+  .tf-options { display:flex; flex-direction:column; gap:0.55rem; margin-bottom:1.25rem; }
+  .tf-opt { display:flex; align-items:center; gap:0.65rem; padding:0.75rem 0.9rem; border:1.5px solid var(--bp-200); border-radius:12px; cursor:pointer; font-size:0.87rem; color:var(--text-primary); transition:all 0.15s; background:#fff; }
+  .tf-opt:hover { border-color:var(--bp-400); background:var(--bp-50); }
+  .tf-opt.selected { border-color:var(--bp-700); background:var(--bp-100); font-weight:600; }
+  .tf-opt-letter { width:22px; height:22px; flex-shrink:0; border-radius:50%; background:var(--bp-100); color:var(--bp-700); font-size:0.7rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .tf-opt.selected .tf-opt-letter { background:var(--bp-700); color:#fff; }
+  .tf-drag-list { list-style:none; display:flex; flex-direction:column; gap:0.55rem; margin-bottom:1.25rem; padding:0; }
+  .tf-drag-item { display:flex; align-items:center; gap:0.65rem; padding:0.75rem 0.9rem; border:1.5px solid var(--bp-200); border-radius:12px; background:#fff; cursor:grab; font-size:0.85rem; color:var(--text-primary); }
+  .tf-drag-item.dragging { opacity:0.4; }
+  .tf-drag-handle { color:var(--bp-400); font-size:1rem; flex-shrink:0; }
+  .tf-drag-num { width:20px; height:20px; flex-shrink:0; border-radius:50%; background:var(--bp-100); color:var(--bp-700); font-size:0.68rem; font-weight:700; display:flex; align-items:center; justify-content:center; }
+  .tf-fill { font-size:0.92rem; color:var(--text-primary); line-height:2.1; margin-bottom:1.25rem; }
+  .tf-select { font-family:'Inter',sans-serif; font-size:0.87rem; font-weight:600; color:var(--bp-800); background:var(--bp-50); border:1.5px solid var(--bp-300); border-radius:8px; padding:5px 10px; }
+  .tf-textarea { width:100%; min-height:110px; resize:vertical; border:1.5px solid var(--bp-200); border-radius:12px; padding:12px 14px; font-family:'Inter',sans-serif; font-size:0.87rem; color:var(--text-primary); background:#fff; outline:none; line-height:1.6; margin-bottom:1.25rem; }
+  .tf-textarea:focus { border-color:var(--bp-500); }
+  .tf-hint { font-size:0.75rem; color:var(--bp-500); margin-top:-1rem; margin-bottom:1.25rem; }
+  .tf-feedback { display:none; padding:0.85rem 1rem; border-radius:10px; font-size:0.83rem; line-height:1.65; margin-bottom:1.1rem; white-space:pre-wrap; }
+  .tf-feedback.show     { display:block; }
+  .tf-feedback.correct  { background:#d1fae5; color:#065f46; }
+  .tf-feedback.incorrect{ background:#fee2e2; color:#991b1b; }
+  .tf-feedback.neutral  { background:var(--bp-100); color:var(--bp-800); }
+  .tf-feedback.loading  { background:var(--bp-50); color:var(--bp-500); font-style:italic; }
+  .tf-actions { display:flex; justify-content:flex-end; gap:0.6rem; }
+  .tf-result { text-align:center; padding-top:0.5rem; }
+  .tf-result-score { font-family:'Syne',sans-serif; font-weight:800; font-size:clamp(2.2rem,7vw,3rem); color:var(--bp-900); margin-bottom:0.4rem; }
+  .tf-result-label { font-size:0.88rem; color:var(--text-secondary); margin-bottom:1.75rem; }
+  .tf-result-ctas { display:flex; flex-direction:column; gap:0.6rem; align-items:center; }
+</style>
+
+<div class="tf-overlay" id="tf-overlay" onclick="if(event.target===this) closeTryFree()">
+  <div class="tf-modal">
+    <button class="tf-close" onclick="closeTryFree()" aria-label="Close">✕</button>
+    <p class="tf-eyebrow">No registration required</p>
+    <h2 class="tf-h1">Test Your Production-Ready Knowledge</h2>
+    <p class="tf-sub">5 real AI engineering questions, graded with detailed feedback. Takes about 3 minutes.</p>
+    <div class="tf-progress" id="tf-progress"></div>
+    <div id="tf-card">Loading…</div>
+  </div>
+</div>
+
+<script>
+let TF_QUESTIONS = null;
+let tfCurrent = 0;
+let tfScore = 0;
+let tfScored = 0;
+let tfState = [];
+
+function openTryFree(e) {
+  if (e) e.preventDefault();
+  document.getElementById('tf-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (!TF_QUESTIONS) loadTfQuestions();
+}
+function closeTryFree() {
+  document.getElementById('tf-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeTryFree(); });
+if (window.location.hash === '#try-free') {
+  window.addEventListener('DOMContentLoaded', () => openTryFree());
+}
+
+async function loadTfQuestions() {
+  document.getElementById('tf-card').innerHTML = 'Loading…';
+  try {
+    const res = await fetch('/api/try-free/questions', { method: 'POST' });
+    const data = await res.json();
+    TF_QUESTIONS = data.questions;
+    tfState = TF_QUESTIONS.map(() => ({ answered: false, selected: null, order: null }));
+    tfCurrent = 0; tfScore = 0; tfScored = 0;
+    renderTfQuestion();
+  } catch (err) {
+    document.getElementById('tf-card').innerHTML = 'Could not load questions. Please try again.';
+  }
+}
+
+function renderTfProgress() {
+  const wrap = document.getElementById('tf-progress');
+  wrap.innerHTML = '';
+  TF_QUESTIONS.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'tf-dot' + (i < tfCurrent ? ' done' : i === tfCurrent ? ' active' : '');
+    wrap.appendChild(dot);
+  });
+}
+
+function renderTfQuestion() {
+  renderTfProgress();
+  const card = document.getElementById('tf-card');
+  const q = TF_QUESTIONS[tfCurrent];
+  const s = tfState[tfCurrent];
+  const tagMap = { mcq: 'Multiple Choice', dragdrop: 'Put In Order', dropdown: 'Fill In The Blank', prompt: 'Write A Prompt' };
+  let html = `<span class="tf-tag">${tagMap[q.type]}</span><div class="tf-q">${q.q}</div>`;
+  if (q.type === 'mcq') {
+    html += `<div class="tf-options" id="tf-options">`;
+    q.options.forEach((opt, i) => {
+      const letter = String.fromCharCode(65 + i);
+      html += `<div class="tf-opt${s.selected === i ? ' selected' : ''}" onclick="tfSelectMcq(${i})">
+        <span class="tf-opt-letter">${letter}</span><span>${opt}</span></div>`;
+    });
+    html += `</div>`;
+  } else if (q.type === 'dragdrop') {
+    if (!s.order) s.order = q.items.map((_, i) => i);
+    html += `<ul class="tf-drag-list" id="tf-drag-list">` + tfDragItemsHtml(q, s) + `</ul>`;
+  } else if (q.type === 'dropdown') {
+    html += `<div class="tf-fill">"${q.q} <select class="tf-select" id="tf-dropdown" onchange="tfSelectDropdown(this.value)">
+      <option value="" disabled ${s.selected === null ? 'selected' : ''}>choose…</option>
+      ${q.options.map(o => `<option value="${o}" ${s.selected === o ? 'selected' : ''}>${o}</option>`).join('')}
+      </select> ${q.blankSuffix}"</div>`;
+  } else if (q.type === 'prompt') {
+    html += `<textarea class="tf-textarea" id="tf-prompt" placeholder="Write your system prompt here…" oninput="tfCheckPromptLength()">${s.selected || ''}</textarea>`;
+    const len = (s.selected || '').trim().length;
+    html += `<p class="tf-hint" id="tf-charcount">${q.hint} (${len}/${q.minLength} characters minimum)</p>`;
+  }
+  html += `<div class="tf-feedback" id="tf-feedback"></div>`;
+  html += `<div class="tf-actions">
+    <button class="btn btn-primary" id="tf-action-btn" onclick="tfHandleAction()" ${tfNeedsSelection(q, s) ? 'disabled' : ''}>
+      ${s.answered ? (tfCurrent === TF_QUESTIONS.length - 1 ? 'See results →' : 'Next question →') : 'Check answer'}
+    </button>
+  </div>`;
+  card.innerHTML = html;
+  if (s.answered && s.feedbackHtml) showTfFeedback(s);
+}
+
+function tfDragItemsHtml(q, s) {
+  return s.order.map((itemIdx, pos) => `<li class="tf-drag-item" draggable="true" data-idx="${itemIdx}" ondragstart="tfDragStart(event)" ondragover="tfDragOver(event)" ondrop="tfDragDrop(event)" ondragend="tfDragEnd(event)">
+    <span class="tf-drag-handle">⠿</span><span class="tf-drag-num">${pos + 1}</span><span>${q.items[itemIdx]}</span></li>`).join('');
+}
+function tfNeedsSelection(q, s) {
+  if (s.answered) return false;
+  if (q.type === 'mcq') return s.selected === null;
+  if (q.type === 'dropdown') return s.selected === null;
+  if (q.type === 'prompt') return !(s.selected && s.selected.trim().length >= q.minLength);
+  return false;
+}
+function tfSelectMcq(i) {
+  if (tfState[tfCurrent].answered) return;
+  tfState[tfCurrent].selected = i;
+  renderTfQuestion();
+}
+function tfSelectDropdown(val) {
+  if (tfState[tfCurrent].answered) return;
+  tfState[tfCurrent].selected = val;
+  document.getElementById('tf-action-btn').disabled = false;
+}
+function tfCheckPromptLength() {
+  const val = document.getElementById('tf-prompt').value;
+  tfState[tfCurrent].selected = val;
+  const len = val.trim().length;
+  const minLen = TF_QUESTIONS[tfCurrent].minLength;
+  document.getElementById('tf-action-btn').disabled = len < minLen;
+  const counter = document.getElementById('tf-charcount');
+  if (counter) counter.textContent = `${TF_QUESTIONS[tfCurrent].hint} (${len}/${minLen} characters minimum)`;
+}
+let tfDragSrcIdx = null;
+function tfDragStart(e) {
+  tfDragSrcIdx = tfState[tfCurrent].order.indexOf(parseInt(e.target.closest('.tf-drag-item').dataset.idx));
+  e.target.closest('.tf-drag-item').classList.add('dragging');
+}
+function tfDragOver(e) {
+  e.preventDefault();
+  const target = e.target.closest('.tf-drag-item');
+  if (!target) return;
+  const targetIdx = tfState[tfCurrent].order.indexOf(parseInt(target.dataset.idx));
+  if (targetIdx === tfDragSrcIdx || tfDragSrcIdx === null) return;
+  const order = tfState[tfCurrent].order;
+  const [moved] = order.splice(tfDragSrcIdx, 1);
+  order.splice(targetIdx, 0, moved);
+  tfDragSrcIdx = targetIdx;
+  document.getElementById('tf-drag-list').innerHTML = tfDragItemsHtml(TF_QUESTIONS[tfCurrent], tfState[tfCurrent]);
+}
+function tfDragDrop(e) { e.preventDefault(); }
+function tfDragEnd() { tfDragSrcIdx = null; }
+function showTfFeedback(s) {
+  const fb = document.getElementById('tf-feedback');
+  fb.className = 'tf-feedback show ' + (s.correct === null ? 'neutral' : s.correct ? 'correct' : 'incorrect');
+  fb.textContent = s.feedbackHtml;
+}
+async function tfHandleAction() {
+  const q = TF_QUESTIONS[tfCurrent];
+  const s = tfState[tfCurrent];
+  if (!s.answered) {
+    let answer;
+    if (q.type === 'mcq') answer = s.selected;
+    else if (q.type === 'dropdown') answer = s.selected;
+    else if (q.type === 'dragdrop') answer = s.order;
+    else if (q.type === 'prompt') answer = s.selected;
+    s.answered = true;
+    document.getElementById('tf-action-btn').disabled = true;
+    const fb = document.getElementById('tf-feedback');
+    fb.className = 'tf-feedback show loading';
+    fb.textContent = 'Asking Gemini for detailed feedback…';
+    try {
+      const res = await fetch('/api/try-free/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ index: tfCurrent, answer })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        s.correct = data.correct;
+        s.feedbackHtml = data.feedback;
+        if (data.correct === true) { tfScore++; tfScored++; }
+        else if (data.correct === false) { tfScored++; }
+      } else {
+        s.correct = null;
+        s.feedbackHtml = data.error || 'Could not grade this answer.';
+      }
+    } catch (err) {
+      s.correct = null;
+      s.feedbackHtml = 'Could not reach the grading service. Your answer was recorded.';
+    }
+    document.getElementById('tf-action-btn').disabled = false;
+    renderTfQuestion();
+    return;
+  }
+  if (tfCurrent < TF_QUESTIONS.length - 1) {
+    tfCurrent++;
+    renderTfQuestion();
+  } else {
+    renderTfResult();
+  }
+}
+function renderTfResult() {
+  renderTfProgress();
+  document.querySelectorAll('#tf-progress .tf-dot').forEach(d => d.classList.add('done'));
+  const card = document.getElementById('tf-card');
+  card.innerHTML = `
+    <div class="tf-result">
+      <div class="tf-result-score">${tfScore}/${tfScored}</div>
+      <p class="tf-result-label">That's the same level of thinking every lab on Artificial Education puts you through — except the real ones are full projects, not single questions.</p>
+      <div class="tf-result-ctas">
+        <a href="/register" class="btn btn-accent btn-lg">Get Started Now — first project's free →</a>
+        <button class="btn btn-ghost" onclick="closeTryFree()">Close</button>
+      </div>
+    </div>`;
+}
+</script>
+{% endif %}
+</body>
+</html>

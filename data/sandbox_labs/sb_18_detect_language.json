@@ -1,0 +1,30 @@
+{
+  "id": "sb_18_detect_language",
+  "title": "Detect and Route by Language",
+  "topic": "System Design",
+  "difficulty": "easy",
+  "description": "Route prompts to the right model based on input language.",
+  "problem": "Write detect_language(text) that returns 'english' if text contains mostly ASCII characters (>80%), 'unicode' otherwise. This is used to route to cheaper models for English-only inputs.",
+  "starter_code": "def detect_language(text):\n    # Return 'english' if >80% ASCII, else 'unicode'\n    return 'english'  # fix this\n",
+  "hint": "Count characters where ord(c) < 128. Divide by len(text). If ratio > 0.8, return 'english'.",
+  "test_cases": [
+    {
+      "label": "English text",
+      "setup": "",
+      "call": "detect_language('Hello world this is English text')",
+      "expected": "english"
+    },
+    {
+      "label": "Unicode text",
+      "setup": "",
+      "call": "detect_language('\u3053\u3093\u306b\u3061\u306f\u4e16\u754c')",
+      "expected": "unicode"
+    },
+    {
+      "label": "Mixed mostly ASCII",
+      "setup": "",
+      "call": "detect_language('Hello caf\u00e9')",
+      "expected": "english"
+    }
+  ]
+}

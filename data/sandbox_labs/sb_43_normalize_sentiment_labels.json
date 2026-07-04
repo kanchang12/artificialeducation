@@ -1,0 +1,30 @@
+{
+  "id": "sb_43_normalize_sentiment_labels",
+  "title": "Normalize Sentiment Label Variants",
+  "topic": "Validation",
+  "difficulty": "easy",
+  "description": "Different model versions return inconsistent sentiment labels - normalize them to a fixed set.",
+  "problem": "Write normalize_sentiment(label) that maps any of 'POS','Positive','positive','pos' to 'positive'; any of 'NEG','Negative','negative','neg' to 'negative'; anything else to 'neutral'.",
+  "starter_code": "def normalize_sentiment(label):\n    # Map many variants to 'positive'/'negative'/'neutral'\n    return label\n",
+  "hint": "Lowercase the label first, then check if it starts with 'pos' or 'neg', else return 'neutral'.",
+  "test_cases": [
+    {
+      "label": "Positive variant",
+      "setup": "",
+      "call": "normalize_sentiment('POS')",
+      "expected": "positive"
+    },
+    {
+      "label": "Negative variant",
+      "setup": "",
+      "call": "normalize_sentiment('Negative')",
+      "expected": "negative"
+    },
+    {
+      "label": "Unknown label",
+      "setup": "",
+      "call": "normalize_sentiment('mixed')",
+      "expected": "neutral"
+    }
+  ]
+}

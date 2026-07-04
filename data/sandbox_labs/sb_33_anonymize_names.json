@@ -1,0 +1,30 @@
+{
+  "id": "sb_33_anonymize_names",
+  "title": "Anonymize Known Names in Text",
+  "topic": "Privacy",
+  "difficulty": "easy",
+  "description": "Replace any occurrence of names from a known list with '[NAME]' before sending text to a third-party model.",
+  "problem": "Write anonymize(text, names) that replaces every whole-word occurrence of any name in `names` (case-insensitive) with '[NAME]'.",
+  "starter_code": "import re\n\ndef anonymize(text, names):\n    # Replace whole-word matches of any name (case-insensitive) with [NAME]\n    return text\n",
+  "hint": "Build a regex pattern r'\\b(' + '|'.join(re.escape(n) for n in names) + r')\\b' with re.IGNORECASE, then re.sub with '[NAME]'.",
+  "test_cases": [
+    {
+      "label": "Single name",
+      "setup": "names=['Alice']",
+      "call": "anonymize('Alice went home', names)",
+      "expected": "[NAME] went home"
+    },
+    {
+      "label": "Case insensitive",
+      "setup": "names=['bob']",
+      "call": "anonymize('BOB called Bob', names)",
+      "expected": "[NAME] called [NAME]"
+    },
+    {
+      "label": "No match",
+      "setup": "names=['Charlie']",
+      "call": "anonymize('Dave is here', names)",
+      "expected": "Dave is here"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_14_retrieval_reranking",
+  "title": "Retrieval is finding the right documents but in the wrong order",
+  "topic": "RAG",
+  "difficulty": "hard",
+  "free": false,
+  "problem": "Your RAG pipeline retrieves the top 10 chunks by cosine similarity and passes all 10 to the model. Users report that the most relevant answer is usually in the 10 results but the model ignores it because it appears at position 7-10. Explain the phenomenon causing this and describe the architectural fix.",
+  "context": "Retrieval: top-10 by cosine similarity\nContext injection order: chunk 1 (highest similarity) to chunk 10 (lowest)\nSymptom: correct answer is in retrieved set but model answers using chunk 1-3 content",
+  "hints": [
+    "This is a known LLM behaviour with a specific name related to where information appears in the prompt.",
+    "The fix does not require changing the embedding model.",
+    "Two approaches: one changes ordering, one reduces the number of chunks passed."
+  ],
+  "solution": "This is the 'lost in the middle' problem — LLMs pay disproportionate attention to content at the start and end of the context window, and under-weight content in the middle. Chunks 7-10 are systematically ignored even when they are most relevant. Fix 1 — reranking: after vector retrieval, run a cross-encoder reranker (e.g. a small BERT model) that scores each chunk against the query and reorders them so the most relevant chunks appear first and last. Fix 2 — reduce retrieved chunks: pass top-3 or top-5 rather than top-10, forcing the model to work with a smaller, higher-quality context where all chunks are in the high-attention positions. In production, combine both: retrieve 20, rerank, pass top-5."
+}

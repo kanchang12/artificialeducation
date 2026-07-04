@@ -1,0 +1,43 @@
+{
+  "id": "sb_39_rate_limit_queue",
+  "title": "Rate-Limited Request Scheduler",
+  "topic": "Reliability",
+  "difficulty": "hard",
+  "description": "Given a list of request timestamps (seconds) and a rate limit, determine which requests must be delayed.",
+  "problem": "Write schedule(timestamps, max_per_second) where timestamps is a sorted list of request times (ints). Return a list of adjusted timestamps such that no more than max_per_second requests share the same integer second, pushing overflow requests to the next second(s), preserving order.",
+  "starter_code": "def schedule(timestamps, max_per_second):\n    # Reassign timestamps so each second has at most max_per_second entries\n    return timestamps\n",
+  "hint": "Track a dict counting how many requests are assigned to each second so far. For each timestamp in order, if the count for that second >= max_per_second, try the next second, and so on.",
+  "test_cases": [
+    {
+      "label": "Within limit",
+      "setup": "",
+      "call": "schedule([0,0,1], 2)",
+      "expected": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "label": "Overflow pushes to next second",
+      "setup": "",
+      "call": "schedule([0,0,0], 2)",
+      "expected": [
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "label": "Multiple overflow",
+      "setup": "",
+      "call": "schedule([0,0,0,0], 1)",
+      "expected": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

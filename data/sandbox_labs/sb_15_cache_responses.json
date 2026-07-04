@@ -1,0 +1,36 @@
+{
+  "id": "sb_15_cache_responses",
+  "title": "Cache Identical Prompts",
+  "topic": "System Design",
+  "difficulty": "easy",
+  "description": "Avoid paying for the same API call twice by caching results.",
+  "problem": "Write PromptCache class with get(prompt) returning cached response or None, and set(prompt, response) storing it. Cache should be case-insensitive and strip whitespace from keys.",
+  "starter_code": "class PromptCache:\n    def __init__(self):\n        self.cache = {}\n    \n    def get(self, prompt):\n        return None  # fix this\n    \n    def set(self, prompt, response):\n        pass  # fix this\n",
+  "hint": "Normalise the key with prompt.strip().lower() before storing or looking up.",
+  "test_cases": [
+    {
+      "label": "Miss returns None",
+      "setup": "c = PromptCache()",
+      "call": "c.get('hello')",
+      "expected": null
+    },
+    {
+      "label": "Hit returns value",
+      "setup": "c = PromptCache()\nc.set('hello', 'world')",
+      "call": "c.get('hello')",
+      "expected": "world"
+    },
+    {
+      "label": "Case insensitive",
+      "setup": "c = PromptCache()\nc.set('Hello', 'world')",
+      "call": "c.get('hello')",
+      "expected": "world"
+    },
+    {
+      "label": "Strips whitespace",
+      "setup": "c = PromptCache()\nc.set('  hello  ', 'world')",
+      "call": "c.get('hello')",
+      "expected": "world"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "id": "sb_06_missing_key",
+  "title": "Handle Missing Keys from the Model",
+  "topic": "Structured Output",
+  "difficulty": "easy",
+  "description": "The model sometimes omits keys. Write defensive extraction that never crashes.",
+  "problem": "Write get_fields(data) that takes a dict from a model response and returns (sentiment, score, language). If any key is missing: sentiment defaults to 'unknown', score to 0.0, language to 'en'.",
+  "starter_code": "def get_fields(data):\n    # Extract sentiment, score, language\n    # Use safe defaults if keys are missing\n    sentiment = data[\"sentiment\"]   # crashes if missing\n    score = data[\"score\"]\n    language = data[\"language\"]\n    return sentiment, score, language\n",
+  "hint": "Use dict.get(key, default) instead of dict[key].",
+  "test_cases": [
+    {
+      "label": "All keys present",
+      "setup": "",
+      "call": "get_fields({'sentiment':'positive','score':0.9,'language':'fr'})",
+      "expected": [
+        "positive",
+        0.9,
+        "fr"
+      ]
+    },
+    {
+      "label": "Missing score",
+      "setup": "",
+      "call": "get_fields({'sentiment':'negative','language':'en'})",
+      "expected": [
+        "negative",
+        0.0,
+        "en"
+      ]
+    },
+    {
+      "label": "Empty dict",
+      "setup": "",
+      "call": "get_fields({})",
+      "expected": [
+        "unknown",
+        0.0,
+        "en"
+      ]
+    }
+  ]
+}

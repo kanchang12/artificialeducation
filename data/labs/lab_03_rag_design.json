@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_03_rag_design",
+  "title": "Design RAG for 500 documents",
+  "topic": "RAG",
+  "difficulty": "medium",
+  "free": false,
+  "problem": "You must answer user questions over 500 internal documents. They don't fit in one prompt. Write a design: how you chunk the docs, how you store and search them, and how you inject the relevant content into the prompt at query time.",
+  "context": "",
+  "hints": [
+    "Why can't you paste all 500 docs into the context window?",
+    "Chunk size trade-off: too large wastes tokens, too small loses meaning.",
+    "Retrieval = embed the question, find nearest chunks by vector similarity, inject only those."
+  ],
+  "solution": "Chunk each document into ~400-token passages with ~50-token overlap. Embed every chunk once and store the vectors. At query time: embed the user's question, retrieve the top 4-5 chunks by cosine similarity, inject only those into the prompt as context. This keeps the prompt small, cheap, and grounded in real source text."
+}

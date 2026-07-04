@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Builds — Artificial Education{% endblock %}
+{% block canonical_path %}/builds{% endblock %}
+
+{% block extra_head %}
+<style>
+  .completed-pill { display:inline-block; background:#10b981; color:#fff; font-size:0.68rem; font-weight:700; padding:2px 8px; border-radius:12px; margin-left:0.35rem; vertical-align:middle; }
+  .builds-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; margin-top:1.5rem; }
+  @media(max-width:480px){ .builds-grid { grid-template-columns:1fr; } }
+  .build-card { background:#fff; border:1.5px solid var(--border); border-radius:var(--radius); padding:1.25rem; display:flex; flex-direction:column; gap:0.5rem; }
+  .build-card-title { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; color:var(--bp-900); }
+  .build-card-desc { font-size:0.83rem; color:var(--text-muted); line-height:1.6; flex:1; }
+  .credit-bar { background:var(--bp-100); border:1px solid var(--border); border-radius:var(--radius-sm); padding:0.6rem 1rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap; font-size:0.83rem; margin-bottom:1.5rem; }
+</style>
+<script>
+window.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-pid]").forEach(el => {
+    if (localStorage.getItem("build_complete_" + el.dataset.pid) === "1") {
+      const s = document.createElement("span"); s.className = "completed-pill"; s.textContent = "✓ Done";
+      el.appendChild(s);
+    }
+  });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="section">
+  <div class="container">
+    <div style="margin-bottom:1.5rem;">
+      <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.5rem,4vw,2rem);color:var(--bp-900);margin-bottom:0.35rem;">Builds</h1>
+      <p style="color:var(--text-muted);font-size:0.9rem;max-width:640px;">11 real-world AI engineering projects. Read the situation, pick the best option, see why. Start with the free Chatbot.</p>
+    </div>
+
+    <div class="credit-bar">
+      <span>⏱ <strong>{{ credits_minutes }}</strong> credit minutes left (₹{{ rate }}/min · £{{ rate_gbp }}/min)</span>
+      <a href="/upgrade" class="btn btn-outline btn-sm">Top up</a>
+    </div>
+
+    <div class="builds-grid">
+      {% for p in projects %}
+      <div class="build-card">
+        <div class="badge-wrap">
+          {% if p.free %}<span class="tag tag-free">Free</span>
+          {% elif p.coming_soon %}<span class="tag" style="background:var(--bp-100);color:var(--text-muted);">Coming soon</span>
+          {% endif %}
+          <span class="tag">{{ p.category }}</span>
+        </div>
+        <div class="build-card-title" data-pid="{{ p.id }}">{{ p.title }}</div>
+        <p class="build-card-desc">{{ p.tagline }}</p>
+        {% if p.has_content and p.unlocked %}
+          <a href="/builds/{{ p.id }}" class="btn btn-primary btn-sm" style="align-self:flex-start;">{{ "Start — free" if p.free else "Start" }}</a>
+        {% elif p.has_content %}
+          <a href="/upgrade" class="btn btn-outline btn-sm" style="align-self:flex-start;">Unlock — ₹{{ rate }}/min</a>
+        {% else %}
+          <span class="btn btn-outline btn-sm" style="opacity:0.45;cursor:default;align-self:flex-start;">Coming soon</span>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{
+  "id": "sb_40_weighted_eval_score",
+  "title": "Weighted Evaluation Score",
+  "topic": "Evaluation",
+  "difficulty": "easy",
+  "description": "Combine multiple evaluation metric scores into a single weighted score for model comparison.",
+  "problem": "Write weighted_score(scores, weights) where both are dicts with the same keys (metric name -> value). Return the weighted average: sum(scores[k]*weights[k]) / sum(weights.values()), rounded to 3 decimals.",
+  "starter_code": "def weighted_score(scores, weights):\n    # Compute sum(scores[k]*weights[k]) / sum(weights values)\n    return 0\n",
+  "hint": "numerator = sum(scores[k] * weights[k] for k in scores); denominator = sum(weights.values()); return round(numerator/denominator, 3)",
+  "test_cases": [
+    {
+      "label": "Two metrics",
+      "setup": "scores={'accuracy':0.8,'speed':0.6}\nweights={'accuracy':2,'speed':1}",
+      "call": "weighted_score(scores, weights)",
+      "expected": 0.733
+    },
+    {
+      "label": "Equal weights",
+      "setup": "scores={'a':1.0,'b':0.0}\nweights={'a':1,'b':1}",
+      "call": "weighted_score(scores, weights)",
+      "expected": 0.5
+    }
+  ]
+}

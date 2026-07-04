@@ -1,0 +1,30 @@
+{
+  "id": "sb_47_redact_phone_numbers",
+  "title": "Redact Phone Numbers Before Logging",
+  "topic": "Privacy",
+  "difficulty": "medium",
+  "description": "Redact phone numbers from text before writing it to application logs.",
+  "problem": "Write redact_phones(text) that replaces any sequence matching common phone formats (e.g. '555-123-4567', '(555) 123-4567', '5551234567') with '[PHONE]'.",
+  "starter_code": "import re\n\ndef redact_phones(text):\n    # Replace phone-number-like patterns with [PHONE]\n    return text\n",
+  "hint": "Pattern: r'\\(?\\d{3}\\)?[-. ]?\\d{3}[-. ]?\\d{4}\\b'",
+  "test_cases": [
+    {
+      "label": "Dashed format",
+      "setup": "",
+      "call": "redact_phones('Call 555-123-4567 now')",
+      "expected": "Call [PHONE] now"
+    },
+    {
+      "label": "Plain digits",
+      "setup": "",
+      "call": "redact_phones('Number: 5551234567')",
+      "expected": "Number: [PHONE]"
+    },
+    {
+      "label": "No phone",
+      "setup": "",
+      "call": "redact_phones('no number here')",
+      "expected": "no number here"
+    }
+  ]
+}

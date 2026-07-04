@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_07_chunking_strategy",
+  "title": "Choose the right chunk size for RAG",
+  "topic": "RAG",
+  "difficulty": "medium",
+  "free": false,
+  "problem": "You are building a RAG system over a 300-page technical manual. A colleague suggests chunking every page into a single chunk. Another suggests splitting every sentence into its own chunk. Both are wrong. Explain the failure mode of each approach, then describe the chunking strategy you would actually use and why.",
+  "context": "Document type: dense technical manual, ~500 words per page\nEmbedding model: text-embedding-3-small (8191 token limit)\nExpected queries: 'How do I configure the retry policy?' / 'What are the error codes for module 4?'",
+  "hints": [
+    "A full page chunk: what happens to retrieval precision when a page covers three unrelated topics?",
+    "A single sentence chunk: what context does the embedding lose when a sentence refers to something defined two sentences earlier?",
+    "Overlap between chunks solves one of these problems."
+  ],
+  "solution": "Full-page chunks hurt precision — a page covering three topics gets retrieved for any of them, flooding the prompt with irrelevant content. Single-sentence chunks break semantic coherence — the embedding for 'it retries three times' has no idea what 'it' refers to. The correct approach: chunk into ~300-400 token passages with a ~50 token overlap between adjacent chunks. The overlap ensures that a sentence referencing prior context carries that context with it. Use a recursive character splitter that respects paragraph and sentence boundaries rather than cutting at fixed character counts."
+}

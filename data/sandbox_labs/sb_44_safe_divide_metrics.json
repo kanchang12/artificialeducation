@@ -1,0 +1,30 @@
+{
+  "id": "sb_44_safe_divide_metrics",
+  "title": "Safe Division for Metric Ratios",
+  "topic": "Observability",
+  "difficulty": "easy",
+  "description": "Compute success rate metrics without crashing on division by zero when no requests have been made yet.",
+  "problem": "Write success_rate(successes, total) returning successes/total as a float rounded to 4 decimals, or 0.0 if total is 0.",
+  "starter_code": "def success_rate(successes, total):\n    # Return successes/total, or 0.0 if total==0\n    return successes / total\n",
+  "hint": "if total == 0: return 0.0, else return round(successes/total, 4)",
+  "test_cases": [
+    {
+      "label": "Normal case",
+      "setup": "",
+      "call": "success_rate(3, 4)",
+      "expected": 0.75
+    },
+    {
+      "label": "Zero total",
+      "setup": "",
+      "call": "success_rate(0, 0)",
+      "expected": 0.0
+    },
+    {
+      "label": "All success",
+      "setup": "",
+      "call": "success_rate(5, 5)",
+      "expected": 1.0
+    }
+  ]
+}

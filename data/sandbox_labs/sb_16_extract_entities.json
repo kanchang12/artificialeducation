@@ -1,0 +1,41 @@
+{
+  "id": "sb_16_extract_entities",
+  "title": "Extract Named Entities from Model Output",
+  "topic": "Structured Output",
+  "difficulty": "medium",
+  "description": "Parse entity lists from model text reliably.",
+  "problem": "The model returns: 'Companies mentioned: Apple, Google, Microsoft.' Write extract_companies(text) that returns a list of company names from that format. Handle variations like 'Companies: X, Y' or 'Organizations: A, B, C.'",
+  "starter_code": "import re\n\ndef extract_companies(text):\n    # Extract company names after 'Companies:' or 'Organizations:'\n    # Return as a list of stripped strings\n    return []  # fix this\n",
+  "hint": "Use re.search to find the pattern, then split by comma and strip each result. Remove trailing periods.",
+  "test_cases": [
+    {
+      "label": "Standard format",
+      "setup": "",
+      "call": "extract_companies('Companies mentioned: Apple, Google, Microsoft.')",
+      "expected": [
+        "Apple",
+        "Google",
+        "Microsoft"
+      ]
+    },
+    {
+      "label": "Organizations label",
+      "setup": "",
+      "call": "extract_companies('Organizations: OpenAI, Anthropic, DeepMind.')",
+      "expected": [
+        "OpenAI",
+        "Anthropic",
+        "DeepMind"
+      ]
+    },
+    {
+      "label": "Two companies",
+      "setup": "",
+      "call": "extract_companies('Companies: Meta, Amazon.')",
+      "expected": [
+        "Meta",
+        "Amazon"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "sb_23_mask_credit_card",
+  "title": "Mask Credit Card Numbers",
+  "topic": "Security",
+  "difficulty": "medium",
+  "description": "Replace 16-digit credit card numbers in text with a masked version showing only the last 4 digits.",
+  "problem": "Write mask_cards(text) that finds any 16-digit number (with or without spaces/dashes every 4 digits) and replaces it with '**** **** **** 1234' format, keeping the real last 4 digits.",
+  "starter_code": "import re\n\ndef mask_cards(text):\n    # Find 16-digit card numbers (groups of 4, separated by space/dash/none)\n    # Replace with **** **** **** <last4>\n    return text\n",
+  "hint": "Pattern: r'\\b(\\d{4})[ -]?(\\d{4})[ -]?(\\d{4})[ -]?(\\d{4})\\b'. In re.sub, build replacement using the last group.",
+  "test_cases": [
+    {
+      "label": "No separators",
+      "setup": "",
+      "call": "mask_cards('Card: 1234567812345678')",
+      "expected": "Card: **** **** **** 5678"
+    },
+    {
+      "label": "Space separated",
+      "setup": "",
+      "call": "mask_cards('1234 5678 1234 5678')",
+      "expected": "**** **** **** 5678"
+    },
+    {
+      "label": "No card present",
+      "setup": "",
+      "call": "mask_cards('no card here')",
+      "expected": "no card here"
+    }
+  ]
+}

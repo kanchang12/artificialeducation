@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_16_evaluation_design",
+  "title": "Design an eval suite for a RAG system",
+  "topic": "Evaluation",
+  "difficulty": "hard",
+  "free": false,
+  "problem": "You built a RAG system for internal HR policy questions. Before shipping to 200 employees, you need to evaluate it. Design a practical evaluation suite: what metrics would you measure, how would you create the test set, and what threshold would you require before shipping?",
+  "context": "System: RAG over 80 HR policy documents\nUsers: 200 employees asking questions like 'How many days of parental leave do I get?' and 'What is the expenses policy for client dinners?'\nRisk: wrong answer about leave entitlement could cause legal issues",
+  "hints": [
+    "You need to measure both retrieval quality and generation quality separately.",
+    "Who creates the ground truth? HR team, not the model.",
+    "What is the cost of a false answer vs. no answer in an HR context?"
+  ],
+  "solution": "Metrics: (1) Retrieval recall@k — for each test question, does the correct document appear in the top-k retrieved chunks? Target: 95% recall@5. (2) Answer faithfulness — does the generated answer contain only claims supported by the retrieved context? Use an LLM judge to score each response 1-5. Target: mean > 4.0. (3) Answer correctness — does the answer match the HR-verified ground truth? Target: 90% exact or equivalent. (4) Refusal rate on unanswerable questions — when the policy does not cover something, does the system say so rather than hallucinating? Test set creation: HR team writes 100 question-answer pairs from the actual documents, including 20 questions the documents do not answer. Ship threshold: retrieval recall@5 > 95%, faithfulness > 4.0, correctness > 90%, and 100% refusal on unanswerable. Given legal risk, choose to fail safe (refuse) over hallucinate."
+}

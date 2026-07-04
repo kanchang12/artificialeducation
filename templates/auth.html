@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}{{ "Login" if mode == "login" else "Create Account" }} — Artificial Education{% endblock %}
+{% block canonical_path %}/{{ mode }}{% endblock %}
+
+{% block content %}
+<div style="min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:2rem 1rem;background:linear-gradient(160deg,var(--bp-100) 0%,var(--bp-50) 100%);">
+  <div style="width:100%;max-width:420px;">
+    <div class="text-center mb-3">
+      <a href="/" style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;color:var(--bp-900);text-decoration:none;"><span style="color:var(--accent);">AI</span>withAI</a>
+      <h1 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;color:var(--bp-900);margin-top:1.5rem;">
+        {{ "Welcome back" if mode == "login" else "Start learning AI" }}
+      </h1>
+      <p style="color:var(--text-muted);font-size:0.875rem;margin-top:0.4rem;">
+        {{ "Log in to access your labs" if mode == "login" else "25 real-world labs, free forever" }}
+      </p>
+    </div>
+
+    <div class="card" style="backdrop-filter:blur(12px);">
+      {% if mode == "register" %}
+      <div class="form-group">
+        <label for="name">Full name</label>
+        <input type="text" id="name" placeholder="Your name" autocomplete="name"/>
+      </div>
+      {% endif %}
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="{{ '8+ characters' if mode == 'register' else 'Your password' }}" autocomplete="{{ 'new-password' if mode == 'register' else 'current-password' }}"/>
+      </div>
+      <div class="err-msg" id="err-msg"></div>
+      <button class="btn btn-primary" id="submit-btn" style="width:100%;margin-top:0.5rem;padding:12px;">
+        {{ "Log in" if mode == "login" else "Create account" }}
+      </button>
+    </div>
+
+    <p class="text-center mt-2" style="font-size:0.875rem;color:var(--text-muted);">
+      {% if mode == "login" %}
+        No account? <a href="/register" style="color:var(--bp-700);font-weight:600;">Sign up free</a>
+      {% else %}
+        Already have an account? <a href="/login" style="color:var(--bp-700);font-weight:600;">Log in</a>
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+<script>
+const MODE = "{{ mode }}";
+const btn = document.getElementById("submit-btn");
+const err = document.getElementById("err-msg");
+
+btn.addEventListener("click", async () => {
+  err.style.display = "none";
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const nameEl = document.getElementById("name");
+  const name = nameEl ? nameEl.value.trim() : "";
+
+  if (!email || !password || (MODE === "register" && !name)) {
+    err.textContent = MODE === "register" ? "Name, email and password required" : "Email and password required";
+    err.style.display = "block";
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>';
+
+  const endpoint = MODE === "register" ? "/api/register" : "/api/login";
+  const body = MODE === "register" ? {name, email, password} : {email, password};
+
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (data.ok) {
+      window.location.href = "/builds";
+    } else {
+      err.textContent = data.error || "Something went wrong";
+      err.style.display = "block";
+      btn.disabled = false;
+      btn.textContent = MODE === "register" ? "Create account" : "Log in";
+    }
+  } catch (e) {
+    err.textContent = "Network error — please try again";
+    err.style.display = "block";
+    btn.disabled = false;
+    btn.textContent = MODE === "register" ? "Create account" : "Log in";
+  }
+});
+
+// Submit on Enter
+document.addEventListener("keydown", e => { if (e.key === "Enter") btn.click(); });
+</script>
+{% endblock %}

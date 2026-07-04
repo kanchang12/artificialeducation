@@ -1,0 +1,38 @@
+{
+  "id": "sb_45_csv_to_records",
+  "title": "Parse CSV String Into Records",
+  "topic": "Data Processing",
+  "difficulty": "easy",
+  "description": "Parse a small CSV string (as might be returned by a model) into a list of dicts.",
+  "problem": "Write csv_to_records(csv_text) that takes CSV text with a header row and returns a list of dicts mapping header->value (all strings), using comma as delimiter with no quoting.",
+  "starter_code": "def csv_to_records(csv_text):\n    # First line = headers, remaining lines = rows\n    return []\n",
+  "hint": "lines = csv_text.strip().split('\\n'); headers = lines[0].split(','); for each remaining line, zip(headers, line.split(',')) into a dict.",
+  "test_cases": [
+    {
+      "label": "Two records",
+      "setup": "csv='name,age\\nBob,30\\nAmy,25'",
+      "call": "csv_to_records(csv)",
+      "expected": [
+        {
+          "name": "Bob",
+          "age": "30"
+        },
+        {
+          "name": "Amy",
+          "age": "25"
+        }
+      ]
+    },
+    {
+      "label": "Single record",
+      "setup": "csv='a,b\\n1,2'",
+      "call": "csv_to_records(csv)",
+      "expected": [
+        {
+          "a": "1",
+          "b": "2"
+        }
+      ]
+    }
+  ]
+}

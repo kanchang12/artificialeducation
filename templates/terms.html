@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Terms of Service — Artificial Education{% endblock %}
+{% block canonical_path %}/terms{% endblock %}
+{% block meta_description %}Artificial Education Terms of Service — rules for using our labs, sandboxes, subscriptions and credits.{% endblock %}
+
+{% block content %}
+<div class="container section" style="max-width:760px;">
+  <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;color:var(--bp-900);margin-bottom:0.5rem;">Terms of Service</h1>
+  <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:2rem;">Last updated: June 2026</p>
+
+  <div style="font-size:0.95rem;line-height:1.8;color:var(--text-primary);">
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">1. Acceptance</h2>
+    <p>By creating an account or using Artificial Education, you agree to these terms. If you do not agree, do not use the service.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">2. Accounts</h2>
+    <p>You must provide accurate information when registering. You are responsible for keeping your login credentials secure. Account authentication is managed by Supabase.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">3. Plans and credits</h2>
+    <p>25 concept labs (excluding "legend" difficulty) and 2 sandbox challenges are free for registered users. "Legend" labs and the remaining sandbox challenges require either a Premium subscription (billed monthly via Stripe) or pay-as-you-go credits purchased in INR. Sandbox credits are consumed based on time spent with a sandbox open, at the rate shown on the upgrade page. Credits are non-refundable once consumed but unused credit balances remain on your account indefinitely unless your account is deleted.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">4. Subscription cancellation</h2>
+    <p>You may cancel your Premium subscription at any time from the Account page. Cancellation takes effect at the end of the current billing period; you retain Premium access until then. No partial refunds are issued for the remaining period.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">5. Acceptable use</h2>
+    <p>The sandbox runs your submitted Python code in a restricted environment for educational purposes only. You agree not to attempt to abuse, overload, or use the sandbox for any purpose other than completing the provided challenges.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">6. AI Tutor</h2>
+    <p>The AI Tutor is powered by Google Gemini and provides guidance, not guaranteed-correct answers. Always verify critical information independently.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">7. Account deletion</h2>
+    <p>You may permanently delete your account and all associated data at any time from the Account page. This action is irreversible and forfeits any remaining credit balance.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">8. Changes</h2>
+    <p>We may update these terms from time to time. Continued use after changes constitutes acceptance.</p>
+
+    <h2 style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.2rem;color:var(--bp-800);margin:1.5rem 0 0.5rem;">9. Contact</h2>
+    <p>hello@aiwithai.online</p>
+  </div>
+</div>
+{% endblock %}

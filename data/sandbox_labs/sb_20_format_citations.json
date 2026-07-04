@@ -1,0 +1,30 @@
+{
+  "id": "sb_20_format_citations",
+  "title": "Format Model Citations",
+  "topic": "Structured Output",
+  "difficulty": "easy",
+  "description": "Parse and format source citations from model output.",
+  "problem": "The model returns answers with inline citations like [1], [2]. Write format_citations(answer, sources) where sources is a list of strings, that appends a numbered references section at the end. Only include sources that are actually cited.",
+  "starter_code": "import re\n\ndef format_citations(answer, sources):\n    # Find all [n] citations in answer\n    # Build a References section with only cited sources\n    # Return answer + '\\n\\nReferences:\\n' + numbered list\n    return answer  # fix this\n",
+  "hint": "Use re.findall(r'\\[(\\d+)\\]', answer) to get cited numbers. Convert to ints, deduplicate, sort. Build the references block.",
+  "test_cases": [
+    {
+      "label": "Single citation",
+      "setup": "",
+      "call": "format_citations('See [1] for details.',['Source A','Source B'])",
+      "expected": "See [1] for details.\n\nReferences:\n[1] Source A"
+    },
+    {
+      "label": "Multiple citations",
+      "setup": "",
+      "call": "format_citations('See [1] and [2].',['A','B','C'])",
+      "expected": "See [1] and [2].\n\nReferences:\n[1] A\n[2] B"
+    },
+    {
+      "label": "No citations",
+      "setup": "",
+      "call": "format_citations('No refs here.',['A','B'])",
+      "expected": "No refs here."
+    }
+  ]
+}

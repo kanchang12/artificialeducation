@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_21_model_selection",
+  "title": "Choose the right model for the job",
+  "topic": "System Design",
+  "difficulty": "medium",
+  "free": false,
+  "problem": "You have three tasks in your product: (A) classify a support ticket into one of 8 categories, (B) generate a 500-word personalised product description from a JSON spec, (C) answer complex multi-step questions over a 200-page technical document. For each task, explain which model capability matters most and whether you would use a large frontier model or a smaller/faster one.",
+  "context": "Available options: gemini-2.5-flash (fast, cheap), gemini-2.5-pro (slow, expensive, stronger reasoning)\nCost difference: pro is roughly 10x more expensive per token than flash",
+  "hints": [
+    "Classification is a narrow, well-defined task. Does it need strong reasoning?",
+    "Long-form generation needs coherence over hundreds of tokens.",
+    "Multi-step reasoning over a long document is where stronger models earn their cost."
+  ],
+  "solution": "Task A (classification): use gemini-2.5-flash. Classification into 8 fixed categories requires pattern matching, not deep reasoning. A fast, cheap model with a good system prompt and few-shot examples matches frontier model accuracy for this task at 1/10th the cost. Task B (personalised descriptions): use gemini-2.5-flash with careful prompting. 500-word coherent text generation is well within flash's capability; the bottleneck is prompt quality, not model size. Only upgrade to pro if A/B tests show measurable quality difference. Task C (multi-step document QA): use gemini-2.5-pro. Multi-step reasoning over a long document — tracking references, synthesising across sections, handling ambiguity — is exactly where larger models with stronger reasoning outperform flash in ways users notice. The cost is justified by task complexity and likely higher user value per query."
+}

@@ -1,0 +1,30 @@
+{
+  "id": "sb_49_currency_formatter",
+  "title": "Format Cost as Currency String",
+  "topic": "Cost Management",
+  "difficulty": "easy",
+  "description": "Format a raw float cost value as a human-readable currency string for a billing dashboard.",
+  "problem": "Write format_currency(amount, symbol) returning a string like '$1,234.56' - the symbol followed by the amount with thousands separators and exactly 2 decimal places.",
+  "starter_code": "def format_currency(amount, symbol):\n    # Return symbol + amount formatted with commas and 2 decimals\n    return str(amount)\n",
+  "hint": "return f'{symbol}{amount:,.2f}'",
+  "test_cases": [
+    {
+      "label": "Thousands separator",
+      "setup": "",
+      "call": "format_currency(1234.5, '$')",
+      "expected": "$1,234.50"
+    },
+    {
+      "label": "Small amount",
+      "setup": "",
+      "call": "format_currency(0.5, '\u20b9')",
+      "expected": "\u20b90.50"
+    },
+    {
+      "label": "Large amount",
+      "setup": "",
+      "call": "format_currency(1000000, '$')",
+      "expected": "$1,000,000.00"
+    }
+  ]
+}

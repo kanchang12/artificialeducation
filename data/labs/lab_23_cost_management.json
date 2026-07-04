@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_23_cost_management",
+  "title": "Your AI API bill tripled overnight",
+  "topic": "System Design",
+  "difficulty": "medium",
+  "free": false,
+  "problem": "Your monthly Gemini API bill went from £800 to £2,400 overnight. Usage logs show request volume is unchanged. Describe a systematic approach to diagnosing the cause, list four common root causes for sudden cost spikes, and describe one architectural pattern that would have prevented or contained this.",
+  "context": "Request volume: unchanged at ~50,000 requests/day\nAverage latency: increased from 1.2s to 3.8s\nBill increase: 3x, from token usage logs",
+  "hints": [
+    "Cost = tokens in + tokens out. Volume is constant — so which changed?",
+    "The latency increase is a clue. What causes both longer responses and higher token count?",
+    "Caching is the containment pattern."
+  ],
+  "solution": "Diagnosis approach: pull token usage logs broken down by input tokens and output tokens per request. Compare yesterday vs. the day before the spike. Root causes: (1) Prompt change that added large context — someone deployed a code change that accidentally included a large document or full conversation history in every prompt, increasing input tokens 3x. (2) Output length regression — a prompt change removed an instruction like 'reply in under 100 words', causing the model to generate much longer responses. (3) New endpoint without token limits — a new feature was deployed without max_tokens set, allowing runaway generation. (4) Retry storm — a bug caused failed requests to retry in a tight loop, multiplying token usage. The latency increase (1.2s → 3.8s) strongly suggests longer responses (root cause 2 or 3). Containment pattern: semantic caching — store and reuse responses for semantically similar queries. A cache hit costs zero tokens. At 50,000 requests/day with typical query repetition, a 30-40% cache hit rate reduces cost by the same proportion and is immune to token-count regressions."
+}

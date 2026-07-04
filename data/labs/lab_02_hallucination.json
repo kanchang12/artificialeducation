@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_02_hallucination",
+  "title": "Catch the model lying about numbers",
+  "topic": "Validation",
+  "difficulty": "medium",
+  "free": false,
+  "problem": "An AI assistant calculates profit margins from a CSV and says 'Beta Ltd has the highest margin at 62%'. The real number is 50%. Explain why this happens, and describe the validation step you would add to catch it before the answer reaches the user.",
+  "context": "CSV data:\nbusiness,revenue,cost\nAlpha Corp,500000,480000\nBeta Ltd,300000,150000\nGamma Inc,800000,820000",
+  "hints": [
+    "LLMs predict plausible text, not calculated results.",
+    "The ground truth is in the CSV. Always compute the real value yourself.",
+    "A validation function compares the model's answer against the result you computed from raw data."
+  ],
+  "solution": "Models hallucinate numbers because they generate plausible text, not verified calculations. The fix: compute the real answer yourself from the source data, then check whether the model's answer matches. If it doesn't, retry or override with the real value. Never trust a number the model gives you without checking it against the source."
+}

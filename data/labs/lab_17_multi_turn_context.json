@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_17_multi_turn_context",
+  "title": "The chatbot forgets what was said two messages ago",
+  "topic": "Prompting",
+  "difficulty": "easy",
+  "free": false,
+  "problem": "Your chatbot works well for single-turn questions. In multi-turn conversations, by message 5 it has forgotten context from message 1 and gives contradictory answers. You are passing only the latest user message to the model on each call. Explain why this causes the problem, describe the standard fix, and explain one scaling problem the fix introduces.",
+  "context": "Turn 1 — User: 'I want to cancel my subscription'\nTurn 2 — Bot: 'I can help. Can you confirm your email?'\nTurn 3 — User: 'kanchan@example.com'\nTurn 4 — Bot: 'Thanks. Do you want to cancel immediately or at period end?'\nTurn 5 — User: 'immediately'\nTurn 6 — Bot: 'What email would you like to cancel?' ← forgot turn 3",
+  "hints": [
+    "The model has no memory between API calls. What is the only memory it has?",
+    "The fix is to include something in every API call.",
+    "What happens to cost and latency as the conversation grows to 50 turns?"
+  ],
+  "solution": "Each API call is stateless — the model has no memory except what is in the current prompt. Passing only the latest message means the model never sees earlier turns. Fix: maintain a conversation history array and pass all previous messages on every call — [{role:'user', content:'...'}, {role:'assistant', content:'...'}, ...]. This gives the model full context. Scaling problem: as conversation length grows, the history grows too, consuming more tokens on every call. A 50-turn conversation might cost 10x a single-turn call. Mitigation: summarise older turns (e.g. keep the last 10 turns verbatim, summarise everything before that) or use a sliding window approach that keeps the last N turns."
+}

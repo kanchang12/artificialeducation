@@ -1,0 +1,37 @@
+{
+  "id": "ae_coding_01_word_frequency",
+  "title": "Count the Words That Matter",
+  "topic": "Coding",
+  "subject": "Coding",
+  "difficulty": "easy",
+  "description": "Learn how a program reads text and counts things, the foundation of all data work.",
+  "problem": "Write word_count(text) that returns a dictionary mapping each word to how many times it appears. Lowercase everything and split on spaces.",
+  "starter_code": "def word_count(text):\n    # lowercase the text\n    # split into words\n    # count each word\n    pass\n",
+  "hint": "Use text.lower().split(), then loop and build a dict with counts.",
+  "test_cases": [
+    {
+      "label": "Simple",
+      "setup": "",
+      "call": "word_count('the cat the dog')",
+      "expected": {
+        "the": 2,
+        "cat": 1,
+        "dog": 1
+      }
+    },
+    {
+      "label": "Case insensitive",
+      "setup": "",
+      "call": "word_count('Sun sun SUN')",
+      "expected": {
+        "sun": 3
+      }
+    },
+    {
+      "label": "Empty",
+      "setup": "",
+      "call": "word_count('')",
+      "expected": {}
+    }
+  ]
+}

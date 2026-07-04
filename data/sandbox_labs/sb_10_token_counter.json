@@ -1,0 +1,36 @@
+{
+  "id": "sb_10_token_counter",
+  "title": "Estimate Token Count Before Sending",
+  "topic": "System Design",
+  "difficulty": "easy",
+  "description": "Rough token estimation prevents expensive context-window errors.",
+  "problem": "Write estimate_tokens(text) that estimates the number of tokens in a string. Use the rule of thumb: 1 token \u2248 4 characters for English text. Return an integer.",
+  "starter_code": "def estimate_tokens(text):\n    # Estimate tokens: ~4 chars per token\n    return 0  # fix this\n",
+  "hint": "Return int(len(text) / 4) or math.ceil(len(text) / 4).",
+  "test_cases": [
+    {
+      "label": "Empty string",
+      "setup": "",
+      "call": "estimate_tokens('')",
+      "expected": 0
+    },
+    {
+      "label": "Short text",
+      "setup": "",
+      "call": "estimate_tokens('Hello world')",
+      "expected": 2
+    },
+    {
+      "label": "Exactly 100 chars",
+      "setup": "",
+      "call": "estimate_tokens('a'*100)",
+      "expected": 25
+    },
+    {
+      "label": "400 char string",
+      "setup": "",
+      "call": "estimate_tokens('x'*400)",
+      "expected": 100
+    }
+  ]
+}

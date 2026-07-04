@@ -1,0 +1,61 @@
+{
+  "id": "sb_12_sliding_window",
+  "title": "Sliding Window Conversation History",
+  "topic": "Prompting",
+  "difficulty": "medium",
+  "description": "Keep only the last N turns to control token cost.",
+  "problem": "Write trim_history(messages, max_turns) that keeps only the last max_turns pairs of user/assistant messages. A 'pair' is one user message + one assistant message. Always keep the system message if it is first.",
+  "starter_code": "def trim_history(messages, max_turns):\n    # Keep system message if present at index 0\n    # Keep only the last max_turns user+assistant pairs\n    return messages  # fix this\n",
+  "hint": "Separate the system message, then take the last max_turns*2 messages from the rest.",
+  "test_cases": [
+    {
+      "label": "No trim needed",
+      "setup": "msgs=[{'role':'user','content':'hi'},{'role':'assistant','content':'hello'}]",
+      "call": "trim_history(msgs,2)",
+      "expected": [
+        {
+          "role": "user",
+          "content": "hi"
+        },
+        {
+          "role": "assistant",
+          "content": "hello"
+        }
+      ]
+    },
+    {
+      "label": "Trims to 1 pair",
+      "setup": "msgs=[{'role':'user','content':'1'},{'role':'assistant','content':'a'},{'role':'user','content':'2'},{'role':'assistant','content':'b'}]",
+      "call": "trim_history(msgs,1)",
+      "expected": [
+        {
+          "role": "user",
+          "content": "2"
+        },
+        {
+          "role": "assistant",
+          "content": "b"
+        }
+      ]
+    },
+    {
+      "label": "Keeps system message",
+      "setup": "msgs=[{'role':'system','content':'sys'},{'role':'user','content':'u1'},{'role':'assistant','content':'a1'},{'role':'user','content':'u2'},{'role':'assistant','content':'a2'}]",
+      "call": "trim_history(msgs,1)",
+      "expected": [
+        {
+          "role": "system",
+          "content": "sys"
+        },
+        {
+          "role": "user",
+          "content": "u2"
+        },
+        {
+          "role": "assistant",
+          "content": "a2"
+        }
+      ]
+    }
+  ]
+}

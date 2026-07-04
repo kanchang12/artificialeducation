@@ -1,0 +1,40 @@
+{
+  "id": "sb_31_function_call_parser",
+  "title": "Parse Function-Call JSON From Model Output",
+  "topic": "Agents",
+  "difficulty": "medium",
+  "description": "Extract a structured function call (name + arguments) from a model's raw text output.",
+  "problem": "Write parse_function_call(text) that finds the first JSON object in text with keys 'name' and 'arguments', and returns it as a dict. If none found, return None.",
+  "starter_code": "import json, re\n\ndef parse_function_call(text):\n    # Find a JSON object containing 'name' and 'arguments' keys\n    return None\n",
+  "hint": "Find the first '{' and matching '}' (or just the last '}'), try json.loads on that substring, check 'name' and 'arguments' are both present before returning.",
+  "test_cases": [
+    {
+      "label": "Clean call",
+      "setup": "",
+      "call": "parse_function_call('{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Leeds\"}}')",
+      "expected": {
+        "name": "get_weather",
+        "arguments": {
+          "city": "Leeds"
+        }
+      }
+    },
+    {
+      "label": "With surrounding text",
+      "setup": "",
+      "call": "parse_function_call('Sure, calling: {\"name\": \"search\", \"arguments\": {\"q\": \"AI\"}} done')",
+      "expected": {
+        "name": "search",
+        "arguments": {
+          "q": "AI"
+        }
+      }
+    },
+    {
+      "label": "No function call",
+      "setup": "",
+      "call": "parse_function_call('just plain text')",
+      "expected": null
+    }
+  ]
+}

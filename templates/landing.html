@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artificial Education — Simulated Learning and Assessment for the AI Era</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <meta name="description" content="Artificial Education: a simulation-based framework where students learn by doing and are assessed on their own reasoning, running on any smartphone with no computer required. Covers Coding, English, Maths and Environmental Studies.">
+  <meta name="keywords" content="Artificial Education, simulation-based learning, AI-resistant assessment, low-resource learning, mobile education, coding english maths environmental studies">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://aiwithai.online/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Artificial Education — Simulated Learning and Assessment for the AI Era">
+  <meta property="og:description" content="Learn by doing inside a simulation. Get assessed on your own reasoning, not an artefact an AI could produce. Any smartphone. Four subjects.">
+  <meta property="og:url" content="https://aiwithai.online/">
+  <meta property="og:site_name" content="Artificial Education">
+  <meta property="og:image" content="https://aiwithai.online/hero-thumbnail.png">
+
+  <style>
+  :root {
+    --bg: #0B0F17;
+    --bg-card: #131A26;
+    --bg-terminal: #070A0F;
+    --ink: #F3F4F6;
+    --ink-soft: #9CA3AF;
+    --emerald: #10B981;
+    --emerald-glow: rgba(16, 185, 129, 0.15);
+    --line: #242F41;
+    --radius: 12px;
+    --font-display: 'Sora', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'Fira Code', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* UTILITIES & BACKDROP GRID */
+  .grid-bg {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(36, 47, 65, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(36, 47, 65, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px; max-width: 1200px; margin: 0 auto;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .logo { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.03em; }
+  .logo span { color: var(--emerald); }
+  
+  .nav-secondary {
+    font-size: 0.85rem; color: var(--ink-soft); font-family: var(--font-mono);
+    border: 1px solid var(--line); padding: 8px 18px; border-radius: 6px;
+    background: rgba(19, 26, 38, 0.5); transition: all 0.2s ease;
+  }
+  .nav-secondary:hover { border-color: var(--emerald); color: var(--emerald); background: var(--bg-card); }
+
+  /* COMPREHENSIVE PLATFORM BANNER */
+  .manifesto-banner { max-width: 1200px; margin: 32px auto 0; padding: 0 24px; }
+  .manifesto-box {
+    background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.2);
+    padding: 18px 24px; border-radius: var(--radius);
+    font-size: 0.9rem; color: #A7F3D0; line-height: 1.6;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .manifesto-box strong { color: var(--emerald); font-family: var(--font-mono); font-weight: 500; }
+
+  /* HERO AREA */
+  .hero {
+    max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px;
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: 64px; align-items: center;
+  }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--emerald);
+    background: var(--emerald-glow); padding: 6px 14px; border-radius: 999px;
+    margin-bottom: 24px; font-weight: 500; border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  h1 {
+    font-family: var(--font-display); font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+    line-height: 1.1; font-weight: 800; margin-bottom: 24px; letter-spacing: -0.03em;
+  }
+  h1 .accent { color: var(--emerald); text-shadow: 0 0 30px rgba(16, 185, 129, 0.2); }
+
+  .sub { font-size: 1.1rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: 36px; }
+
+  .cta-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .cta-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--emerald); color: #000; font-weight: 700; font-size: 1rem;
+    padding: 16px 32px; border-radius: 8px; transition: all 0.2s ease;
+    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+  }
+  .cta-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(16, 185, 129, 0.4); background: #12d394; }
+  .cta-note { font-size: 0.85rem; color: var(--ink-soft); font-family: var(--font-mono); }
+
+  /* SIMULATED INTERFACE WORKSPACE (HERO VISUAL) */
+  .workspace-window {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: var(--radius); overflow: hidden;
+    box-shadow: 0 24px 48px -12px rgba(0,0,0,0.5);
+  }
+  .window-header {
+    background: rgba(7, 10, 15, 0.8); padding: 12px 18px;
+    border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between;
+  }
+  .window-dots { display: flex; gap: 6px; }
+  .window-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+  .window-dot.active { background: #EF4444; }
+  .window-title { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); }
+
+  .window-body { padding: 20px; background: var(--bg-terminal); display: grid; grid-template-columns: 140px 1fr; gap: 20px; height: 380px; }
+  
+  /* Mobile Phone Layout Representation inside IDE Window */
+  .phone-frame {
+    border: 2px solid var(--line); border-radius: 20px; padding: 12px 8px;
+    background: var(--bg); display: flex; flex-direction: column; gap: 10px; overflow: hidden;
+  }
+  .phone-screen {
+    background: var(--bg-terminal); flex: 1; border-radius: 12px;
+    padding: 8px; font-family: var(--font-mono); font-size: 0.65rem; color: #34D399;
+    overflow: hidden; line-height: 1.4;
+  }
+  .phone-pill { width: 30px; height: 4px; background: var(--line); border-radius: 999px; margin: 0 auto 4px; }
+
+  /* Code execution representation block */
+  .ide-terminal {
+    font-family: var(--font-mono); font-size: 0.8rem; color: #E5E7EB;
+    line-height: 1.5; overflow-y: auto; white-space: pre-wrap; padding-right: 10px;
+  }
+  .code-keyword { color: #F472B6; }
+  .code-string { color: #34D399; }
+  .code-comment { color: #6B7280; }
+  .code-var { color: #60A5FA; }
+
+  /* HARDWARE DECENTRALIZATION ARRAYS (FEATURES) */
+  .features-heading { max-width: 1200px; margin: 40px auto 0; padding: 0 24px; font-family: var(--font-display); font-size: 1.5rem; letter-spacing: -0.02em; }
+  
+  .features {
+    max-width: 1200px; margin: 20px auto 0; padding: 0 24px 80px;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .feature-card {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; gap: 16px;
+    transition: border-color 0.2s ease;
+  }
+  .feature-card:hover { border-color: rgba(16, 185, 129, 0.3); }
+  .feature-meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--emerald); text-transform: uppercase; letter-spacing: 0.05em; }
+  .feature-card h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; }
+  .feature-card p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; }
+  
+  .feature-code-block {
+    background: var(--bg-terminal); border: 1px solid var(--line);
+    padding: 14px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.75rem; color: #9CA3AF;
+    margin-top: auto;
+  }
+
+  /* SYSTEM RULES STRATIFICATION (FAQ) */
+  .faq-section { border-top: 1px solid var(--line); background: rgba(19, 26, 38, 0.2); padding: 80px 0; }
+  .faq { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+  .faq h2 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 40px; text-align: center; letter-spacing: -0.02em; }
+  .faq-item { border: 1px solid var(--line); background: var(--bg-card); border-radius: 8px; padding: 24px; margin-bottom: 16px; }
+  .faq-item h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 12px; font-family: var(--font-body); color: var(--ink); }
+  .faq-item p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; }
+
+  /* FINAL CONTEXT ASSIGNMENT GATE */
+  .bottom-cta { max-width: 800px; margin: 0 auto; padding: 96px 24px 120px; text-align: center; }
+  .bottom-cta h2 { font-family: var(--font-display); font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; margin-bottom: 16px; letter-spacing: -0.03em; }
+  .bottom-cta p { color: var(--ink-soft); font-size: 1.1rem; margin-bottom: 40px; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 48px; padding-top: 24px; }
+    .features { grid-template-columns: 1fr; }
+    .window-body { grid-template-columns: 1fr; height: auto; }
+    .phone-frame { display: none; }
+  }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="logo">Artificial <span>Education</span></div>
+  <a class="nav-secondary" href="/login">cat session.log</a>
+</nav>
+
+<section class="manifesto-banner">
+  <div class="manifesto-box">
+    <span>💡</span>
+    <div>
+      <strong>What is Artificial Education?</strong> A framework that rebuilds learning and assessment inside a simulation. Students learn by doing — using any resource, including AI — and are assessed on their own reasoning, not on an artefact an AI could produce. It runs on any smartphone, so a computer is never required. Based on the peer-reviewed research at <a href="https://zenodo.org/records/21060844" style="color:var(--emerald); text-decoration:underline;">zenodo.org/records/21060844</a>.
+    </div>
+  </div>
+</section>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">
+      <span style="width:6px; height:6px; background:var(--emerald); border-radius:50%; display:inline-block; animation: pulse 2s infinite;"></span>
+      CORE ENGINE RUNNING: V2.5
+    </div>
+    <h1>Learn by doing. Get assessed on <span class="accent">your own</span> thinking.</h1>
+    <p class="sub">Artificial Education rebuilds learning and assessment inside a simulation. Use any resource, including AI, while you learn. When you are assessed, the questions come from your own work — so an AI answer cannot pass for you. Four subjects: Coding, English, Maths and Environmental Studies. Runs on the phone you already own.</p>
+
+    <div class="cta-row">
+      <a class="cta-primary" href="/signup">
+        Start Learning
+      </a>
+      <span class="cta-note">chmod +x student_builder</span>
+    </div>
+  </div>
+
+  <div class="workspace-window">
+    <div class="window-header">
+      <div class="window-dots">
+        <div class="window-dot active"></div>
+        <div class="window-dot"></div>
+        <div class="window-dot"></div>
+      </div>
+      <div class="window-title">artificial-education // simulation</div>
+    </div>
+    <div class="window-body">
+      
+      <div class="phone-frame">
+        <div class="phone-pill"></div>
+        <div class="phone-screen">
+          [LOGIC STATE]<br>
+          Isolation: TRUE<br>
+          Window: Cap[-6:]<br>
+          <br>
+          <span style="color:#FFF">> Run Verification</span><br>
+          Status: Correct<br>
+          Score: 10/10<br>
+          <span style="color:#60A5FA">RAM Locked</span>
+        </div>
+      </div>
+
+      <div class="ide-terminal">
+<span class="code-comment"># Task 08: Sliding Window Cost Bounding</span>
+<span class="code-keyword">def</span> <span class="code-var">serialize_context_stream</span>(chat_history):
+    <span class="code-comment"># Enforce fixed token ceiling parameters</span>
+    history_payload = chat_history[<span class="code-keyword">-6:</span>]
+    
+    <span class="code-keyword">return</span> client.models.generate_content(
+        model=<span class="code-string">"gemini-3.5-flash"</span>,
+        contents=history_payload
+    )</div>
+    </div>
+  </div>
+</section>
+
+<h2 class="features-heading">Engineered Mental Models</h2>
+<section class="features">
+  <div class="feature-card">
+    <div class="feature-meta">[Module 01 // Privilege]</div>
+    <h3>Isolated Logic Controls</h3>
+    <p>Every assignment maps explicit operational declarations before the interaction window gates open. Learn how kernel structures isolate credentials dynamically inside variable blocks rather than relying on hardcoded vulnerabilities.</p>
+    <div class="feature-card-cta"></div>
+    <div class="feature-code-block">
+      <span style="color:#F472B6">import</span> os<br>
+      key = os.environ.get(<span style="color:#34D399">"SECRET"</span>)
+    </div>
+  </div>
+  
+  <div class="feature-card">
+    <div class="feature-meta">[Module 02 // Boundary]</div>
+    <h3>Context Budget Limits</h3>
+    <p>Track execution boundaries mathematically. Discover how bounding contextual message array layers natively using sliding index constraints directly eliminates backend memory execution crashes and caps transaction token budgets at scale.</p>
+    <div class="feature-code-block">
+      <span style="color:#6B7280"># Array matrix bounding window</span><br>
+      payload = history[<span style="color:#F472B6">-6:</span>]
+    </div>
+  </div>
+
+  <div class="feature-card">
+    <div class="feature-meta">[Module 03 // Stability]</div>
+    <h3>Fault Isolation Networks</h3>
+    <p>Master multi-user process protection maps. Learn the exact architecture principles required to instantiate thread boundary containers, manage asynchronous backoff connection retries, and contain request runtime execution failures cleanly.</p>
+    <div class="feature-code-block">
+      <span style="color:#F472B6">try</span>:<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;dispatch_call()<br>
+      <span style="color:#F472B6">except</span> Failure <span style="color:#F472B6">as</span> e:
+    </div>
+  </div>
+</section>
+
+<section class="faq-section">
+  <div class="faq">
+    <h2>System Verification Mechanics</h2>
+    
+    <div class="faq-item">
+      <h3>Can a student genuinely become a software architect using only a mobile browser?</h3>
+      <p>Yes. Syntax structures can be cross-referenced dynamically on any physical workstation keyboard later. The core value multiplier of an elite software engineer is structural logic visualization. By tracing explicit code footprints, memory arrays, and transaction boundaries on their smartphone layout, students construct the identical analytical frameworks needed to manage complex infrastructure servers globally.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>How does this pipeline differ from conventional template tutorial sites?</h3>
+      <p>Conventional code bootcamps offer passive video blocks that encourage rote imitation of superficial syntax. This platform structures code execution evaluations directly against operational constraints. Students must isolate processes, restrict processing contexts, and evaluate system exceptions, preparing them to integrate production code immediately when they bridge to an enterprise environment.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>Are these logical blueprints compatible with alternative language kernels?</h3>
+      <p>Completely. The core logic models delivered—exponential backoff connection retry states, sliding window processing constraints, token budgeting controls, and transaction state isolation boundaries—are universal computer science architectures that remain identical across any operational language stack.</p>
+    </div>
+  </div>
+</section>
+
+<section style="max-width:1200px; margin:0 auto; padding:32px 24px;">
+  <h2 class="features-heading">Four Subjects, One Simulation</h2>
+  <section class="features">
+    <div class="feature-card">
+      <div class="feature-meta">[Subject 01 // Coding]</div>
+      <h3>Coding</h3>
+      <p>Write and run real code inside the simulation. Assessment is drawn from what you wrote, so understanding is tested, not the artefact. Deterministic checking: the code either works or it does not.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-meta">[Subject 02 // English]</div>
+      <h3>English</h3>
+      <p>Read, write and reason through language tasks. You are questioned on your own responses, making a pasted AI answer useless as a shortcut.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-meta">[Subject 03 // Maths]</div>
+      <h3>Maths</h3>
+      <p>Solve problems step by step. The simulation probes your method, not just the final number, exposing the gap between copying an answer and understanding it.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-meta">[Subject 04 // Environmental Studies]</div>
+      <h3>Environmental Studies</h3>
+      <p>Apply concepts to real situations. Assessment is personalised to your own reasoning about the material you engaged with.</p>
+    </div>
+  </section>
+</section>
+
+<section style="max-width:1200px; margin:0 auto; padding:8px 24px 32px;">
+  <h2 class="features-heading">Why it works</h2>
+  <section class="features">
+    <div class="feature-card">
+      <div class="feature-meta">[Benefit // Access]</div>
+      <h3>No computer needed</h3>
+      <p>The entire platform runs in a mobile browser on a low-end Android phone. No installation, no expensive hardware, no lab. Learning reaches students who are currently excluded by infrastructure.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-meta">[Benefit // Integrity]</div>
+      <h3>AI cannot sit the test for you</h3>
+      <p>Because questions are generated from each student's own submission, every learner gets different questions tied to their own reasoning. An AI-generated response cannot answer them without the student's own prior work.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-meta">[Benefit // Evidence]</div>
+      <h3>Grounded in research</h3>
+      <p>Artificial Education is a published framework, not a slogan. The theory, method and pilot data are documented and citable at <a href="https://zenodo.org/records/21060844" style="color:var(--emerald); text-decoration:underline;">zenodo.org/records/21060844</a>.</p>
+    </div>
+  </section>
+</section>
+
+<section class="bottom-cta">
+  <h2>Start learning the way the AI era demands.</h2>
+  <p>The simulation is live and formatted for your phone. Begin with any of the four subjects.</p>
+  <a class="cta-primary" href="/signup">
+    Start Learning
+  </a>
+</section>
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "x5uemo08j4");
+</script>
+</body>
+</html>

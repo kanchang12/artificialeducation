@@ -1,0 +1,36 @@
+{
+  "id": "sb_03_pii_scrub",
+  "title": "Scrub PII Before the API Call",
+  "topic": "AI Security",
+  "difficulty": "medium",
+  "description": "Remove personal data from text before sending to a third-party LLM.",
+  "problem": "Write scrub_pii(text) that replaces email addresses with [EMAIL] and order numbers (format #12345) with [ORDER]. Everything else stays intact.",
+  "starter_code": "import re\n\ndef scrub_pii(text):\n    # Replace emails with [EMAIL]\n    # Replace order numbers like #12345 with [ORDER]\n    return text  # fix this\n",
+  "hint": "Use re.sub(). Email: r'[\\w.-]+@[\\w.-]+\\.[a-z]{2,}'. Order: r'#\\d+'",
+  "test_cases": [
+    {
+      "label": "Scrubs email",
+      "setup": "",
+      "call": "scrub_pii('Contact jane@example.com for help')",
+      "expected": "Contact [EMAIL] for help"
+    },
+    {
+      "label": "Scrubs order number",
+      "setup": "",
+      "call": "scrub_pii('My order #44821 was charged twice')",
+      "expected": "My order [ORDER] was charged twice"
+    },
+    {
+      "label": "Scrubs both",
+      "setup": "",
+      "call": "scrub_pii('I am jane@example.com and order #99001 is wrong')",
+      "expected": "I am [EMAIL] and order [ORDER] is wrong"
+    },
+    {
+      "label": "Clean text unchanged",
+      "setup": "",
+      "call": "scrub_pii('I need help with my subscription')",
+      "expected": "I need help with my subscription"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "id": "bb_01_chatbot",
+  "title": "Build a Gemini Chatbot",
+  "tagline": "Go from API key to a working multi-turn chatbot, step by step.",
+  "description": "You'll build a real chatbot end-to-end: set up the client, write a system prompt, send messages, handle responses, add memory, and handle errors. Each step is reviewed by an AI mentor that reads your code and tells you exactly what's right, what's wrong, and why.",
+  "difficulty": "medium",
+  "category": "Chatbot",
+  "steps": [
+    {
+      "id": 1,
+      "title": "Set up your API key",
+      "instructions": "Create a variable called GEMINI_API_KEY and assign it a placeholder string value. In a real project this would come from an environment variable — never hardcode real keys.",
+      "criteria": "User defines a variable named GEMINI_API_KEY (or similar) assigned to a string. Should not need to be a real key.",
+      "starter_code": "# Step 1: API key setup\nGEMINI_API_KEY = \"your-api-key-here\"\n"
+    },
+    {
+      "id": 2,
+      "title": "Initialize the client",
+      "instructions": "Using the google-genai SDK pattern, create a client object using genai.Client(), passing your API key.",
+      "criteria": "User creates a client via genai.Client(api_key=...) or equivalent. Import statement for google.genai is encouraged but not mandatory.",
+      "starter_code": "from google import genai\n\nclient = genai.Client(api_key=GEMINI_API_KEY)\n"
+    },
+    {
+      "id": 3,
+      "title": "Write a system prompt",
+      "instructions": "Write a system instruction string that defines your chatbot's persona and behaviour (e.g. a friendly customer support assistant for a bakery).",
+      "criteria": "User writes a non-empty string variable (e.g. SYSTEM_PROMPT) describing a persona/behaviour with at least one concrete instruction.",
+      "starter_code": "SYSTEM_PROMPT = \"\"\"You are a friendly assistant for a bakery.\nAlways be polite and suggest a pastry when relevant.\"\"\"\n"
+    },
+    {
+      "id": 4,
+      "title": "Send your first message",
+      "instructions": "Call the model to generate content for a single user message, passing the system prompt as configuration.",
+      "criteria": "User calls client.models.generate_content (or chats.create + send_message) with a model name and the user message, referencing the system prompt.",
+      "starter_code": "response = client.models.generate_content(\n    model=\"gemini-2.0-flash\",\n    contents=\"Hi, do you have any vegan options?\",\n    config={\"system_instruction\": SYSTEM_PROMPT}\n)\n"
+    },
+    {
+      "id": 5,
+      "title": "Extract the response text",
+      "instructions": "Print only the text of the model's reply, not the whole response object.",
+      "criteria": "User accesses response.text (or equivalent) and prints/uses it, not the raw object.",
+      "starter_code": "print(response.text)\n"
+    },
+    {
+      "id": 6,
+      "title": "Add conversation memory",
+      "instructions": "Create a chat session that remembers previous messages, and send two messages in sequence to prove memory works.",
+      "criteria": "User creates a chat object (e.g. client.chats.create) and sends at least two messages via send_message, relying on built-in history.",
+      "starter_code": "chat = client.chats.create(model=\"gemini-2.0-flash\", config={\"system_instruction\": SYSTEM_PROMPT})\n\nr1 = chat.send_message(\"My name is Asha.\")\nr2 = chat.send_message(\"What's my name?\")\n"
+    },
+    {
+      "id": 7,
+      "title": "Handle errors gracefully",
+      "instructions": "Wrap your API call in a try/except block and print a friendly fallback message if it fails.",
+      "criteria": "User wraps the API call in try/except, catching a general or specific exception, with a fallback action in except.",
+      "starter_code": "try:\n    r = chat.send_message(\"Tell me today's special.\")\n    print(r.text)\nexcept Exception as e:\n    print(\"Sorry, something went wrong. Please try again.\")\n"
+    },
+    {
+      "id": 8,
+      "title": "Build the chat loop",
+      "instructions": "Write a loop that takes user input, sends it to the chat, and prints the reply — until the user types 'exit'.",
+      "criteria": "User writes a while loop with input(), an exit condition, and a send_message call inside the loop with response printed.",
+      "starter_code": "while True:\n    user_input = input(\"You: \")\n    if user_input.lower() == \"exit\":\n        break\n    reply = chat.send_message(user_input)\n    print(\"Bot:\", reply.text)\n"
+    },
+    {
+      "id": 9,
+      "title": "Tune the response style",
+      "instructions": "Add a generation config with a temperature value, and explain in a comment why you chose that value for a support chatbot.",
+      "criteria": "User adds a temperature parameter (0-1 range, low for support bots) to the config dict, with a comment justifying the choice.",
+      "starter_code": "config = {\n    \"system_instruction\": SYSTEM_PROMPT,\n    \"temperature\": 0.3  # low temperature: consistent, predictable support answers\n}\n"
+    },
+    {
+      "id": 10,
+      "title": "Wrap it up",
+      "instructions": "Review your full chatbot script. Combine the pieces from previous steps into one coherent script you could actually run.",
+      "criteria": "User combines key elements: client init, system prompt, chat session with config, error-handled loop. Doesn't need to be perfect, but should show all major pieces together.",
+      "starter_code": "# Paste your combined chatbot script here\n"
+    }
+  ]
+}

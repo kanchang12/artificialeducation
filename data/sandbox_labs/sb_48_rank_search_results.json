@@ -1,0 +1,42 @@
+{
+  "id": "sb_48_rank_search_results",
+  "title": "Rank and Tie-Break Search Results",
+  "topic": "RAG",
+  "difficulty": "easy",
+  "description": "Sort retrieved search results by relevance score, breaking ties by original order (stable sort).",
+  "problem": "Write rank_results(results) where results is a list of dicts with a 'score' key. Return them sorted by score descending; for equal scores, preserve original relative order.",
+  "starter_code": "def rank_results(results):\n    # Sort by score descending, stable for ties\n    return results\n",
+  "hint": "sorted() is stable in Python - just use sorted(results, key=lambda r: r['score'], reverse=True). Reverse=True with stable sort preserves original order for ties... actually verify: it does, since Python's sort is stable and reverse just reverses comparisons, not the final tie order for equal keys remains original relative order.",
+  "test_cases": [
+    {
+      "label": "Distinct scores",
+      "setup": "results=[{'id':1,'score':0.5},{'id':2,'score':0.9}]",
+      "call": "rank_results(results)",
+      "expected": [
+        {
+          "id": 2,
+          "score": 0.9
+        },
+        {
+          "id": 1,
+          "score": 0.5
+        }
+      ]
+    },
+    {
+      "label": "Tied scores keep order",
+      "setup": "results=[{'id':1,'score':0.5},{'id':2,'score':0.5}]",
+      "call": "rank_results(results)",
+      "expected": [
+        {
+          "id": 1,
+          "score": 0.5
+        },
+        {
+          "id": 2,
+          "score": 0.5
+        }
+      ]
+    }
+  ]
+}

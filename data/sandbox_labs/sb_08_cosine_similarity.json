@@ -1,0 +1,36 @@
+{
+  "id": "sb_08_cosine_similarity",
+  "title": "Cosine Similarity for Retrieval",
+  "topic": "RAG",
+  "difficulty": "medium",
+  "description": "Implement cosine similarity \u2014 the core of vector search.",
+  "problem": "Write cosine_similarity(a, b) that takes two lists of floats and returns their cosine similarity (a float between -1 and 1). Do not use any external libraries.",
+  "starter_code": "import math\n\ndef cosine_similarity(a, b):\n    # dot product / (magnitude_a * magnitude_b)\n    return 0.0  # fix this\n",
+  "hint": "dot = sum(x*y for x,y in zip(a,b)). magnitude = math.sqrt(sum(x*x for x in v)). Return dot/(mag_a*mag_b).",
+  "test_cases": [
+    {
+      "label": "Identical vectors",
+      "setup": "import math",
+      "call": "round(cosine_similarity([1,0,0],[1,0,0]),4)",
+      "expected": 1.0
+    },
+    {
+      "label": "Opposite vectors",
+      "setup": "import math",
+      "call": "round(cosine_similarity([1,0],[-1,0]),4)",
+      "expected": -1.0
+    },
+    {
+      "label": "Orthogonal vectors",
+      "setup": "import math",
+      "call": "round(cosine_similarity([1,0],[0,1]),4)",
+      "expected": 0.0
+    },
+    {
+      "label": "General case",
+      "setup": "import math",
+      "call": "round(cosine_similarity([1,2,3],[4,5,6]),4)",
+      "expected": 0.9746
+    }
+  ]
+}

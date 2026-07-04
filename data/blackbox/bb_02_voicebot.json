@@ -1,0 +1,80 @@
+{
+  "id": "bb_02_voicebot",
+  "title": "Build an ElevenLabs Voice Bot",
+  "tagline": "Turn text replies into spoken audio with ElevenLabs.",
+  "description": "You'll connect to the ElevenLabs API, pick a voice, generate speech from text, and combine it with an AI-generated reply so your chatbot can talk back.",
+  "difficulty": "medium",
+  "category": "Voice",
+  "steps": [
+    {
+      "id": 1,
+      "title": "Set up your ElevenLabs API key",
+      "instructions": "Create a variable ELEVENLABS_API_KEY with a placeholder string value.",
+      "criteria": "User defines a variable named ELEVENLABS_API_KEY assigned to a string.",
+      "starter_code": "ELEVENLABS_API_KEY = \"your-elevenlabs-key-here\"\n"
+    },
+    {
+      "id": 2,
+      "title": "Initialize the ElevenLabs client",
+      "instructions": "Create a client object for ElevenLabs using your API key.",
+      "criteria": "User creates a client object, passing the API key, e.g. ElevenLabs(api_key=ELEVENLABS_API_KEY).",
+      "starter_code": "from elevenlabs.client import ElevenLabs\n\nclient = ElevenLabs(api_key=ELEVENLABS_API_KEY)\n"
+    },
+    {
+      "id": 3,
+      "title": "Choose a voice",
+      "instructions": "Pick a voice ID (a placeholder string is fine) and store it in a variable. Add a comment on why voice choice matters for user experience.",
+      "criteria": "User defines a voice_id variable (string) with a comment explaining its relevance to UX/persona.",
+      "starter_code": "voice_id = \"voice-id-placeholder\"  # choose a voice that matches your bot's persona\n"
+    },
+    {
+      "id": 4,
+      "title": "Generate speech from text",
+      "instructions": "Call the text-to-speech endpoint with some sample text and the chosen voice.",
+      "criteria": "User calls a text-to-speech generation method (e.g. client.text_to_speech.convert or client.generate) passing text and voice_id.",
+      "starter_code": "audio = client.text_to_speech.convert(\n    voice_id=voice_id,\n    text=\"Hello! Thanks for calling, how can I help you today?\"\n)\n"
+    },
+    {
+      "id": 5,
+      "title": "Save the audio output",
+      "instructions": "Write the generated audio bytes to a file (e.g. response.mp3).",
+      "criteria": "User opens a file in binary write mode and writes the audio data (iterating chunks if it's a generator).",
+      "starter_code": "with open(\"response.mp3\", \"wb\") as f:\n    for chunk in audio:\n        f.write(chunk)\n"
+    },
+    {
+      "id": 6,
+      "title": "Connect it to your chatbot reply",
+      "instructions": "Take a text variable representing your chatbot's reply (from the chatbot project) and pass it into the speech generation call instead of a hardcoded string.",
+      "criteria": "User uses a variable (not a hardcoded literal) as the 'text' argument to the TTS call.",
+      "starter_code": "bot_reply = \"We're open until 9pm today.\"\n\naudio = client.text_to_speech.convert(\n    voice_id=voice_id,\n    text=bot_reply\n)\n"
+    },
+    {
+      "id": 7,
+      "title": "Handle errors gracefully",
+      "instructions": "Wrap the TTS call in try/except so a failed voice generation doesn't crash your whole bot — fall back to text-only.",
+      "criteria": "User wraps the TTS call in try/except with a fallback (e.g. printing text, or setting audio = None).",
+      "starter_code": "try:\n    audio = client.text_to_speech.convert(voice_id=voice_id, text=bot_reply)\nexcept Exception as e:\n    audio = None\n    print(\"Voice unavailable, falling back to text:\", bot_reply)\n"
+    },
+    {
+      "id": 8,
+      "title": "Control voice settings",
+      "instructions": "Add voice settings (stability and similarity_boost) to your call and comment on what each does.",
+      "criteria": "User adds a voice_settings object/dict with stability and similarity_boost fields, with comments explaining each.",
+      "starter_code": "voice_settings = {\n    \"stability\": 0.5,       # higher = more consistent tone, lower = more expressive\n    \"similarity_boost\": 0.75  # how closely it matches the original voice sample\n}\n"
+    },
+    {
+      "id": 9,
+      "title": "Stream audio instead of saving",
+      "instructions": "Instead of saving to a file, write a function that streams audio chunks directly (e.g. to a player or response stream).",
+      "criteria": "User writes a function/generator that yields or processes audio chunks without first writing to disk.",
+      "starter_code": "def stream_audio(text):\n    audio_stream = client.text_to_speech.convert(voice_id=voice_id, text=text)\n    for chunk in audio_stream:\n        yield chunk\n"
+    },
+    {
+      "id": 10,
+      "title": "Wrap it up",
+      "instructions": "Combine everything: a chatbot reply variable, error-handled TTS generation with voice settings, and either saving or streaming.",
+      "criteria": "User combines the pieces from previous steps into one coherent script with bot_reply, voice settings, error handling, and audio output.",
+      "starter_code": "# Paste your combined voice bot script here\n"
+    }
+  ]
+}

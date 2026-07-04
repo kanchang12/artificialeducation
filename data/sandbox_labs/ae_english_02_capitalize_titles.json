@@ -1,0 +1,25 @@
+{
+  "id": "ae_english_02_capitalize_titles",
+  "title": "Make It a Proper Title",
+  "topic": "English",
+  "subject": "English",
+  "difficulty": "easy",
+  "description": "Apply the rules of capitalisation, reinforcing grammar through logic.",
+  "problem": "Write to_title(text) that capitalises the first letter of every word and lowercases the rest.",
+  "starter_code": "def to_title(text):\n    # capitalise each word\n    pass\n",
+  "hint": "Python strings have a built-in .title(), but try building it with split and capitalize to understand it.",
+  "test_cases": [
+    {
+      "label": "Basic",
+      "setup": "",
+      "call": "to_title('the wind in the willows')",
+      "expected": "The Wind In The Willows"
+    },
+    {
+      "label": "Mixed case",
+      "setup": "",
+      "call": "to_title('hELLo wORLd')",
+      "expected": "Hello World"
+    }
+  ]
+}

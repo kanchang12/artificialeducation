@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_25_deployment_rollout",
+  "title": "Plan a safe rollout of a new AI model version",
+  "topic": "System Design",
+  "difficulty": "legend",
+  "free": false,
+  "problem": "You are upgrading from gemini-2.0-flash to gemini-2.5-flash in production. The new model has different default behaviour — it is more verbose, sometimes refuses requests the old model handled, and formats lists differently, which breaks your downstream markdown parser. Design a safe rollout plan that minimises user impact and allows fast rollback.",
+  "context": "Current model: gemini-2.0-flash (serving 100,000 requests/day)\nNew model: gemini-2.5-flash\nKnown issues: more verbose, different refusal behaviour, different list formatting\nDownstream: markdown parser that expects '- item' format, sometimes receives '• item'",
+  "hints": [
+    "Fix known issues before rollout, not during.",
+    "Shadow mode lets you compare outputs without affecting users.",
+    "What is the minimum viable rollback time? Define it before you start."
+  ],
+  "solution": "Rollout plan in five stages: (1) Fix known issues first — update the system prompt to specify exact list format ('always use - for bullet points, never •'), add max_tokens to control verbosity, review refusal patterns and add prompt instructions to handle edge cases. Do not roll out until these are fixed. (2) Shadow mode — run the new model in parallel with production for 24 hours, logging both responses but only serving the old model's response to users. Compare outputs for format compliance, length, and refusal rate. Fix any remaining differences. (3) Canary — route 1% of traffic to the new model for 24 hours. Monitor error rate, downstream parser failures, and user satisfaction. Define rollback trigger: if parser error rate exceeds 0.5% or user satisfaction drops > 1 point, auto-rollback to old model in < 5 minutes (feature flag toggle). (4) Gradual ramp — 1% → 10% → 25% → 50% → 100% over 5 days, with a 24-hour hold at each stage and automated monitoring at each step. (5) Keep old model warm for 72 hours after full rollout so rollback is a flag flip, not a redeployment. Define success: parser error rate < 0.1%, refusal rate within 10% of old model, latency within 20% of old model."
+}

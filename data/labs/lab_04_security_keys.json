@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_04_security_keys",
+  "title": "Why .env files exist",
+  "topic": "Security",
+  "difficulty": "hard",
+  "free": false,
+  "problem": "A developer hardcoded an API key in a Python file and pushed it to a public GitHub repo. Within 4 hours the account was charged $3,000. Explain the full attack chain, then describe the correct way to handle secrets in a production Python application.",
+  "context": "",
+  "hints": [
+    "GitHub is indexed. Bots scan for hardcoded keys within minutes.",
+    "The fix isn't just 'use .env' — you also need to understand what not to commit.",
+    "Three layers: environment variables, .gitignore, and rotating the leaked key immediately."
+  ],
+  "solution": "Attack chain: developer pushes file → bots scan new commits for key patterns → key found within minutes → used to make expensive API calls. Fix: (1) read secrets only from os.getenv(), never literals; (2) add .env to .gitignore; (3) if a key is ever exposed, rotate it immediately — removing the commit is not enough as scrapers may have already captured it."
+}

@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_19_latency_optimisation",
+  "title": "Your AI feature is too slow for production",
+  "topic": "System Design",
+  "difficulty": "hard",
+  "free": false,
+  "problem": "Your RAG-powered search feature takes 4.2 seconds end-to-end. Users expect under 1 second. Break down where the time is likely going in a typical RAG pipeline and describe three concrete optimisations to hit the 1-second target.",
+  "context": "Current breakdown (estimated):\n- Embedding the query: 180ms\n- Vector search: 240ms\n- LLM generation (top-5 chunks, ~2000 tokens in, 300 out): 3,400ms\n- Network + overhead: 380ms\nTotal: ~4,200ms",
+  "hints": [
+    "The LLM generation step dominates. What levers do you have on that step?",
+    "Streaming does not reduce total time but changes perceived latency.",
+    "Can any steps run in parallel?"
+  ],
+  "solution": "The LLM generation step (3,400ms) is the bottleneck. Three optimisations: (1) Reduce context size — pass top-3 chunks instead of top-5 and limit each chunk to 300 tokens. This reduces input tokens from ~2,000 to ~1,000 and cuts generation time by roughly 40-50%, targeting ~1,800ms for generation. (2) Use a smaller/faster model for this task — if the query is factual retrieval, a smaller model (e.g. gemini-2.0-flash) may be sufficient and generates 3-5x faster than a large model, potentially getting generation under 800ms. (3) Streaming — start rendering the response to the user as tokens arrive; perceived latency drops to time-to-first-token (~300ms) even if total time is still 2s. Combined: optimisations 1+2 target ~1.2s total; adding streaming makes this feel under 1s to the user. Further: cache embeddings for common queries, pre-warm the vector index."
+}

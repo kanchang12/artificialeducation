@@ -1,0 +1,30 @@
+{
+  "id": "sb_17_truncate_context",
+  "title": "Truncate Context to Token Budget",
+  "topic": "System Design",
+  "difficulty": "medium",
+  "description": "Keep the most relevant content within a token budget.",
+  "problem": "Write truncate_to_budget(chunks, max_tokens, tokens_per_chunk) that takes a list of text chunks and returns as many as fit within max_tokens budget, keeping the highest-scoring ones first. Each chunk has a score field.",
+  "starter_code": "def truncate_to_budget(chunks, max_tokens, tokens_per_chunk=100):\n    # chunks: list of dicts with 'text' and 'score'\n    # Sort by score descending\n    # Return chunks that fit within max_tokens\n    return chunks  # fix this\n",
+  "hint": "Sort by score descending. Then greedily add chunks until adding next would exceed budget.",
+  "test_cases": [
+    {
+      "label": "Fits all chunks",
+      "setup": "chunks=[{'text':'a','score':0.9},{'text':'b','score':0.7}]",
+      "call": "len(truncate_to_budget(chunks, 300, 100))",
+      "expected": 2
+    },
+    {
+      "label": "Truncates by budget",
+      "setup": "chunks=[{'text':'a','score':0.9},{'text':'b','score':0.7},{'text':'c','score':0.5}]",
+      "call": "len(truncate_to_budget(chunks, 200, 100))",
+      "expected": 2
+    },
+    {
+      "label": "Keeps highest scores",
+      "setup": "chunks=[{'text':'low','score':0.1},{'text':'high','score':0.9}]",
+      "call": "truncate_to_budget(chunks, 100, 100)[0]['text']",
+      "expected": "high"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_20_pii_in_prompts",
+  "title": "You are sending customer PII to a third-party LLM",
+  "topic": "AI Security",
+  "difficulty": "hard",
+  "free": false,
+  "problem": "Your pipeline sends customer support tickets directly to the Gemini API for classification. The tickets contain names, email addresses, order numbers, and sometimes payment details. Your legal team flags this as a GDPR risk. Describe the technical approach to resolving this without rebuilding the pipeline from scratch.",
+  "context": "Current flow: raw_ticket → Gemini API → intent_classification\nTicket example: 'Hi, I am Jane Smith (jane@email.com, order #44821). My card ending 4821 was charged twice.'",
+  "hints": [
+    "You do not need the PII to classify intent — 'PERSON was charged twice' classifies the same as the full text.",
+    "There is a technique that removes PII before sending and restores it after.",
+    "What does GDPR say about sending personal data to third-party processors?"
+  ],
+  "solution": "The technique is PII anonymisation before API calls. Step 1 — detect and replace: use a NER (named entity recognition) model or regex patterns to identify and replace PII with placeholders before sending to the LLM. 'Jane Smith' → '[PERSON]', 'jane@email.com' → '[EMAIL]', '#44821' → '[ORDER_ID]', 'card ending 4821' → '[PAYMENT_REF]'. Step 2 — classify the anonymised text: the intent (double charge complaint) is preserved, the PII is not sent. Step 3 — if the LLM response needs to reference the original entities, maintain a reversible mapping and substitute back after generation. GDPR implication: under Article 28, Gemini API is a data processor and requires a DPA (Data Processing Agreement) with Google. Even with a DPA, data minimisation (sending only what is necessary) is a GDPR principle — anonymisation satisfies this. Document the approach in your privacy notice."
+}

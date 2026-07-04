@@ -1,0 +1,36 @@
+{
+  "id": "sb_04_validate_llm_number",
+  "title": "Never Trust a Number the Model Gives You",
+  "topic": "Validation",
+  "difficulty": "medium",
+  "description": "Write a validator that catches when the model's claimed number disagrees with the source data.",
+  "problem": "Write validate_profit_claim(claimed_business, claimed_profit, csv_text) that returns True only if the claim matches the real CSV data within 1% tolerance.",
+  "starter_code": "import csv, io\n\ndef validate_profit_claim(claimed_business, claimed_profit, csv_text):\n    # Parse the CSV\n    # Find the row matching claimed_business\n    # Compare profit within 1% tolerance\n    # Return True if valid, False otherwise\n    pass\n",
+  "hint": "Parse with csv.DictReader. Cast profit to int. Check abs(real - claimed) / abs(real) <= 0.01",
+  "test_cases": [
+    {
+      "label": "Correct claim",
+      "setup": "import csv,io\nCSV='business,profit\\nAlpha,20000\\nBeta,50000\\n'",
+      "call": "validate_profit_claim('Beta',50000,CSV)",
+      "expected": true
+    },
+    {
+      "label": "Wrong profit",
+      "setup": "import csv,io\nCSV='business,profit\\nAlpha,20000\\nBeta,50000\\n'",
+      "call": "validate_profit_claim('Beta',62000,CSV)",
+      "expected": false
+    },
+    {
+      "label": "Wrong business name",
+      "setup": "import csv,io\nCSV='business,profit\\nAlpha,20000\\nBeta,50000\\n'",
+      "call": "validate_profit_claim('Gamma',50000,CSV)",
+      "expected": false
+    },
+    {
+      "label": "Within 1% tolerance",
+      "setup": "import csv,io\nCSV='business,profit\\nBeta,50000\\n'",
+      "call": "validate_profit_claim('Beta',50400,CSV)",
+      "expected": true
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Admin Login{% endblock %}
+{% block content %}
+<div style="min-height:calc(100vh - 60px);display:flex;align-items:center;justify-content:center;padding:2rem 1rem;">
+  <div class="card" style="max-width:380px;width:100%;">
+    <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.35rem;color:var(--bp-900);margin-bottom:1rem;">Admin Login</h1>
+
+    {% if error %}
+    <div style="background:#fee2e2;color:#991b1b;padding:0.75rem 1rem;border-radius:8px;font-size:0.85rem;font-weight:500;margin-bottom:1rem;display:flex;align-items:flex-start;gap:0.5rem;">
+      <span style="flex-shrink:0;margin-top:1px;">⚠</span>
+      <span>{{ error }} — check your email and password and try again.</span>
+    </div>
+    {% endif %}
+
+    <form method="POST" id="admin-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required autocomplete="email"
+               value="{{ request.form.get('email','') }}"
+               style="{% if error %}border-color:#ef4444;{% endif %}"/>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password"
+               style="{% if error %}border-color:#ef4444;{% endif %}"/>
+      </div>
+      <button class="btn btn-primary" id="submit-btn" style="width:100%;margin-top:0.25rem;padding:11px;" type="submit">
+        Log in
+      </button>
+    </form>
+  </div>
+</div>
+<script>
+document.getElementById('admin-form').addEventListener('submit', function(){
+  var btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Logging in…';
+});
+// Auto-focus password field if email is already filled (i.e. after a failed attempt)
+window.addEventListener('DOMContentLoaded', function(){
+  var email = document.getElementById('email');
+  var pass = document.getElementById('password');
+  if (email.value) { pass.focus(); }
+});
+</script>
+{% endblock %}

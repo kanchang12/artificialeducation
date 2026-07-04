@@ -1,0 +1,31 @@
+{
+  "id": "ae_maths_01_is_prime",
+  "title": "Is It Prime?",
+  "topic": "Maths",
+  "subject": "Maths",
+  "difficulty": "medium",
+  "description": "Explore what makes a number prime by testing divisibility, reasoning made concrete.",
+  "problem": "Write is_prime(n) that returns True if n is a prime number, False otherwise. Numbers below 2 are not prime.",
+  "starter_code": "def is_prime(n):\n    # numbers below 2 are not prime\n    # check divisors up to n-1\n    pass\n",
+  "hint": "Return False for n<2. Then check if any number from 2 to n-1 divides n evenly.",
+  "test_cases": [
+    {
+      "label": "Prime",
+      "setup": "",
+      "call": "is_prime(7)",
+      "expected": true
+    },
+    {
+      "label": "Not prime",
+      "setup": "",
+      "call": "is_prime(9)",
+      "expected": false
+    },
+    {
+      "label": "Below two",
+      "setup": "",
+      "call": "is_prime(1)",
+      "expected": false
+    }
+  ]
+}

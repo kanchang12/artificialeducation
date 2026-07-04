@@ -1,0 +1,10 @@
+{
+  "id": "video_03_rag_pipeline",
+  "title": "Build a Mini RAG Pipeline From Scratch",
+  "topic": "RAG",
+  "free": false,
+  "duration_minutes": 25,
+  "description": "Chunk a document, generate embeddings, store them, and retrieve relevant chunks for a question - all in plain Python.",
+  "what_you_do": "Build a working RAG pipeline over a sample document in your own environment, following along step by step.",
+  "bunny_video_id": "REPLACE_WITH_BUNNY_VIDEO_ID"
+}

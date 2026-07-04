@@ -1,0 +1,545 @@
+{
+  "id": "p08_coding_suite",
+  "title": "Collaborative Coding Suite",
+  "tagline": "An AI pair-programmer that proposes changes, runs them in a sandbox, and shows clear diffs \u2014 without the classic pitfalls.",
+  "category": "Dev Tools",
+  "free": false,
+  "coming_soon": false,
+  "levels": [
+    {
+      "key": "junior",
+      "label": "Junior",
+      "intro": "Context management: why naive 'paste the whole codebase' approaches fail.",
+      "theory": "An AI coding assistant's output quality is bounded by the quality of context it receives. The three main failure modes: (1) Context window overflow \u2014 pasting an entire codebase into a 128k context window costs thousands of tokens per request and degrades quality on longer codebases. The model doesn't need the entire codebase \u2014 it needs the relevant files, the relevant function signatures from adjacent files, and the task description. (2) Stale context \u2014 if the model's context includes code that has since been changed, it proposes changes against the wrong version and creates merge conflicts. The context must always be drawn from the current state of the filesystem. (3) Lack of structural context \u2014 pasting raw code without explaining the architecture, naming conventions, testing requirements, or style guide produces technically functional but stylistically inconsistent suggestions. A project context file (project.md or similar) that encodes these conventions should always be included in the context. (4) Token counting \u2014 before calling the API, estimate the token count of your context. If it exceeds 60% of the model's context window, your response quality will degrade and you risk truncation.",
+      "theory_hint": "Re-read the Junior theory on stale context \u2014 specifically what it means for the model to propose changes against the wrong version of a file."
+    },
+    {
+      "key": "senior",
+      "label": "Senior",
+      "intro": "Execution and diffing: sandboxed test runs, structured diffs, and change validation.",
+      "theory": "Proposing code changes and running code changes are fundamentally different risk profiles. (1) Sandboxed execution \u2014 any code the assistant suggests and the user wants to test must run in an isolated environment: a Docker container with no network access, no access to credentials or environment variables from the host, and resource limits (CPU time, memory, disk). Running suggested code directly on the developer's machine is not acceptable. (2) Structured diffs \u2014 showing a raw unified diff to a developer who asked 'add error handling to this function' is unhelpful. The diff must be presented in context: what the original code was, what changed, and why. An explanation-first, diff-second format produces better review and better decisions. (3) Test integration \u2014 before proposing a change as 'ready to apply', the assistant should run existing tests against the proposed change in the sandbox. A change that breaks tests should be flagged before the developer sees it, not after. (4) Rollback \u2014 every applied change must be reversible. This means either working in a git branch, maintaining an undo stack, or both. 'Apply all suggested changes' with no rollback path is a data loss risk.",
+      "theory_hint": "Re-read the Senior theory on sandboxed execution \u2014 specifically what host resources must be isolated from the execution environment."
+    },
+    {
+      "key": "architect",
+      "label": "Architect",
+      "intro": "Security: credential exposure, malicious code proposals, supply chain, and audit trails.",
+      "theory": "An AI coding assistant that can read your codebase and suggest changes has a significant attack surface. (1) Credential detection \u2014 codebases contain API keys, connection strings, and tokens embedded in comments, test fixtures, and config files. Context sent to an external API must be scanned for credentials before transmission. A credential that's sent to an AI API is effectively public. (2) Malicious code proposals \u2014 a compromised model, a jailbroken assistant, or a prompt injection from a malicious code comment can result in the assistant proposing code that looks correct but introduces a backdoor, exfiltrates data, or creates a vulnerability. Proposed code must be reviewed by a security-aware human before application in production codebases. (3) Supply chain \u2014 if the assistant suggests adding a dependency ('pip install X' or 'npm install Y'), that dependency must be evaluated: is it actively maintained? does it have known vulnerabilities? is it the legitimate package or a typosquatted alternative? (4) Audit trail \u2014 in a team setting, every AI suggestion accepted or rejected must be logged with: the exact suggestion, who accepted/modified/rejected it, and the git commit it produced.",
+      "theory_hint": "Re-read the Architect theory on credential detection \u2014 specifically what 'effectively public' means for a credential that reaches an AI API."
+    },
+    {
+      "key": "executive",
+      "label": "Executive",
+      "intro": "Productivity reality: measuring AI pair-programming impact, code ownership, and licensing.",
+      "theory": "AI coding assistants are widely adopted but their productivity impact is contested and context-dependent. (1) Productivity measurement \u2014 lines of code per day is the wrong metric. Relevant metrics: time-to-complete per ticket type, bug introduction rate, review cycle length, and test coverage on AI-assisted vs human-written code. Measure these before and after adoption. (2) Code ownership \u2014 if 60% of your production codebase is AI-generated, who understands it? Code that no human fully understands creates severe maintenance and debugging risk. AI assistance should augment understanding, not replace it. (3) Licensing \u2014 some AI coding assistants are trained on GPL-licensed code and may reproduce GPL snippets. If your product is closed source, a GPL snippet in production is a licence violation. Know your tool's training data and copyright indemnification policy. (4) Skill atrophy \u2014 developers who exclusively use AI for non-trivial coding tasks may lose or fail to develop the skills needed to debug, review, and understand complex code. This is an organisational risk, not just a technical one.",
+      "theory_hint": "Re-read the Executive theory on code ownership \u2014 specifically the maintenance risk of code no one fully understands."
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "level": "junior",
+      "type": "choice",
+      "scenario": "Your AI coding assistant sends the entire 50,000-line Python codebase as context with every request. Response quality is inconsistent and the API cost per request is $0.35. A senior engineer says 'just send the relevant files.' What does this require technically?",
+      "options_type": "text",
+      "options": [
+        "Modern models can handle 50,000 lines of context without any meaningful quality degradation \u2014 the inconsistency being observed here is more likely caused by something else in the request pipeline entirely",
+        "A code intelligence layer retrieves the target file, its dependencies, and conventions \u2014 not the whole codebase. This requires an import graph or symbol index to know what's actually relevant",
+        "Simply configure the context window setting to be larger than it currently is \u2014 once the window is large enough to comfortably fit the full codebase, response quality should stop degrading on long requests",
+        "Send only the exact function currently being modified as context, with no surrounding file content at all \u2014 the model doesn't need anything beyond the specific lines it's been asked to change"
+      ],
+      "correct": 1,
+      "hints": [
+        "Think about how you'd determine which files are relevant to a given task without sending everything. Re-read the Junior theory on context window overflow.",
+        "'Send the relevant files' requires knowing which files are relevant. That knowledge comes from an import graph or symbol index \u2014 not from the AI model itself."
+      ],
+      "why": "Relevant context retrieval requires a local codebase index: at minimum, an import graph (which files import which) and a symbol table (where each function/class is defined). Given a task about function X in file Y, the relevant context is: file Y, files that Y imports (one level), files that import Y (direct callers), and any project conventions. This is deterministic, cheap to compute, and produces 3-5 files of context instead of 50,000 lines."
+    },
+    {
+      "id": 2,
+      "level": "junior",
+      "type": "fix_code",
+      "scenario": "This context builder always reads files from disk at the time of context construction, but a recent change made the file unreadable due to a syntax error. Instead of handling this, it crashes and loses the conversation context. Fix it to handle file read errors gracefully.",
+      "starter_code": "def build_context(target_file: str, related_files: list) -> str:\n    context = f\"# Target file: {target_file}\\n\"\n    context += open(target_file).read() + \"\\n\\n\"\n    for f in related_files:\n        context += f\"# Related: {f}\\n\"\n        context += open(f).read() + \"\\n\\n\"\n    return context",
+      "checks": [
+        {
+          "include_any": [
+            "try",
+            "except",
+            "error",
+            "Error",
+            "OSError",
+            "SyntaxError"
+          ],
+          "label": "Handles file read errors gracefully"
+        },
+        {
+          "include_any": [
+            "continue",
+            "skip",
+            "fallback",
+            "note",
+            "comment",
+            "[could not"
+          ],
+          "label": "Continues building context when a file fails to read"
+        }
+      ],
+      "why": "A context builder that crashes on a single unreadable file loses all accumulated context for that request. The correct handling: catch read errors per-file, include a note in the context that the file couldn't be read (so the model knows there's missing context), and continue building context from the remaining files. This is especially important during active development when files may be in a broken state."
+    },
+    {
+      "id": 3,
+      "level": "junior",
+      "type": "reorder",
+      "scenario": "Put the steps of a well-designed AI code suggestion workflow in the correct order.",
+      "items": [
+        "Present the proposed change as an explanation-first diff to the developer for review",
+        "Retrieve relevant context: target file, dependencies, project conventions",
+        "Run existing tests against the proposed change in a sandbox",
+        "Developer accepts, modifies, or rejects the proposal",
+        "Ask model to propose change given context and task description"
+      ],
+      "correct_order": [
+        1,
+        4,
+        2,
+        0,
+        3
+      ],
+      "why": "Context first \u2014 the model needs it. Model proposes change. Before showing the developer, run tests in sandbox so they know if it breaks anything. Present as explanation-first diff. Developer decides. This order means the developer sees a complete picture (proposal + test results) before making a decision, rather than discovering broken tests after applying the change."
+    },
+    {
+      "id": 4,
+      "level": "junior",
+      "type": "write_prompt",
+      "scenario": "Write a project context file (project.md equivalent) for a Flask/PostgreSQL API. It must encode: architecture pattern, naming conventions, error handling standard, testing requirements, and the one thing the AI should NEVER do in this codebase.",
+      "placeholder": "# Project: [Name]\n## Architecture\n...",
+      "checks": [
+        {
+          "include_any": [
+            "architecture",
+            "pattern",
+            "structure",
+            "blueprint",
+            "layer"
+          ],
+          "label": "Describes the architecture pattern"
+        },
+        {
+          "include_any": [
+            "naming",
+            "convention",
+            "snake_case",
+            "camelCase",
+            "variable",
+            "function",
+            "class"
+          ],
+          "label": "Specifies naming conventions"
+        },
+        {
+          "include_any": [
+            "error",
+            "exception",
+            "handling",
+            "log",
+            "raise",
+            "return"
+          ],
+          "label": "States the error handling standard"
+        },
+        {
+          "include_any": [
+            "test",
+            "pytest",
+            "coverage",
+            "unittest",
+            "spec"
+          ],
+          "label": "States testing requirements"
+        },
+        {
+          "include_any": [
+            "never",
+            "do not",
+            "avoid",
+            "prohibited",
+            "must not"
+          ],
+          "label": "States at least one explicit prohibition"
+        }
+      ],
+      "why": "A project context file is the single most impactful thing you can add to an AI coding assistant's context. It's read on every request and encodes the conventions that distinguish 'correct for this project' from 'correct Python'. Without it, the AI will mix async/sync patterns, use different naming conventions per suggestion, and ignore project-specific error handling requirements. Explicit prohibitions ('never use raw SQL strings \u2014 always use parameterised queries') prevent entire classes of suggestions that would fail code review."
+    },
+    {
+      "id": 5,
+      "level": "senior",
+      "type": "choice",
+      "scenario": "Your AI coding assistant suggests: `import subprocess; subprocess.run(['pip', 'install', 'colourama'])` in a test setup file. What are the two issues a security review must flag?",
+      "options_type": "text",
+      "options": [
+        "The colour spelling is simply wrong in this suggestion \u2014 it should read 'colorama' rather than 'colourama', and correcting that one typo before running the install command resolves the issue entirely \u2014 this is the kind of fix that's quick to implement and matches what most teams try first before digging deeper into the underlying cause",
+        "Two issues: 'colourama' is a typosquat of 'colorama', and installing packages at runtime via subprocess in test code is itself an anti-pattern \u2014 dependencies belong in a requirements file",
+        "The import itself is unnecessary in this context \u2014 colorama provides functionality that's already built into Python's standard library, so the package doesn't actually need to be installed at all here \u2014 while this requires no architectural change, it directly addresses the symptom that's actually visible to users right now",
+        "subprocess.run is inherently a security risk regardless of what command it's used to execute \u2014 any use of subprocess in application or test code should be flagged and rejected on that basis alone \u2014 this is the kind of fix that's quick to implement and matches what most teams try first before digging deeper into the underlying cause"
+      ],
+      "correct": 1,
+      "hints": [
+        "Check the package name letter by letter and think about what 'installing packages at runtime via subprocess' means in a test file. Re-read the Architect theory on supply chain.",
+        "'colourama' has an extra 'u'. This is a known typosquatting technique \u2014 register a slightly different spelling of a popular package and serve malicious code."
+      ],
+      "why": "Typosquatting in package managers is an active attack vector. Popular packages are spoofed by registering misspelled alternatives. The correct review flags: (1) verify the exact package name against the legitimate package's PyPI/npm page; (2) flag runtime pip install as an anti-pattern \u2014 dependencies belong in requirements files, not in code that executes at runtime. Both issues in this single suggestion represent significant security risk if accepted."
+    },
+    {
+      "id": 6,
+      "level": "senior",
+      "type": "fix_code",
+      "scenario": "This function applies all AI-suggested changes directly to files with no rollback mechanism. Fix it to apply changes in a git branch so they can be reviewed and reverted.",
+      "starter_code": "import os\n\ndef apply_suggestion(file_path: str, new_content: str) -> bool:\n    with open(file_path, 'w') as f:\n        f.write(new_content)\n    return True",
+      "checks": [
+        {
+          "include_any": [
+            "git",
+            "branch",
+            "checkout",
+            "commit",
+            "subprocess",
+            "GitPython",
+            "pygit"
+          ],
+          "label": "Uses git to apply the change in a branch"
+        },
+        {
+          "include_any": [
+            "branch",
+            "temp_branch",
+            "ai_suggestion",
+            "ai/",
+            "review/"
+          ],
+          "label": "Creates or targets a specific branch for the change"
+        }
+      ],
+      "why": "Direct file modification with no version control integration means there's no safe rollback path if the suggestion is wrong. The correct approach: create a git branch (e.g. 'ai/suggestion/TIMESTAMP'), apply the change to that branch, optionally run tests in the sandbox against that branch, then present the branch as a pull request for human review. The developer can then review the diff in their standard code review tool, merge, or close the branch. Never apply changes directly to the working tree without a rollback path."
+    },
+    {
+      "id": 7,
+      "level": "senior",
+      "type": "choice",
+      "scenario": "Your AI assistant proposed a database migration that adds a NOT NULL column to a table with 10M rows. You ran it in the sandbox container and it completed in 3 seconds. You apply it to production and it locks the table for 47 minutes. Why did the sandbox not predict this?",
+      "options_type": "text",
+      "options": [
+        "The sandbox database had minimal test data and didn't approximate production volume or index structure \u2014 it validated logic correctness, not performance characteristics at scale",
+        "The sandbox used a different database version \u2014 while this requires no architectural change, it directly addresses the symptom that's actually visible to users right now",
+        "You should test on staging, not sandbox \u2014 this is the kind of fix that's quick to implement and matches what most teams try first before digging deeper into the underlying cause",
+        "The migration query needs to be rewritten \u2014 while this requires no architectural change, it directly addresses the symptom that's actually visible to users right now"
+      ],
+      "correct": 0,
+      "hints": [
+        "Think about what the sandbox environment was actually testing vs what production was actually running. Re-read the Senior theory on sandboxed execution.",
+        "A sandbox that tests logic correctness on an empty or minimal-data database cannot predict performance at production scale. These are different tests with different purposes."
+      ],
+      "why": "Sandbox execution validates that the code runs and produces correct output. It cannot predict production performance unless the sandbox approximates production data volume, index statistics, query concurrency, and hardware. Schema migrations must be tested on a realistic dataset (a subset or a snapshot of production data) before being applied to production. Additionally, PostgreSQL NOT NULL column additions can be done without a full table lock using 'ADD COLUMN DEFAULT ... CHECK (... IS NOT NULL)' pattern \u2014 the sandbox should also test the migration strategy, not just whether it succeeds."
+    },
+    {
+      "id": 8,
+      "level": "senior",
+      "type": "write_prompt",
+      "scenario": "Write the diff presentation format instruction for your AI coding assistant. The format must include: the explanation of what changed and why, the diff itself (showing context lines), the test results summary, and the rollback instruction.",
+      "placeholder": "When proposing a code change, present it in this format:\n\n1. What changed and why...",
+      "checks": [
+        {
+          "include_any": [
+            "explain",
+            "what changed",
+            "why",
+            "reason",
+            "purpose"
+          ],
+          "label": "Includes an explanation before the diff"
+        },
+        {
+          "include_any": [
+            "diff",
+            "--- ",
+            "+++ ",
+            "context",
+            "before",
+            "after"
+          ],
+          "label": "Specifies a diff format showing changes"
+        },
+        {
+          "include_any": [
+            "test",
+            "passing",
+            "failing",
+            "result"
+          ],
+          "label": "Includes test results in the presentation"
+        },
+        {
+          "include_any": [
+            "rollback",
+            "revert",
+            "undo",
+            "branch",
+            "git checkout"
+          ],
+          "label": "Includes rollback instructions"
+        }
+      ],
+      "why": "The order of information in a diff presentation determines how carefully it's reviewed. Explanation-first means the developer understands the intent before reading code. The diff itself with context lines (3 lines before/after each change) provides enough context to understand impact. Test results before the accept/reject decision means the developer knows the consequence of each choice. Rollback instructions make it safe to try \u2014 reducing friction on accepting proposals that can always be undone."
+    },
+    {
+      "id": 9,
+      "level": "architect",
+      "type": "choice",
+      "scenario": "Your AI coding assistant sends file contents to an external API. During a context scan, you find a file containing: `DATABASE_URL = 'postgresql://admin:P@ssw0rd!@prod.db.internal/appdb'` in a test fixtures file. What must happen before this context is sent?",
+      "options_type": "text",
+      "options": [
+        "There's no real exposure here \u2014 the API provider's terms of service explicitly state they won't use submitted data for model training, which is sufficient assurance that this credential remains protected",
+        "Any credential sent to an external API must be treated as compromised regardless of that provider's stated policy \u2014 it must be redacted or the file excluded from context before transmission",
+        "Redaction is only necessary here if this turns out to be a genuine production credential \u2014 test or staging environment credentials like this one are generally low-risk enough to be acceptable to send as-is",
+        "Adding a note in the context alongside the credential instructing the model not to use it would be sufficient mitigation here, since the model can be trusted to respect that kind of explicit instruction"
+      ],
+      "correct": 1,
+      "hints": [
+        "Think about what happens to data once it leaves your infrastructure, regardless of the recipient's policy. Re-read the Architect theory on credential detection.",
+        "'Prohibited from using' in a terms of service is not the same as 'guaranteed to not store or expose'. The correct policy is: credentials do not leave your infrastructure in any form."
+      ],
+      "why": "Any credential sent to an external API must be treated as compromised. Terms of service do not prevent API providers from being breached, compelled by law enforcement, or from having logging infrastructure that captures the request. The correct pattern: scan all files before context construction for credential patterns (connection strings, API key formats, JWT-shaped strings, private key headers) and redact them with a placeholder before transmission. This applies to all external API calls, not just AI APIs."
+    },
+    {
+      "id": 10,
+      "level": "architect",
+      "type": "fix_code",
+      "scenario": "Your context builder transmits file contents without credential scanning. Add a credential detection step that redacts common credential patterns before context is sent.",
+      "starter_code": "def prepare_context_for_api(files: dict) -> str:\n    context = \"\"\n    for filename, content in files.items():\n        context += f\"# {filename}\\n{content}\\n\\n\"\n    return context",
+      "checks": [
+        {
+          "include_any": [
+            "regex",
+            "re.sub",
+            "pattern",
+            "scan",
+            "detect",
+            "redact",
+            "replace",
+            "mask"
+          ],
+          "label": "Applies pattern matching to detect credentials"
+        },
+        {
+          "include_any": [
+            "password",
+            "api_key",
+            "secret",
+            "token",
+            "credential",
+            "DATABASE_URL",
+            "connection_string",
+            "private_key"
+          ],
+          "label": "Targets specific credential patterns"
+        },
+        {
+          "include_any": [
+            "REDACTED",
+            "[REDACTED]",
+            "[CREDENTIAL]",
+            "***",
+            "placeholder"
+          ],
+          "label": "Replaces detected credentials with a placeholder"
+        }
+      ],
+      "why": "Credential redaction before context transmission requires: (1) a set of regex patterns covering common credential formats \u2014 connection strings (postgresql://, mysql://, mongodb://), API key formats (sk-..., AIza...), private key headers (-----BEGIN RSA PRIVATE KEY-----), and common variable name patterns (SECRET_KEY = '...', API_KEY = '...'); (2) replacing matches with [REDACTED] before including in context; (3) logging (internally) that a credential was detected and redacted so the developer is alerted. The model still receives the file's structure and other code \u2014 just with credentials safely replaced."
+    },
+    {
+      "id": 11,
+      "level": "architect",
+      "type": "choice",
+      "scenario": "A developer on your team has accepted 450 AI-generated code suggestions over 3 months. During a security audit, a reviewer finds that 12 of the accepted suggestions introduced subtle SQL injection vulnerabilities \u2014 they used f-strings instead of parameterised queries. What process failure does this reveal?",
+      "options_type": "text",
+      "options": [
+        "The underlying AI model is simply low quality \u2014 a more capable model wouldn't have suggested SQL injection vulnerabilities like this one in the first place, so the fix here is purely a model selection problem",
+        "Accepted suggestions bypassed standard code review, which would have caught the f-string SQL pattern immediately \u2014 the audit trail was also insufficient to identify which code came from AI",
+        "The developer involved should have personally recognised this pattern and known better than to accept these particular suggestions, regardless of what review process the team had in place around AI code",
+        "SQL injection vulnerabilities of this kind are an acceptable trade-off to make in exchange for the development velocity gains that come from using an AI coding assistant at this pace"
+      ],
+      "correct": 1,
+      "hints": [
+        "Think about what process would have caught this pattern, and whether that process was being applied to AI-generated code. Re-read the Architect theory on audit trails.",
+        "A human writing `cursor.execute(f'SELECT * FROM users WHERE id = {user_id}')` in a code review would be caught immediately. The question is whether AI suggestions bypassed that review."
+      ],
+      "why": "This is a code review bypass failure. AI-generated code suggestions carry the same risk of introducing vulnerabilities as human-written code \u2014 arguably more risk, because the pattern of errors is systematic (the model consistently uses f-strings where parameterised queries are needed) rather than random. All accepted suggestions must go through the same code review process as manually-written code: PR, review, approval. An audit trail that identifies AI-origin code makes systematic review of AI-generated patterns possible. 450 unreviewed AI suggestions in production is a process failure."
+    },
+    {
+      "id": 12,
+      "level": "architect",
+      "type": "write_prompt",
+      "scenario": "Write the security review checklist that runs automatically against every AI code suggestion before it's presented to the developer. List specific patterns to check for, not just categories.",
+      "placeholder": "Before presenting any AI code suggestion, automatically check for:\n1. Hardcoded credentials:...",
+      "checks": [
+        {
+          "include_any": [
+            "credential",
+            "API key",
+            "password",
+            "secret",
+            "hardcoded",
+            "f-string with password",
+            "connection string"
+          ],
+          "label": "Checks for hardcoded credentials"
+        },
+        {
+          "include_any": [
+            "SQL injection",
+            "f-string",
+            "format(",
+            "% user",
+            "parameterised",
+            "prepared statement"
+          ],
+          "label": "Checks for SQL injection patterns"
+        },
+        {
+          "include_any": [
+            "eval(",
+            "exec(",
+            "subprocess",
+            "os.system",
+            "command injection",
+            "shell=True"
+          ],
+          "label": "Checks for code execution vulnerabilities"
+        },
+        {
+          "include_any": [
+            "import",
+            "pip install",
+            "require",
+            "dependency",
+            "package",
+            "typosquat"
+          ],
+          "label": "Checks for suspicious dependencies"
+        }
+      ],
+      "why": "Automated security pre-screening must check specific patterns, not generic categories. 'Check for security issues' produces nothing actionable. 'Flag any cursor.execute() call using f-strings or % formatting instead of parameterised queries' produces a specific finding. The checklist should cover: credential patterns (regex-matched), injection vectors (specific anti-patterns), code execution anti-patterns (eval, exec, subprocess with shell=True), and dependency additions (any suggested pip install or npm install)."
+    },
+    {
+      "id": 13,
+      "level": "executive",
+      "type": "choice",
+      "scenario": "Your engineering team has been using an AI coding assistant for 6 months. Velocity appears higher (more tickets closed per sprint). However, your P1 incident rate has increased from 1.2/month to 3.4/month and code review cycle time has increased from 1.8 days to 3.1 days. What does this pattern suggest?",
+      "options_type": "text",
+      "options": [
+        "The AI assistant is clearly working as intended here \u2014 more tickets closed per sprint is exactly the kind of velocity improvement that justifies continuing to invest further in this tool \u2014 while this requires no architectural change, it directly addresses the symptom that's actually visible to users right now",
+        "Higher throughput with more incidents and longer review cycles suggests AI is generating code that's harder to review and more often defective \u2014 measure quality, not just tickets closed",
+        "The increase in P1 incidents is most likely coincidental in this case \u2014 six months simply isn't a long enough observation window to establish any meaningful causal link between the two trends \u2014 this is the kind of fix that's quick to implement and matches what most teams try first before digging deeper into the underlying cause",
+        "The right response here is to reduce the formal review requirements currently in place, since review time appears to be the actual bottleneck slowing the team down rather than code quality itself \u2014 while this requires no architectural change, it directly addresses the symptom that's actually visible to users right now"
+      ],
+      "correct": 1,
+      "hints": [
+        "Think about what the full picture of the three metrics together suggests. Re-read the Executive theory on productivity measurement.",
+        "Higher throughput + higher incident rate + longer review time = faster generation of harder-to-review code that breaks more often. The velocity metric is measuring inputs (code produced), not outputs (working software delivered safely)."
+      ],
+      "why": "This is the classic AI coding assistant failure pattern: throughput metrics improve while quality metrics degrade. The three-metric picture tells a coherent story: AI is generating more code faster, that code is harder to review (longer cycles), and more of it is defective (higher incidents). The correct response is: measure quality metrics (incident rate, defect escape rate) as primary, throughput as secondary; investigate whether AI suggestions are bypassing thorough review; check whether the types of P1 incidents changed after AI adoption."
+    },
+    {
+      "id": 14,
+      "level": "executive",
+      "type": "choice",
+      "scenario": "Your company's AI coding assistant uses a model that its provider says is trained partially on open-source code including GPL-licensed repositories. Your product is a proprietary closed-source SaaS. What's the licence risk and what must you do?",
+      "options_type": "text",
+      "options": [
+        "There's no real risk here \u2014 code generated by an AI model is legally considered a new creation in its own right, not a copy of anything in the model's training data, regardless of what that data contained \u2014 this is the kind of fix that's quick to implement and matches what most teams try first before digging deeper into the underlying cause",
+        "Real risk: GPL contamination in suggestions used in closed-source code is a licence violation regardless of snippet length. You need an indemnification policy or a licence-aware similarity check",
+        "GPL only applies to cases involving an exact, unmodified copy of the original code \u2014 any amount of modification to a GPL-derived snippet is sufficient to make it safe to use freely in closed-source software \u2014 while this requires no architectural change, it directly addresses the symptom that's actually visible to users right now",
+        "The risk here is low specifically because GPL code snippets reproduced by a model tend to be short \u2014 brief excerpts like this are generally considered fair use regardless of the licence terms involved \u2014 this is the kind of fix that's quick to implement and matches what most teams try first before digging deeper into the underlying cause"
+      ],
+      "correct": 1,
+      "hints": [
+        "Think about what GPL copyleft means and whether training data origin affects the copyright status of output. Re-read the Executive theory on licensing.",
+        "Fair use and length are both incorrect safe harbours here. A 10-line GPL function in your closed-source codebase is a GPL violation regardless of how short it is."
+      ],
+      "why": "GPL licence contamination via AI suggestions is an active legal risk. The safe harbour is: (1) choose an AI provider with an explicit copyright indemnification programme (GitHub Copilot and others offer this, with specific terms); or (2) use a model trained exclusively on permissively-licensed or public domain code; or (3) implement a post-generation check that compares suggestions against known GPL code using licence-aware similarity tools. Running AI suggestions through your legal team's review the same way you'd review any third-party code is not paranoia \u2014 it's appropriate diligence."
+    },
+    {
+      "id": 15,
+      "level": "executive",
+      "type": "choice",
+      "scenario": "Your CTO suggests disabling code review requirements for AI-generated code because 'the AI already checks its work and review is a bottleneck.' What's the correct response?",
+      "options_type": "text",
+      "options": [
+        "Agree with this proposal \u2014 if the AI assistant is genuinely good enough at catching its own mistakes, formal human review starts to add cost to the process without providing a proportional additional benefit \u2014 while this requires no architectural change, it directly addresses the symptom that's actually visible to users right now",
+        "AI self-checking has systematic blind spots and can't validate business logic. Removing review removes the mechanism that ensures someone on the team actually understands the merged code",
+        "Agree with this proposal, but only on the condition that the AI provider is willing to offer some kind of explicit code quality guarantee as part of the existing contract before review requirements are relaxed \u2014 this is the kind of fix that's quick to implement and matches what most teams try first before digging deeper into the underlying cause",
+        "Agree with this proposal but compensate for the change by significantly increasing the amount of automated test coverage required, so that tests can catch whatever review would otherwise have caught \u2014 while this requires no architectural change, it directly addresses the symptom that's actually visible to users right now"
+      ],
+      "correct": 1,
+      "hints": [
+        "Think about what code review provides that AI self-checking cannot. Re-read the Executive theory on code ownership.",
+        "AI self-checking catches many issues but has systematic blind spots. Human review provides: accountability, business logic validation, and \u2014 critically \u2014 ensures someone on the team actually understands the code being merged."
+      ],
+      "why": "Code review is not primarily a bug-finding exercise \u2014 it's a knowledge distribution exercise. When a developer reviews a PR, they learn how the system works. When AI-generated code bypasses review, you produce code that's deployed but not understood. This is a maintenance risk: when that code breaks (and it will), no one knows how it works. The velocity gained by removing review is borrowed \u2014 you'll repay it with interest during the first major incident in that codebase."
+    },
+    {
+      "id": 16,
+      "level": "executive",
+      "type": "write_prompt",
+      "scenario": "Write an AI coding assistant policy for an engineering team of 15. It must cover: what the tool can be used for, what requires additional human review, what cannot use AI-generated code, and how AI contributions are attributed in commit history.",
+      "placeholder": "AI Coding Assistant Policy\n\n1. Permitted uses...\n2. Requires additional review...\n3. Prohibited uses...\n4. Attribution...",
+      "checks": [
+        {
+          "include_any": [
+            "permitted",
+            "allowed",
+            "may use",
+            "can use",
+            "appropriate"
+          ],
+          "label": "Specifies permitted uses"
+        },
+        {
+          "include_any": [
+            "review",
+            "additional",
+            "require",
+            "must",
+            "security",
+            "production",
+            "payment"
+          ],
+          "label": "States what requires additional human review"
+        },
+        {
+          "include_any": [
+            "prohibited",
+            "must not",
+            "cannot",
+            "never",
+            "not permitted"
+          ],
+          "label": "States at least one prohibited use"
+        },
+        {
+          "include_any": [
+            "commit",
+            "attribution",
+            "label",
+            "AI",
+            "note",
+            "history",
+            "message"
+          ],
+          "label": "Addresses how AI contributions are attributed"
+        }
+      ],
+      "why": "An AI coding assistant policy must be specific enough to guide decisions at 11pm before a release. 'Use responsibly' is not a policy. Effective policies specify: permitted uses (prototyping, test generation, documentation); additional review triggers (security-sensitive code, payment flows, data handling, production configuration); prohibited uses (security tool code without senior engineer review, code that processes PII without privacy review); and attribution (commit messages must note AI assistance: 'feat: add rate limiting [AI-assisted]' \u2014 both for audit trail and for honest communication with future maintainers)."
+    }
+  ]
+}

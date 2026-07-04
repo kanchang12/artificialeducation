@@ -1,0 +1,29 @@
+{
+  "id": "sb_41_keyword_extraction",
+  "title": "Extract Top Keywords by Frequency",
+  "topic": "NLP",
+  "difficulty": "medium",
+  "description": "Extract the most frequent meaningful words from a document for tagging or search indexing.",
+  "problem": "Write top_keywords(text, n, stopwords) that lowercases text, splits on non-alphanumeric characters, removes words in `stopwords` and empty strings, then returns the top n words by frequency. Ties broken by first appearance order.",
+  "starter_code": "import re\nfrom collections import Counter\n\ndef top_keywords(text, n, stopwords):\n    # Tokenize, remove stopwords, return top n by frequency (ties: first-seen order)\n    return []\n",
+  "hint": "words = re.findall(r'[a-z0-9]+', text.lower()); filter out stopwords; use Counter, then sort by (-count, first_index).",
+  "test_cases": [
+    {
+      "label": "Basic extraction",
+      "setup": "stopwords={'the','a','is'}",
+      "call": "top_keywords('The cat is a cat. The dog is a dog.', 2, stopwords)",
+      "expected": [
+        "cat",
+        "dog"
+      ]
+    },
+    {
+      "label": "With punctuation",
+      "setup": "stopwords=set()",
+      "call": "top_keywords('AI, AI! ml.', 1, stopwords)",
+      "expected": [
+        "ai"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "sb_36_markdown_table_parser",
+  "title": "Parse a Markdown Table Into Records",
+  "topic": "Structured Output",
+  "difficulty": "medium",
+  "description": "Parse a markdown table (as often returned by models) into a list of dicts keyed by header.",
+  "problem": "Write parse_md_table(text) that takes a markdown table string (header row, separator row, data rows, each '|'-delimited) and returns a list of dicts mapping header->cell value (stripped strings).",
+  "starter_code": "def parse_md_table(text):\n    # Parse header row, skip separator row, build list of dicts for data rows\n    return []\n",
+  "hint": "Split text into lines, split each line on '|', strip empty edges and whitespace. First line = headers, skip second line (---), zip remaining rows with headers.",
+  "test_cases": [
+    {
+      "label": "Two rows",
+      "setup": "md='| name | age |\\n|---|---|\\n| Bob | 30 |\\n| Amy | 25 |'",
+      "call": "parse_md_table(md)",
+      "expected": [
+        {
+          "name": "Bob",
+          "age": "30"
+        },
+        {
+          "name": "Amy",
+          "age": "25"
+        }
+      ]
+    },
+    {
+      "label": "Single row",
+      "setup": "md='| a | b |\\n|---|---|\\n| 1 | 2 |'",
+      "call": "parse_md_table(md)",
+      "expected": [
+        {
+          "a": "1",
+          "b": "2"
+        }
+      ]
+    }
+  ]
+}

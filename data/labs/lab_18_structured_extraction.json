@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_18_structured_extraction",
+  "title": "Extract structured data reliably from messy text",
+  "topic": "Structured Output",
+  "difficulty": "medium",
+  "free": false,
+  "problem": "You need to extract invoice data from scanned PDF text: invoice number, date, vendor name, and total amount. The text is messy — inconsistent formatting, OCR errors, amounts in different currencies. Write the system prompt you would use and describe two validation steps you would run on the extracted data before storing it in a database.",
+  "context": "Sample messy input:\n'INV0O234 | Date: 3rd Jan 24 | Vendor : Acme Corp Ltd.\nSub-total: £1,240.00\nVAT (20%): £248.0O\nTOTAL: £1488.00 GBP'",
+  "hints": [
+    "OCR errors turn '0' into 'O' — your prompt should acknowledge this.",
+    "The total should equal sub-total + VAT. That is a validation check you can do in code.",
+    "What format should the date be normalised to?"
+  ],
+  "solution": "System prompt: 'You are an invoice data extractor. Extract exactly these fields from the text: invoice_number (string), date (ISO format YYYY-MM-DD), vendor_name (string, trimmed), total_amount (number, GBP, no currency symbol), currency (3-letter code). The text may contain OCR errors where O and 0 are confused. Return ONLY a JSON object with these five keys. If a field cannot be found, use null.' Validation step 1 — arithmetic check: if sub-total and VAT are also extractable, verify sub-total + VAT = total within £0.01 tolerance; flag for human review if not. Validation step 2 — type and range check: total_amount must be a positive number less than £1,000,000; date must parse as a valid ISO date; invoice_number must be non-empty. Any failure sends to a manual review queue rather than auto-storing."
+}

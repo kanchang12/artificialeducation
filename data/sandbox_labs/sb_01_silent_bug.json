@@ -1,0 +1,30 @@
+{
+  "id": "sb_01_silent_bug",
+  "title": "The Silent Bug",
+  "topic": "Validation",
+  "difficulty": "easy",
+  "description": "This code runs without crashing but returns the wrong answer. Find and fix the type bug.",
+  "problem": "The function finds the most profitable business from CSV data. It runs without errors \u2014 but returns the wrong answer. Why? Fix it.",
+  "starter_code": "import csv, io\n\nCSV = \"\"\"business,profit\nAlpha,20000\nBeta,150000\nGamma,-20000\"\"\"\n\ndef most_profitable(csv_text):\n    rows = list(csv.DictReader(io.StringIO(csv_text)))\n    best = rows[0]\n    for r in rows:\n        if r[\"profit\"] > best[\"profit\"]:   # bug is here\n            best = r\n    return best[\"business\"]\n",
+  "hint": "csv.DictReader gives you strings, not numbers. '9' > '100' is True in Python.",
+  "test_cases": [
+    {
+      "label": "Finds most profitable",
+      "setup": "import csv,io\nCSV='business,profit\\nAlpha,20000\\nBeta,150000\\nGamma,-20000\\n'",
+      "call": "most_profitable(CSV)",
+      "expected": "Beta"
+    },
+    {
+      "label": "Handles negatives",
+      "setup": "import csv,io\nCSV='business,profit\\nX,100\\nY,-500\\nZ,50\\n'",
+      "call": "most_profitable(CSV)",
+      "expected": "X"
+    },
+    {
+      "label": "Single row",
+      "setup": "import csv,io\nCSV='business,profit\\nOnlyOne,999\\n'",
+      "call": "most_profitable(CSV)",
+      "expected": "OnlyOne"
+    }
+  ]
+}

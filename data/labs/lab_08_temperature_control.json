@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_08_temperature_control",
+  "title": "When temperature=1.0 breaks your pipeline",
+  "topic": "Prompting",
+  "difficulty": "easy",
+  "free": false,
+  "problem": "Your pipeline extracts a JSON object from model output and parses it. In testing it works. In production it fails 30% of the time with a JSON parse error. You check the logs and see the model is sometimes adding commentary before and after the JSON. The only thing different between test and production is that production uses temperature=1.0. Explain why temperature causes this, and what two changes you would make to fix it reliably.",
+  "context": "temperature=0.0 in tests, temperature=1.0 in production\nExpected output: {\"intent\": \"refund\", \"confidence\": 0.9}\nActual output (30% of calls): 'Sure! Here is the JSON you requested:\\n{\"intent\": \"refund\", \"confidence\": 0.9}\\nLet me know if you need anything else!'",
+  "hints": [
+    "Temperature controls randomness — higher values make the model more likely to deviate from the most probable token sequence.",
+    "The system prompt is your first line of defence.",
+    "Stripping the fence is your second — what happens if the model adds markdown?"
+  ],
+  "solution": "High temperature increases the probability of the model adding conversational filler around the JSON, because those tokens are plausible completions at high randomness. Fix 1 — lower temperature to 0.0 or 0.1 for all structured output calls; there is no benefit to creativity when you need deterministic schema compliance. Fix 2 — add defensive parsing: strip any text before the first '{' and after the last '}' before calling json.loads(). This handles the residual cases where even low temperature produces filler."
+}

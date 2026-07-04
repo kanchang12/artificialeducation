@@ -1,0 +1,56 @@
+{
+  "id": "sb_34_batch_splitter",
+  "title": "Batch Requests for Bulk Processing",
+  "topic": "Cost Management",
+  "difficulty": "easy",
+  "description": "Split a list of items into fixed-size batches for bulk embedding or batch API calls.",
+  "problem": "Write make_batches(items, batch_size) returning a list of lists, each of length batch_size except possibly the last.",
+  "starter_code": "def make_batches(items, batch_size):\n    # Split items into chunks of batch_size\n    return [items]\n",
+  "hint": "[items[i:i+batch_size] for i in range(0, len(items), batch_size)]",
+  "test_cases": [
+    {
+      "label": "Exact division",
+      "setup": "",
+      "call": "make_batches([1,2,3,4],2)",
+      "expected": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    {
+      "label": "Remainder",
+      "setup": "",
+      "call": "make_batches([1,2,3,4,5],2)",
+      "expected": [
+        [
+          1,
+          2
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          5
+        ]
+      ]
+    },
+    {
+      "label": "Batch larger than list",
+      "setup": "",
+      "call": "make_batches([1,2],10)",
+      "expected": [
+        [
+          1,
+          2
+        ]
+      ]
+    }
+  ]
+}

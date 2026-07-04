@@ -1,0 +1,38 @@
+{
+  "id": "sb_26_top_k_sampling",
+  "title": "Top-K Token Filter",
+  "topic": "Prompting",
+  "difficulty": "medium",
+  "description": "Implement the top-k filtering step used before sampling the next token from a language model.",
+  "problem": "Write top_k(probs, k) where probs is a dict mapping token->probability. Return a new dict containing only the k tokens with the highest probabilities, unchanged values.",
+  "starter_code": "def top_k(probs, k):\n    # Keep only the k highest-probability entries\n    return probs\n",
+  "hint": "Use sorted(probs.items(), key=lambda x: x[1], reverse=True)[:k], then build a dict from that.",
+  "test_cases": [
+    {
+      "label": "Top 2 of 4",
+      "setup": "probs={'a':0.1,'b':0.4,'c':0.3,'d':0.2}",
+      "call": "top_k(probs, 2)",
+      "expected": {
+        "b": 0.4,
+        "c": 0.3
+      }
+    },
+    {
+      "label": "k equals length",
+      "setup": "probs={'x':0.5,'y':0.5}",
+      "call": "top_k(probs, 2)",
+      "expected": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    {
+      "label": "k=1",
+      "setup": "probs={'a':0.2,'b':0.8}",
+      "call": "top_k(probs, 1)",
+      "expected": {
+        "b": 0.8
+      }
+    }
+  ]
+}

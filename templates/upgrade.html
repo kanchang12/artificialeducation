@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Top Up Credits — Artificial Education{% endblock %}
+{% block canonical_path %}/upgrade{% endblock %}
+
+{% block content %}
+<div style="min-height:calc(100vh - 60px);padding:2.5rem clamp(1rem,5vw,2rem);background:linear-gradient(160deg,var(--bp-100) 0%,var(--bp-50) 100%);">
+  <div class="container" style="max-width:500px;">
+
+    <div class="text-center mb-3">
+      <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(1.5rem,4vw,1.9rem);color:var(--bp-900);margin-bottom:0.4rem;">Top up AI Time Credits</h1>
+      <p style="color:var(--text-muted);font-size:0.9rem;">Pay-as-you-go. Unlocks paid Builds (₹2/min) and all 4 Legend-tier labs while you're actively using them.</p>
+    </div>
+
+    {% if stripe_configured %}
+    <div class="card" style="border:2px solid var(--bp-700);margin-bottom:1rem;">
+      <p style="font-size:0.72rem;font-weight:700;color:var(--bp-700);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.2rem;">Best value — Project Bundle</p>
+      <div style="font-size:1.9rem;font-weight:800;font-family:'Syne',sans-serif;color:var(--bp-900);margin:0.2rem 0;">₹500<span style="font-size:0.9rem;font-weight:400;color:var(--text-muted);"> → 300 minutes</span></div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem;">50 extra minutes vs standard rate. Enough to complete all 5 AI projects.</p>
+      <button class="btn btn-primary" style="width:100%;" onclick="buyBundle()">Get the Bundle — ₹500</button>
+    </div>
+    {% endif %}
+
+    <div class="card">
+      <div style="font-size:1.9rem;font-weight:800;font-family:'Syne',sans-serif;color:var(--bp-900);margin:0.2rem 0;">₹2<span style="font-size:0.9rem;font-weight:400;color:var(--text-muted);">/minute</span></div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1.1rem;">Credits never expire. Timer runs only while a paid Build is open.</p>
+      <ul style="list-style:none;font-size:0.875rem;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem;">
+        {% for f in ["2 sandboxes always free — no credits needed","Credit balance unlocks all 4 Legend-tier labs","Timer pauses when you close the Build","Top up any amount, any time"] %}
+        <li style="display:flex;gap:0.5rem;align-items:flex-start;"><span style="color:var(--success);font-weight:700;flex-shrink:0;">✓</span>{{ f }}</li>
+        {% endfor %}
+      </ul>
+
+      {% if stripe_configured %}
+      <p style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem;">Pay in INR</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;margin-bottom:1.1rem;">
+        {% for amt in [50, 100, 500] %}
+        <button class="btn btn-outline" onclick="buyCreditsINR({{ amt }})">+ ₹{{ amt }}</button>
+        {% endfor %}
+      </div>
+      <p style="font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.4rem;">Pay in GBP</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+        <button class="btn btn-outline" onclick="buyCreditsGBP(10)">£10 · 500 min</button>
+        <button class="btn btn-outline" onclick="buyCreditsGBP(20)">£20 · 1000 min</button>
+      </div>
+      {% else %}
+      <div style="background:var(--bp-100);border-radius:var(--radius-sm);padding:0.75rem;font-size:0.8rem;color:var(--text-muted);">Top-ups coming soon. Email <a href="mailto:hello@aiwithai.online" style="color:var(--bp-700);">hello@aiwithai.online</a>.</div>
+      {% endif %}
+      <p id="topup-status" style="font-size:0.8rem;margin-top:0.65rem;"></p>
+    </div>
+
+    <div class="text-center mt-3">
+      <a href="/builds" class="btn btn-ghost">← Back to Builds</a>
+    </div>
+  </div>
+</div>
+
+<script>
+async function startCheckout(body) {
+  const s = document.getElementById("topup-status");
+  s.style.color = "var(--text-muted)"; s.textContent = "Redirecting to payment…";
+  try {
+    const d = await (await fetch("/api/billing/create-credit-checkout", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)})).json();
+    if (d.ok && d.url) { window.location.href = d.url; }
+    else { s.style.color = "var(--danger)"; s.textContent = d.error || "Payments not available right now."; }
+  } catch(e) { s.style.color = "var(--danger)"; s.textContent = "Network error."; }
+}
+function buyCreditsINR(a) { startCheckout({currency:"inr",amount_inr:a}); }
+function buyCreditsGBP(a) { startCheckout({currency:"gbp",amount_gbp:a}); }
+async function buyBundle() {
+  const s = document.getElementById("topup-status");
+  s.style.color = "var(--text-muted)"; s.textContent = "Redirecting to payment…";
+  try {
+    const d = await (await fetch("/api/billing/create-bundle-checkout", {method:"POST",headers:{"Content-Type":"application/json"}})).json();
+    if (d.ok && d.url) { window.location.href = d.url; }
+    else { s.style.color = "var(--danger)"; s.textContent = d.error || "Payments not available right now."; }
+  } catch(e) { s.style.color = "var(--danger)"; s.textContent = "Network error."; }
+}
+</script>
+{% endblock %}

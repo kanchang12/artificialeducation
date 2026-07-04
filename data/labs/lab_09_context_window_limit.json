@@ -1,0 +1,15 @@
+{
+  "task_id": "lab_09_context_window_limit",
+  "title": "The document is too long for the context window",
+  "topic": "RAG",
+  "difficulty": "hard",
+  "free": false,
+  "problem": "You are asked to summarise a 120-page legal contract (~90,000 tokens). Your model has a 32,000 token context window. Describe two architecturally different approaches to solving this, explain the trade-off of each, and say which you would use for a production legal tool and why.",
+  "context": "Document: 120-page contract, ~750 words/page\nModel context window: 32,000 tokens\nGoal: produce a structured summary covering parties, obligations, termination clauses, and liability caps",
+  "hints": [
+    "Approach 1 involves splitting the document and processing pieces sequentially.",
+    "Approach 2 involves retrieving only the relevant sections rather than reading everything.",
+    "Legal accuracy requirements should drive your production choice."
+  ],
+  "solution": "Approach 1 — Map-reduce summarisation: split the document into 28,000 token chunks, summarise each independently, then summarise the summaries. Trade-off: fast and complete, but the final summary loses cross-chunk relationships (e.g. a liability cap defined in part 1 referenced in part 8). Approach 2 — RAG over the contract: embed all clauses, retrieve only the sections relevant to each summary category (parties, obligations, etc.), inject only those. Trade-off: retrieval misses can cause critical clauses to be omitted entirely. For production legal use I would use map-reduce for completeness, because missing a liability cap is worse than a slightly longer prompt. RAG is better for Q&A over the contract after the fact."
+}
