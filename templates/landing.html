@@ -23,18 +23,20 @@
 
   <style>
   :root {
-    --bg: #0B0F17;
-    --bg-card: #131A26;
-    --bg-terminal: #070A0F;
-    --ink: #F3F4F6;
-    --ink-soft: #9CA3AF;
-    --emerald: #10B981;
-    --emerald-glow: rgba(16, 185, 129, 0.15);
-    --line: #242F41;
+    --bg: #f0f4ff;
+    --bg-card: rgba(255,255,255,0.88);
+    --bg-terminal: #e0e9ff;
+    --ink: #141959;
+    --ink-soft: #4361ee;
+    --emerald: #7c3aed;
+    --emerald-glow: rgba(124,58,237,0.10);
+    --line: #c3d2fe;
     --radius: 12px;
     --font-display: 'Sora', sans-serif;
     --font-body: 'Inter', sans-serif;
     --font-mono: 'Fira Code', monospace;
+    --accent: #7c3aed;
+    --accent-light: #a78bfa;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -63,24 +65,24 @@
   }
 
   .logo { font-family: var(--font-display); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.03em; }
-  .logo span { color: var(--emerald); }
+  .logo span { color: var(--accent); }
   
   .nav-secondary {
     font-size: 0.85rem; color: var(--ink-soft); font-family: var(--font-mono);
     border: 1px solid var(--line); padding: 8px 18px; border-radius: 6px;
     background: rgba(19, 26, 38, 0.5); transition: all 0.2s ease;
   }
-  .nav-secondary:hover { border-color: var(--emerald); color: var(--emerald); background: var(--bg-card); }
+  .nav-secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--bg-card); }
 
   /* COMPREHENSIVE PLATFORM BANNER */
   .manifesto-banner { max-width: 1200px; margin: 32px auto 0; padding: 0 24px; }
   .manifesto-box {
-    background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.2);
+    background: rgba(124,58,237,0.04); border: 1px solid rgba(124,58,237,0.2);
     padding: 18px 24px; border-radius: var(--radius);
-    font-size: 0.9rem; color: #A7F3D0; line-height: 1.6;
+    font-size: 0.9rem; color: #2632ab; line-height: 1.6;
     display: flex; align-items: flex-start; gap: 12px;
   }
-  .manifesto-box strong { color: var(--emerald); font-family: var(--font-mono); font-weight: 500; }
+  .manifesto-box strong { color: var(--accent); font-family: var(--font-mono); font-weight: 500; }
 
   /* HERO AREA */
   .hero {
@@ -90,27 +92,27 @@
 
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
-    font-family: var(--font-mono); font-size: 0.75rem; color: var(--emerald);
+    font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);
     background: var(--emerald-glow); padding: 6px 14px; border-radius: 999px;
-    margin-bottom: 24px; font-weight: 500; border: 1px solid rgba(16, 185, 129, 0.2);
+    margin-bottom: 24px; font-weight: 500; border: 1px solid rgba(124,58,237,0.2);
   }
 
   h1 {
     font-family: var(--font-display); font-size: clamp(2.2rem, 4.5vw, 3.4rem);
     line-height: 1.1; font-weight: 800; margin-bottom: 24px; letter-spacing: -0.03em;
   }
-  h1 .accent { color: var(--emerald); text-shadow: 0 0 30px rgba(16, 185, 129, 0.2); }
+  h1 .accent { color: var(--accent); text-shadow: 0 0 30px rgba(124,58,237,0.2); }
 
   .sub { font-size: 1.1rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: 36px; }
 
   .cta-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
   .cta-primary {
     display: inline-flex; align-items: center; gap: 12px;
-    background: var(--emerald); color: #000; font-weight: 700; font-size: 1rem;
+    background: var(--accent); color: #fff; font-weight: 700; font-size: 1rem;
     padding: 16px 32px; border-radius: 8px; transition: all 0.2s ease;
-    box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 20px rgba(124,58,237,0.3);
   }
-  .cta-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(16, 185, 129, 0.4); background: #12d394; }
+  .cta-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(124,58,237,0.4); background: #6d28d9; }
   .cta-note { font-size: 0.85rem; color: var(--ink-soft); font-family: var(--font-mono); }
 
   /* SIMULATED INTERFACE WORKSPACE (HERO VISUAL) */
@@ -137,7 +139,7 @@
   }
   .phone-screen {
     background: var(--bg-terminal); flex: 1; border-radius: 12px;
-    padding: 8px; font-family: var(--font-mono); font-size: 0.65rem; color: #34D399;
+    padding: 8px; font-family: var(--font-mono); font-size: 0.65rem; color: #4361ee;
     overflow: hidden; line-height: 1.4;
   }
   .phone-pill { width: 30px; height: 4px; background: var(--line); border-radius: 999px; margin: 0 auto 4px; }
@@ -147,10 +149,10 @@
     font-family: var(--font-mono); font-size: 0.8rem; color: #E5E7EB;
     line-height: 1.5; overflow-y: auto; white-space: pre-wrap; padding-right: 10px;
   }
-  .code-keyword { color: #F472B6; }
-  .code-string { color: #34D399; }
-  .code-comment { color: #6B7280; }
-  .code-var { color: #60A5FA; }
+  .code-keyword { color: #2632ab; }
+  .code-string { color: #4361ee; }
+  .code-comment { color: #4361ee; }
+  .code-var { color: #7c3aed; }
 
   /* HARDWARE DECENTRALIZATION ARRAYS (FEATURES) */
   .features-heading { max-width: 1200px; margin: 40px auto 0; padding: 0 24px; font-family: var(--font-display); font-size: 1.5rem; letter-spacing: -0.02em; }
@@ -164,8 +166,8 @@
     border-radius: var(--radius); padding: 32px; display: flex; flex-direction: column; gap: 16px;
     transition: border-color 0.2s ease;
   }
-  .feature-card:hover { border-color: rgba(16, 185, 129, 0.3); }
-  .feature-meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--emerald); text-transform: uppercase; letter-spacing: 0.05em; }
+  .feature-card:hover { border-color: rgba(124,58,237,0.3); }
+  .feature-meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
   .feature-card h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; }
   .feature-card p { font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; }
   
@@ -205,8 +207,8 @@
   <a class="nav-secondary" href="/login">cat session.log</a>
 </nav>
 
-<section style="background:var(--emerald);padding:0.75rem 1.5rem;text-align:center;">
-  <a href="https://zenodo.org/records/21060844" target="_blank" rel="noopener" style="color:#000;font-family:var(--font-mono);font-size:0.85rem;font-weight:700;text-decoration:none;letter-spacing:0.03em;">
+<section style="background:var(--accent);padding:0.75rem 1.5rem;text-align:center;">
+  <a href="https://zenodo.org/records/21060844" target="_blank" rel="noopener" style="color:#fff;font-family:var(--font-mono);font-size:0.85rem;font-weight:700;text-decoration:none;letter-spacing:0.03em;">
     📄 READ THE PAPER — Artificial Education Framework · Zenodo DOI: 10.5281/zenodo.21060844 ↗
   </a>
 </section>
@@ -223,7 +225,7 @@
 <section class="hero">
   <div>
     <div class="eyebrow">
-      <span style="width:6px; height:6px; background:var(--emerald); border-radius:50%; display:inline-block; animation: pulse 2s infinite;"></span>
+      <span style="width:6px; height:6px; background:var(--accent); border-radius:50%; display:inline-block; animation: pulse 2s infinite;"></span>
       CORE ENGINE RUNNING: V2.5
     </div>
     <h1>Learn by doing. Build <span class="accent">real</span> AI skills.</h1>
@@ -236,7 +238,7 @@
       <span class="cta-note">chmod +x student_builder</span>
     </div>
     <div style="margin-top:1.5rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;">
-      <a href="https://zenodo.org/records/21060844" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(16,185,129,0.12);border:1px solid var(--emerald);color:var(--emerald);font-family:var(--font-mono);font-size:0.78rem;padding:0.5rem 1rem;border-radius:6px;text-decoration:none;font-weight:600;letter-spacing:0.02em;">
+      <a href="https://zenodo.org/records/21060844" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(124,58,237,0.08);border:1px solid var(--accent);color:var(--accent);font-family:var(--font-mono);font-size:0.78rem;padding:0.5rem 1rem;border-radius:6px;text-decoration:none;font-weight:600;letter-spacing:0.02em;">
         📄 READ THE PAPER — Artificial Education Framework · Zenodo DOI: 10.5281/zenodo.21060844 ↗
       </a>
     </div>
@@ -260,7 +262,7 @@
           Isolation: TRUE<br>
           Window: Cap[-6:]<br>
           <br>
-          <span style="color:#FFF">> Run Verification</span><br>
+          <span style="color:var(--ink)">> Run Verification</span><br>
           Status: Correct<br>
           Score: 10/10<br>
           <span style="color:#60A5FA">RAM Locked</span>
@@ -290,7 +292,7 @@
     <div class="feature-card-cta"></div>
     <div class="feature-code-block">
       <span style="color:#F472B6">import</span> os<br>
-      key = os.environ.get(<span style="color:#34D399">"SECRET"</span>)
+      key = os.environ.get(<span style="color:#7c3aed">"SECRET"</span>)
     </div>
   </div>
   
@@ -360,7 +362,7 @@
     <div class="feature-card">
       <div class="feature-meta">[Benefit // Evidence]</div>
       <h3>Grounded in research</h3>
-      <p>Artificial Education is a published framework, not a slogan. The theory, method and pilot data are documented and citable. <a href="https://zenodo.org/records/21060844" target="_blank" style="color:var(--emerald); text-decoration:underline;">Read the paper ↗</a></p>
+      <p>Artificial Education is a published framework, not a slogan. The theory, method and pilot data are documented and citable. <a href="https://zenodo.org/records/21060844" target="_blank" style="color:var(--accent); text-decoration:underline;">Read the paper ↗</a></p>
     </div>
   </section>
 </section>
